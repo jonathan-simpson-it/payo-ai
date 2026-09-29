@@ -22,3 +22,21 @@ Stage Summary:
 - All PRD acceptance criteria met: one-click landing→library, 3 complete interactive workflows with 5–6 steps, editable inspector settings reflected live (tolerance change visibly alters exceptions found), DnD + button reordering, step-by-step run animation, NAV review gate with distinct Approve/Return outcomes, run history with Draft/Needs review/Completed, visible sample-data labels throughout, About-this-demo dialog, keyboard focusable controls with visible focus, no broken states at 1440/1024.
 - Key files: `src/app/page.tsx` → `src/components/payo/app.tsx`; lib in `src/lib/payo/`; components in `src/components/payo/`.
 - Verification screenshots kept in `/home/z/my-project/scripts/verify/`.
+
+---
+Task ID: 2
+Agent: Main agent (Super Z)
+Task: Theme adjustment per user request — replace the deep petrol accent with a friendly yellow-orange primary, and introduce a cute Payo mascot (in the spirit of the Astro VS Code pet: simple shape, eyes, mouth, minimal colours), keeping a modern non-AI-slop SaaS look.
+
+Work Log:
+- Re-themed `src/app/globals.css` tokens: primary #F97316 (yellow-orange fills) with dark warm-ink foreground #2A1708 on fills; added `--primary-ink` #C2410C (AA-contrast text/links on light bg), `--primary-strong` #EA580C (hover/focus), `--primary-deep` #9A3412; soft tint #FDF0E4 / border #F7D9BD. Warmed the whole neutral ramp (background #FAF8F3, warm ink #27211A, borders/inks/scrollbars/selection). Kept status palette: gold "needs review" #96650A stays visually distinct from the orange brand.
+- Created `src/components/payo/mark.tsx` — PayoMark mascot: flat SVG, rounded-square orange body with a little tuft, two dark eyes with white shines, soft smile, subtle blush; gentle 4.6s blink animation (`.payo-blink`), disabled under prefers-reduced-motion.
+- Replaced favicon.svg with the mascot; wired PayoMark into: workspace nav logo, landing header/footer/hero (64–72px, slight tilt), product mockup top bar, Overview "Start from a template" card, and the About-this-demo dialog title.
+- Contrast fixes: all bare `text-primary` usages → `text-primary-ink` across ui/shell/landing/misc/runs/builder/reports; button default hover → `bg-primary-strong`; focus borders → `primary-strong`; spinner → `text-primary-strong`; shadcn button `link` variant → `text-primary-ink`.
+- Fixed a stale Turbopack CSS chunk (server kept serving old tokens after the first edit; verified via curl + getComputedStyle) by forcing a rebuild with a file bump — served CSS then carried the new palette.
+- Verified with agent-browser + VLM visual QA at 1440px, 1024px and 390px: landing (hero mascot, CTAs, mockup), template library, builder, full run → review gate (gold vs orange distinction) → approve → run result, runs list at 1024px, About dialog, overview, mobile hero. `bun run lint` clean, zero page errors, dev server healthy.
+
+Stage Summary:
+- Deliverable: Payo AI prototype re-themed to a warm, friendly yellow-orange brand with a cute minimal mascot (logo, hero, product chrome, dialog, favicon) — no gradients, no glow, no AI-slop; gold needs-review status kept distinct from orange actions.
+- Key files: src/app/globals.css, src/components/payo/mark.tsx (new), favicon.svg, plus small token-class updates across payo components and components/ui/button.tsx.
+- Verification screenshots: scripts/verify/theme-01…09.

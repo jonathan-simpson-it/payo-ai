@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { runSummary } from "@/lib/payo/data";
 import { fmtDateTime, fmtLongDate } from "@/lib/payo/format";
 import { usePayo } from "@/lib/payo/store";
+import { PayoMark } from "@/components/payo/mark";
 import { RunStatusChip, SampleTag, WorkflowStatusChip } from "@/components/payo/ui";
 
 const SECTION_HEADING = "text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ink-3";
@@ -41,7 +42,7 @@ export function OverviewScreen() {
               </h2>
               <a
                 href="#/workspace/runs"
-                className="text-[12.5px] font-medium text-primary transition-colors hover:text-primary-deep"
+                className="text-[12.5px] font-medium text-primary-ink transition-colors hover:text-primary-deep"
               >
                 All runs
               </a>
@@ -53,7 +54,7 @@ export function OverviewScreen() {
                     href={`#/workspace/runs/${run.id}`}
                     className="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-3 transition-colors hover:bg-muted/40 focus-visible:bg-muted/40"
                   >
-                    <span className="text-[12.5px] font-medium tabular-nums text-primary">
+                    <span className="text-[12.5px] font-medium tabular-nums text-primary-ink">
                       {run.code}
                     </span>
                     <span className="text-[13.5px] font-medium">{run.workflowName}</span>
@@ -77,7 +78,7 @@ export function OverviewScreen() {
               </h2>
               <a
                 href="#/workspace/workflows"
-                className="text-[12.5px] font-medium text-primary transition-colors hover:text-primary-deep"
+                className="text-[12.5px] font-medium text-primary-ink transition-colors hover:text-primary-deep"
               >
                 All workflows
               </a>
@@ -109,7 +110,10 @@ export function OverviewScreen() {
         </div>
 
         <aside className="space-y-5 rounded-md border border-border bg-card p-5">
-          <h2 className="text-[14.5px] font-semibold">Start from a template</h2>
+          <div className="flex items-center gap-3">
+            <PayoMark className="size-8" />
+            <h2 className="text-[14.5px] font-semibold">Start from a template</h2>
+          </div>
           <ol className="space-y-2.5">
             {[
               "Choose a finance template",
@@ -182,7 +186,7 @@ export function WorkflowsList() {
               <span className="flex flex-wrap items-center gap-2 text-[12.5px] text-ink-2">
                 {last ? (
                   <>
-                    <span className="font-medium tabular-nums text-primary">{last.code}</span>
+                    <span className="font-medium tabular-nums text-primary-ink">{last.code}</span>
                     <RunStatusChip status={last.status} />
                     <span className="text-ink-3">{runSummary(last)}</span>
                   </>

@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 
 import { usePayo, useUI } from "@/lib/payo/store";
 import type { Route } from "@/lib/payo/router";
+import { PayoMark } from "@/components/payo/mark";
 import { RunStatusChip } from "@/components/payo/ui";
 import { cn } from "@/lib/utils";
 
@@ -67,7 +68,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
           className="flex h-14 items-center gap-2.5 border-b border-border px-5"
           aria-label="Payo AI — back to landing page"
         >
-          <span className="size-2.5 rounded-[3px] bg-primary" aria-hidden="true" />
+          <PayoMark className="size-[26px]" />
           <span className="text-[14.5px] font-semibold tracking-tight">Payo AI</span>
         </a>
         <nav className="flex flex-1 flex-col gap-0.5 px-3 py-4" aria-label="Workspace">
@@ -85,7 +86,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 className={cn(
                   "flex items-center gap-2.5 rounded-md px-3 py-2 text-[13.5px] font-medium transition-colors",
                   active
-                    ? "bg-primary-tint text-primary"
+                    ? "bg-primary-tint text-primary-ink"
                     : "text-ink-2 hover:bg-muted hover:text-foreground",
                 )}
               >
@@ -165,7 +166,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "shrink-0 rounded-md px-3 py-1.5 text-[13px] font-medium",
-                  active ? "bg-primary-tint text-primary" : "text-ink-2",
+                  active ? "bg-primary-tint text-primary-ink" : "text-ink-2",
                 )}
               >
                 {item.label}

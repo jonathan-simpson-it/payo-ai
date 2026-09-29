@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Check, ChevronRight, CircleAlert, Plus } from "lucide-react";
 
+import { PayoMark } from "@/components/payo/mark";
 import { cn } from "@/lib/utils";
 
 /**
@@ -39,11 +40,11 @@ export function ProductMockup() {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none select-none overflow-hidden rounded-lg border border-line-strong bg-card shadow-[0_1px_2px_rgba(29,40,54,0.05),0_16px_40px_-16px_rgba(29,40,54,0.16)]"
+        className="pointer-events-none select-none overflow-hidden rounded-lg border border-line-strong bg-card shadow-[0_1px_2px_rgba(66,44,15,0.06),0_16px_40px_-16px_rgba(66,44,15,0.18)]"
       >
         {/* Mini top bar */}
         <div className="flex items-center gap-3 border-b border-border bg-background px-4 py-2.5">
-          <span className="size-2 rounded-[2px] bg-primary" />
+          <PayoMark className="size-[18px]" blink={false} />
           <span className="text-[13px] font-semibold text-foreground">NAV reconciliation</span>
           <span className="rounded-sm bg-neutral-tint px-1.5 py-px text-[10.5px] font-medium text-ink-2">Draft</span>
           <span className="ml-auto rounded-md bg-primary px-2.5 py-1 text-[11.5px] font-medium text-primary-foreground">

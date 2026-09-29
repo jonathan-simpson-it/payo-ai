@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { TEMPLATES } from "@/lib/payo/data";
 import { useUI } from "@/lib/payo/store";
 import { Eyebrow, SampleTag } from "@/components/payo/ui";
+import { PayoMark } from "@/components/payo/mark";
 import { ProductMockup } from "@/components/payo/landing-mockup";
 
 const WORKSPACE_URL = "#/workspace/templates";
@@ -65,7 +66,7 @@ export function LandingPage() {
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-8 px-6">
           <a href="#/" className="flex items-center gap-2.5" aria-label="Payo AI home">
-            <span className="size-2.5 rounded-[3px] bg-primary" aria-hidden="true" />
+            <PayoMark className="size-[26px]" />
             <span className="text-[15px] font-semibold tracking-tight">Payo AI</span>
           </a>
           <nav className="ml-auto hidden items-center gap-6 md:flex" aria-label="Landing sections">
@@ -91,7 +92,8 @@ export function LandingPage() {
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-6 pb-20 pt-16 md:pt-24">
         <div className="mx-auto max-w-2xl text-center">
-          <Eyebrow className="justify-center">Payo AI</Eyebrow>
+          <PayoMark className="mx-auto block size-16 -rotate-3 md:size-[72px]" />
+          <Eyebrow className="mt-6 justify-center">Payo AI</Eyebrow>
           <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.02em] md:text-[52px]">
             Finance workflows, made clear.
           </h1>
@@ -145,7 +147,7 @@ export function LandingPage() {
           <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
             {HOW.map((h, i) => (
               <div key={h.title} className="flex gap-4">
-                <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-md border border-primary-soft bg-primary-tint text-[14px] font-semibold text-primary tabular-nums">
+                <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-md border border-primary-soft bg-primary-tint text-[14px] font-semibold text-primary-ink tabular-nums">
                   {i + 1}
                 </span>
                 <div>
@@ -168,7 +170,7 @@ export function LandingPage() {
                 Start from a template, not a blank canvas.
               </h2>
             </div>
-            <Button asChild variant="ghost" className="text-[13.5px] text-primary">
+            <Button asChild variant="ghost" className="text-[13.5px] text-primary-ink">
               <a href={WORKSPACE_URL}>
                 View all templates
                 <ArrowRight className="size-4" aria-hidden="true" />
@@ -194,7 +196,7 @@ export function LandingPage() {
                   <SampleTag />
                   <a
                     href={`#/workspace/workflows/${t.id}`}
-                    className="inline-flex items-center gap-1 text-[13px] font-medium text-primary transition-colors hover:text-primary-deep"
+                    className="inline-flex items-center gap-1 text-[13px] font-medium text-primary-ink transition-colors hover:text-primary-deep"
                   >
                     Open in workspace
                     <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -250,7 +252,7 @@ export function LandingPage() {
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 md:flex-row md:items-start md:justify-between">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="size-2.5 rounded-[3px] bg-primary" aria-hidden="true" />
+              <PayoMark className="size-6" />
               <span className="text-[14px] font-semibold tracking-tight">Payo AI</span>
             </div>
             <p className="mt-3 max-w-xs text-[12.5px] leading-relaxed text-ink-3">
@@ -259,7 +261,7 @@ export function LandingPage() {
             </p>
           </div>
           <div className="flex flex-col gap-2.5 text-[13px] md:items-end">
-            <a href={WORKSPACE_URL} className="font-medium text-primary hover:text-primary-deep">
+            <a href={WORKSPACE_URL} className="font-medium text-primary-ink hover:text-primary-deep">
               Enter the workspace
             </a>
             <button

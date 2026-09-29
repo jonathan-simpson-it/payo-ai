@@ -52,7 +52,7 @@ export function RunsList() {
             href={`#/workspace/runs/${run.id}`}
             className="grid gap-1.5 border-b border-border px-4 py-3.5 transition-colors last:border-0 hover:bg-muted/40 focus-visible:bg-muted/40 md:grid-cols-[86px_1.1fr_160px_110px_1.7fr_16px] md:items-center md:gap-3"
           >
-            <span className="text-[12.5px] font-medium tabular-nums text-primary">{run.code}</span>
+            <span className="text-[12.5px] font-medium tabular-nums text-primary-ink">{run.code}</span>
             <span className="truncate text-[13.5px] font-medium text-foreground">
               {run.workflowName}
             </span>

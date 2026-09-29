@@ -452,7 +452,7 @@ export function ReportPreview({
       footer="AI-assisted draft prepared from sample data. Preview only — not investment advice."
     >
       <div className="flex items-center gap-2.5">
-        <span className="inline-flex items-center rounded-sm bg-primary-tint px-2 py-0.5 text-[11.5px] font-semibold text-primary">
+        <span className="inline-flex items-center rounded-sm bg-primary-tint px-2 py-0.5 text-[11.5px] font-semibold text-primary-ink">
           AI-assisted draft
         </span>
         <span className="text-[12px] text-ink-3">Generated from the sample snapshot — check before use.</span>

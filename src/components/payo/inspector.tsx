@@ -102,7 +102,7 @@ function NumberField({
   };
 
   return (
-    <div className="flex items-stretch overflow-hidden rounded-md border border-input bg-card focus-within:border-primary">
+    <div className="flex items-stretch overflow-hidden rounded-md border border-input bg-card focus-within:border-primary-strong">
       <input
         type="text"
         inputMode="decimal"

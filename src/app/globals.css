@@ -34,6 +34,8 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
   --color-primary-deep: var(--primary-deep);
+  --color-primary-ink: var(--primary-ink);
+  --color-primary-strong: var(--primary-strong);
   --color-primary-tint: var(--primary-tint);
   --color-primary-soft: var(--primary-soft);
   --color-popover-foreground: var(--popover-foreground);
@@ -60,54 +62,56 @@
 :root {
   --radius: 0.4rem;
 
-  /* Payo light theme — warm off-white base, navy ink, deep petrol accent */
-  --background: #faf9f6;
-  --foreground: #1d2836;
+  /* Payo light theme — warm cream base, warm ink, friendly yellow-orange accent */
+  --background: #faf8f3;
+  --foreground: #27211a;
   --card: #ffffff;
-  --card-foreground: #1d2836;
+  --card-foreground: #27211a;
   --popover: #ffffff;
-  --popover-foreground: #1d2836;
-  --primary: #14556b;
-  --primary-foreground: #f5fafb;
-  --primary-deep: #0f4356;
-  --primary-tint: #ecf3f5;
-  --primary-soft: #b9cfd8;
-  --secondary: #f0efea;
-  --secondary-foreground: #1d2836;
-  --muted: #f0efea;
-  --muted-foreground: #5a6472;
-  --accent: #f0efea;
-  --accent-foreground: #1d2836;
+  --popover-foreground: #27211a;
+  --primary: #f97316;
+  --primary-foreground: #2a1708;
+  --primary-strong: #ea580c;
+  --primary-deep: #9a3412;
+  --primary-ink: #c2410c;
+  --primary-tint: #fdf0e4;
+  --primary-soft: #f7d9bd;
+  --secondary: #f1eee6;
+  --secondary-foreground: #27211a;
+  --muted: #f1eee6;
+  --muted-foreground: #5d564b;
+  --accent: #f1eee6;
+  --accent-foreground: #27211a;
   --destructive: #b3261e;
-  --border: #e5e2da;
-  --input: #d9d5cc;
-  --ring: #14556b;
-  --chart-1: #14556b;
+  --border: #e9e4d8;
+  --input: #dcd5c5;
+  --ring: #ea580c;
+  --chart-1: #ea580c;
   --chart-2: #1f7350;
   --chart-3: #96650a;
-  --chart-4: #5a6472;
-  --chart-5: #b9cfd8;
-  --sidebar: #faf9f6;
-  --sidebar-foreground: #1d2836;
-  --sidebar-primary: #14556b;
-  --sidebar-primary-foreground: #f5fafb;
-  --sidebar-accent: #ecf3f5;
-  --sidebar-accent-foreground: #14556b;
-  --sidebar-border: #e5e2da;
-  --sidebar-ring: #14556b;
+  --chart-4: #7a7466;
+  --chart-5: #f7d9bd;
+  --sidebar: #faf8f3;
+  --sidebar-foreground: #27211a;
+  --sidebar-primary: #f97316;
+  --sidebar-primary-foreground: #2a1708;
+  --sidebar-accent: #fdf0e4;
+  --sidebar-accent-foreground: #c2410c;
+  --sidebar-border: #e9e4d8;
+  --sidebar-ring: #ea580c;
 
-  /* Payo secondary ink + status palette */
-  --ink-2: #4e5866;
-  --ink-3: #8b93a0;
-  --line-strong: #d7d3c9;
+  /* Payo secondary ink + status palette (gold "needs review" stays apart from the orange brand) */
+  --ink-2: #5d564b;
+  --ink-3: #8e877a;
+  --line-strong: #d8d1c0;
   --ok: #1f7350;
   --ok-tint: #e9f3ee;
   --warn: #96650a;
   --warn-tint: #faf2e1;
   --danger: #b3261e;
   --danger-tint: #faecea;
-  --neutral: #7c838d;
-  --neutral-tint: #f0efea;
+  --neutral: #7a7466;
+  --neutral-tint: #f1efe8;
 }
 
 @layer base {
@@ -127,7 +131,7 @@
     border-radius: 2px;
   }
   ::selection {
-    background: #d9e7ec;
+    background: #fde3c8;
   }
   th {
     font-weight: 500;
@@ -137,7 +141,7 @@
 /* Slim, quiet scrollbars */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #d3cfc6 transparent;
+  scrollbar-color: #d6cec0 transparent;
 }
 ::-webkit-scrollbar {
   width: 10px;
@@ -147,12 +151,30 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d3cfc6;
+  background: #d6cec0;
   border-radius: 5px;
-  border: 3px solid #faf9f6;
+  border: 3px solid #faf8f3;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c4bfb4;
+  background: #c8bfae;
+}
+
+/* Payo mascot — a gentle blink */
+@keyframes payo-blink {
+  0%,
+  91%,
+  100% {
+    transform: scaleY(1);
+  }
+  94%,
+  96% {
+    transform: scaleY(0.12);
+  }
+}
+.payo-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: payo-blink 4.6s ease-in-out infinite;
 }
 
 /* Respect reduced motion */
@@ -167,4 +189,9 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .payo-blink {
+    animation: none;
+  }
 }
+
+/* retheme-bump */

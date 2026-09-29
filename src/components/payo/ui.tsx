@@ -26,6 +26,7 @@ import {
 import { STEP_TYPE_LABELS } from "@/lib/payo/data";
 import type { RunStatus, RunStepState, StepTypeId, WorkflowStatus } from "@/lib/payo/types";
 import { useUI } from "@/lib/payo/store";
+import { PayoMark } from "@/components/payo/mark";
 import { cn } from "@/lib/utils";
 
 // ─── Scroll affordance ──────────────────────────────────────────────────────
@@ -112,7 +113,7 @@ export function SampleTag({
 
 const RUN_STATUS: Record<RunStatus, { label: string; dot: string; cls: string; pulse?: boolean }> = {
   draft: { label: "Draft", dot: "bg-neutral", cls: "bg-neutral-tint text-ink-2" },
-  running: { label: "Running", dot: "bg-primary", cls: "bg-primary-tint text-primary", pulse: true },
+  running: { label: "Running", dot: "bg-primary", cls: "bg-primary-tint text-primary-ink", pulse: true },
   "needs-review": { label: "Needs review", dot: "bg-warn", cls: "bg-warn-tint text-warn" },
   completed: { label: "Completed", dot: "bg-ok", cls: "bg-ok-tint text-ok" },
 };
@@ -194,7 +195,7 @@ export function rowStatusTone(status: string): Tone {
 export function StepStateIcon({ state, className }: { state: RunStepState; className?: string }) {
   switch (state) {
     case "running":
-      return <Loader2 className={cn("size-3.5 animate-spin text-primary", className)} aria-hidden="true" />;
+      return <Loader2 className={cn("size-3.5 animate-spin text-primary-strong", className)} aria-hidden="true" />;
     case "complete":
       return (
         <span
@@ -220,7 +221,7 @@ export function Eyebrow({ children, className }: { children: React.ReactNode; cl
   return (
     <p
       className={cn(
-        "flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-primary",
+        "flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-primary-ink",
         className,
       )}
     >
@@ -238,7 +239,10 @@ export function AboutDemoDialog() {
     <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
       <DialogContent className="max-w-md gap-0">
         <DialogHeader className="items-start text-left">
-          <DialogTitle className="text-base">About this demo</DialogTitle>
+          <DialogTitle className="flex items-center gap-2.5 text-base">
+            <PayoMark className="size-7" />
+            About this demo
+          </DialogTitle>
           <DialogDescription className="text-[13px] leading-relaxed text-ink-2">
             Payo AI is a V0 product prototype. The workflows, sample data, connections, approvals
             and outputs in this demo are simulated for demonstration purposes.

@@ -311,7 +311,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             value={wf.name}
             onChange={(e) => renameWorkflow(wf.id, e.target.value)}
             aria-label="Workflow name"
-            className="min-w-0 max-w-[300px] flex-1 rounded-sm border border-transparent bg-transparent px-1.5 py-0.5 text-[15px] font-semibold tracking-[-0.01em] transition-colors hover:border-line-strong focus:border-primary focus:outline-none"
+            className="min-w-0 max-w-[300px] flex-1 rounded-sm border border-transparent bg-transparent px-1.5 py-0.5 text-[15px] font-semibold tracking-[-0.01em] transition-colors hover:border-line-strong focus:border-primary-strong focus:outline-none"
           />
           <WorkflowStatusChip status={wf.status} />
           <div className="ml-auto flex items-center gap-2">
@@ -513,7 +513,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
               <span className="text-[12px] text-ink-3">Last run</span>
               <a
                 href={`#/workspace/runs/${lastRun.id}`}
-                className="text-[12.5px] font-medium tabular-nums text-primary transition-colors hover:text-primary-deep"
+                className="text-[12.5px] font-medium tabular-nums text-primary-ink transition-colors hover:text-primary-deep"
               >
                 {lastRun.code}
               </a>
@@ -526,7 +526,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
               </span>
               <a
                 href={`#/workspace/runs/${lastRun.id}`}
-                className="ml-auto text-[12.5px] font-medium text-primary transition-colors hover:text-primary-deep"
+                className="ml-auto text-[12.5px] font-medium text-primary-ink transition-colors hover:text-primary-deep"
               >
                 View result
               </a>
@@ -614,7 +614,7 @@ function AddStepControl({
         <Button
           variant="outline"
           disabled={disabled}
-          className="h-auto gap-1.5 border-dashed py-3.5 text-[13px] font-medium text-ink-2 hover:border-primary hover:text-primary"
+          className="h-auto gap-1.5 border-dashed py-3.5 text-[13px] font-medium text-ink-2 hover:border-primary hover:text-primary-ink"
           aria-label="Add a step"
         >
           <Plus className="size-3.5" aria-hidden="true" />
