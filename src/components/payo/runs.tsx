@@ -205,7 +205,7 @@ export function RunDetail({ runId }: { runId: string }) {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-8 md:px-10">
+    <div className="mx-auto max-w-6xl px-6 py-8 md:px-10">
       <a
         href="#/workspace/runs"
         className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-ink-2 transition-colors hover:text-foreground"
@@ -288,7 +288,7 @@ export function RunDetail({ runId }: { runId: string }) {
         </div>
       )}
 
-      <div className="mt-8 grid gap-x-10 gap-y-10 xl:grid-cols-[300px_1fr]">
+      <div className="mt-8 grid gap-x-10 gap-y-10 xl:grid-cols-[260px_1fr]">
         {/* Left column — steps and sources */}
         <div className="space-y-8">
           <section aria-labelledby="run-steps">

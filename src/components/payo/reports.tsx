@@ -52,17 +52,9 @@ const TD_R = "whitespace-nowrap px-3 py-2.5 text-right tabular-nums text-ink-2";
 
 // ─── NAV tables ──────────────────────────────────────────────────────────────
 
-function NavTable({
-  rows,
-  full,
-  tolerance,
-}: {
-  rows: NavResultRow[];
-  full?: boolean;
-  tolerance: number;
-}) {
+function NavTable({ rows, full }: { rows: NavResultRow[]; full?: boolean }) {
   return (
-    <TableShell minWidth={full ? 780 : 640}>
+    <TableShell minWidth={full ? 740 : 640}>
       <thead>
         <tr className="border-b border-border">
           <th className={TH}>Fund</th>
@@ -70,7 +62,6 @@ function NavTable({
           <th className={TH_R}>Internal NAV (£)</th>
           <th className={TH_R}>Difference (£)</th>
           <th className={TH_R}>Difference %</th>
-          {full && <th className={TH_R}>Tolerance</th>}
           {full && <th className={TH}>Status</th>}
           <th className={TH}>Note</th>
         </tr>
@@ -78,7 +69,14 @@ function NavTable({
       <tbody>
         {rows.map((r) => (
           <tr key={r.fund} className="border-b border-border/70 last:border-0">
-            <td className="whitespace-nowrap px-3 py-2.5 font-medium text-foreground">{r.fund}</td>
+            <td
+              className={cn(
+                "px-3 py-2.5 font-medium text-foreground",
+                !full && "whitespace-nowrap",
+              )}
+            >
+              {r.fund}
+            </td>
             <td className={TD_R}>{fmtInt(r.adminNav)}</td>
             <td className={TD_R}>{fmtInt(r.internalNav)}</td>
             <td className={cn(TD_R, r.status === "Exception" && "font-medium text-danger")}>
@@ -87,13 +85,12 @@ function NavTable({
             <td className={cn(TD_R, r.status === "Exception" && "font-medium text-danger")}>
               {fmtSignedPct(r.diffPct)}
             </td>
-            {full && <td className={TD_R}>±{tolerance.toFixed(2)}%</td>}
             {full && (
               <td className="whitespace-nowrap px-3 py-2.5">
                 <ToneChip tone={rowStatusTone(r.status)}>{r.status}</ToneChip>
               </td>
             )}
-            <td className={cn(TD, "max-w-[260px] text-[12px] leading-snug")}>{r.note}</td>
+            <td className={cn(TD, "max-w-[190px] text-[12px] leading-snug")}>{r.note}</td>
           </tr>
         ))}
       </tbody>
@@ -130,7 +127,7 @@ function RiskTable({ rows }: { rows: RiskResultRow[] }) {
             <td className="whitespace-nowrap px-3 py-2.5">
               <ToneChip tone={rowStatusTone(r.status)}>{r.status}</ToneChip>
             </td>
-            <td className={cn(TD, "max-w-[240px] text-[12px] leading-snug")}>{r.reviewerNote}</td>
+            <td className={cn(TD, "max-w-[200px] text-[12px] leading-snug")}>{r.reviewerNote}</td>
           </tr>
         ))}
       </tbody>
@@ -200,7 +197,7 @@ function HoldingLinksTable() {
             <td className={cn(TD, "text-[12px]")}>{h.exposure}</td>
             <td className={cn(TD, "whitespace-nowrap text-[12px]")}>{h.move}</td>
             <td className={cn(TD_R, "font-medium")}>{fmtSignedGBP(h.estImpact)}</td>
-            <td className={cn(TD, "max-w-[240px] text-[12px] leading-snug")}>{h.note}</td>
+            <td className={cn(TD, "max-w-[200px] text-[12px] leading-snug")}>{h.note}</td>
           </tr>
         ))}
       </tbody>
@@ -230,7 +227,7 @@ export function ReviewContent({ templateId, config }: { templateId: string; conf
             </>
           )}
         </p>
-        {ex.length > 0 && <NavTable rows={ex} tolerance={tol} />}
+        {ex.length > 0 && <NavTable rows={ex} />}
       </div>
     );
   }
@@ -277,7 +274,7 @@ export function FindingsSection({ templateId, config }: { templateId: string; co
           <span className="font-medium text-danger">{t.exceptions} exceptions</span> · Tolerance
           ±{tol.toFixed(2)}%
         </p>
-        <NavTable rows={navResults(tol)} full tolerance={tol} />
+        <NavTable rows={navResults(tol)} full />
       </div>
     );
   }
@@ -404,7 +401,7 @@ export function ReportPreview({
           <span className="font-medium text-danger">{t.exceptions} exceptions</span>
         </p>
         {ex.length > 0 ? (
-          <NavTable rows={ex} tolerance={tol} />
+          <NavTable rows={ex} />
         ) : (
           <p className="rounded-md border border-border bg-muted/30 px-4 py-3 text-[13px] text-ink-2">
             No exceptions — all funds are within the ±{tol.toFixed(2)}% tolerance.

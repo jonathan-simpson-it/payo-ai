@@ -52,7 +52,7 @@ export function ProductMockup() {
   const exceptions = rows.filter((r) => r.status === "Exception").length;
 
   return (
-    <div className="relative">
+    <div className="relative min-w-0">
       <div
         role="img"
         aria-label="Simulated preview of a NAV reconciliation workflow paused for review, with two material variances highlighted."
@@ -103,7 +103,7 @@ export function ProductMockup() {
 
           {/* Reconciliation table */}
           <div className="px-4 pt-3">
-            <div className="overflow-hidden rounded-md border border-border">
+            <div className="overflow-x-auto rounded-md border border-border">
               <table className="w-full border-collapse text-[11.5px]">
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-left text-[10.5px] font-medium text-ink-3">

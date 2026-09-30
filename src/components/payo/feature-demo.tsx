@@ -122,7 +122,7 @@ function ReconcileResult() {
         <span className="font-medium text-danger">{totals.exceptions} exceptions</span> · tolerance
         ±0.50%
       </p>
-      <div className="overflow-hidden rounded-md border border-border">
+      <div className="overflow-x-auto rounded-md border border-border">
         <table className="w-full border-collapse text-[11.5px]">
           <thead>
             <tr className="border-b border-border bg-muted/40">
@@ -163,7 +163,7 @@ function RiskResult() {
         Portfolio {fmtSignedGBP(RISK_PORTFOLIO_TOTAL).replace("+", "")} ·{" "}
         {flagged.length} positions flagged at the 90% review threshold
       </p>
-      <div className="overflow-hidden rounded-md border border-border">
+      <div className="overflow-x-auto rounded-md border border-border">
         <table className="w-full border-collapse text-[11.5px]">
           <thead>
             <tr className="border-b border-border bg-muted/40">
@@ -428,7 +428,7 @@ export function FeatureDemo() {
           ) : (
             <div className="grid md:grid-cols-[minmax(0,290px)_minmax(0,1fr)]">
               {/* Step timeline */}
-              <div className="border-b border-border px-4 py-4 md:border-b-0 md:border-r">
+              <div className="min-w-0 border-b border-border px-4 py-4 md:border-b-0 md:border-r">
                 <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
                   Steps
                 </p>

@@ -79,7 +79,7 @@ export function LandingPage() {
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-6 pb-16 pt-12 md:pb-20 md:pt-16">
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,440px)_minmax(0,1fr)] lg:gap-12">
-          <div>
+          <div className="min-w-0">
             <Eyebrow>Finance workflow workspace</Eyebrow>
             <h1 className="mt-4 text-[36px] font-semibold leading-[1.06] tracking-[-0.02em] md:text-[46px]">
               Finance workflows, made clear.

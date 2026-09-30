@@ -106,6 +106,7 @@ function NumberField({
       <input
         type="text"
         inputMode="decimal"
+        name="step-value"
         value={text}
         onChange={(e) => {
           setText(e.target.value);

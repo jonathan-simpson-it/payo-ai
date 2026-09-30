@@ -48,7 +48,7 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
-      <div className="mx-auto max-w-5xl px-6 py-6 md:px-10">
+      <div className="mx-auto max-w-6xl px-6 py-6 md:px-10">
         {/* Mode header */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <div>
@@ -99,7 +99,7 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
         ) : (
           <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,240px)_minmax(0,1fr)]">
             {/* Step progress */}
-            <section aria-label="Test steps">
+            <section aria-label="Test steps" className="min-w-0">
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
                 Steps
               </p>

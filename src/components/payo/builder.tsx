@@ -348,6 +348,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             value={wf.name}
             onChange={(e) => renameWorkflow(wf.id, e.target.value)}
             aria-label="Workflow name"
+            name="workflow-name"
             className="min-w-0 max-w-[300px] flex-1 rounded-sm border border-transparent bg-transparent px-1.5 py-0.5 text-[15px] font-semibold tracking-[-0.01em] transition-colors hover:border-line-strong focus:border-primary-strong focus:outline-none"
           />
           <WorkflowStatusChip status={wf.status} />
