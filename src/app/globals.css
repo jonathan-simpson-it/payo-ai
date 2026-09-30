@@ -8,19 +8,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -59,59 +46,99 @@
   --radius-xl: calc(var(--radius) + 3px);
 }
 
+/*
+ * Payo light theme — quiet warm paper, ink text, deep petrol for action.
+ * Colour is semantic: petrol = action/selection, green = complete,
+ * amber = needs review, red = exception, orange = Payo brand mark only.
+ */
 :root {
-  --radius: 0.4rem;
+  --radius: 0.5rem;
 
-  /* Payo light theme — warm cream base, warm ink, friendly yellow-orange accent */
-  --background: #faf8f3;
-  --foreground: #27211a;
+  --background: #f6f5f1;
+  --foreground: #1c2024;
   --card: #ffffff;
-  --card-foreground: #27211a;
+  --card-foreground: #1c2024;
   --popover: #ffffff;
-  --popover-foreground: #27211a;
-  --primary: #f97316;
-  --primary-foreground: #2a1708;
-  --primary-strong: #ea580c;
-  --primary-deep: #9a3412;
-  --primary-ink: #c2410c;
-  --primary-tint: #fdf0e4;
-  --primary-soft: #f7d9bd;
-  --secondary: #f1eee6;
-  --secondary-foreground: #27211a;
-  --muted: #f1eee6;
-  --muted-foreground: #5d564b;
-  --accent: #f1eee6;
-  --accent-foreground: #27211a;
+  --popover-foreground: #1c2024;
+  --primary: #14556b;
+  --primary-foreground: #ffffff;
+  --primary-strong: #0f4459;
+  --primary-deep: #0b3546;
+  --primary-ink: #14556b;
+  --primary-tint: #e9f1f4;
+  --primary-soft: #c7dbe2;
+  --secondary: #efeee9;
+  --secondary-foreground: #1c2024;
+  --muted: #efeee9;
+  --muted-foreground: #5b636b;
+  --accent: #efeee9;
+  --accent-foreground: #1c2024;
   --destructive: #b3261e;
-  --border: #e9e4d8;
-  --input: #dcd5c5;
-  --ring: #ea580c;
-  --chart-1: #ea580c;
-  --chart-2: #1f7350;
-  --chart-3: #96650a;
-  --chart-4: #7a7466;
-  --chart-5: #f7d9bd;
-  --sidebar: #faf8f3;
-  --sidebar-foreground: #27211a;
-  --sidebar-primary: #f97316;
-  --sidebar-primary-foreground: #2a1708;
-  --sidebar-accent: #fdf0e4;
-  --sidebar-accent-foreground: #c2410c;
-  --sidebar-border: #e9e4d8;
-  --sidebar-ring: #ea580c;
+  --border: #e5e3dd;
+  --input: #d2cfc7;
+  --ring: #0f4459;
 
-  /* Payo secondary ink + status palette (gold "needs review" stays apart from the orange brand) */
-  --ink-2: #5d564b;
-  --ink-3: #8e877a;
-  --line-strong: #d8d1c0;
+  --ink-2: #5b636b;
+  --ink-3: #8a9199;
+  --line-strong: #d5d3cc;
+
   --ok: #1f7350;
   --ok-tint: #e9f3ee;
   --warn: #96650a;
   --warn-tint: #faf2e1;
   --danger: #b3261e;
-  --danger-tint: #faecea;
-  --neutral: #7a7466;
-  --neutral-tint: #f1efe8;
+  --danger-tint: #faecEA;
+  --neutral: #6f7680;
+  --neutral-tint: #efefec;
+
+  --select-bg: #dce9ee;
+  --scroll-thumb: #d6d3cb;
+  --scroll-thumb-hover: #c4c0b6;
+  --scroll-edge: #f6f5f1;
+}
+
+.dark {
+  --background: #101316;
+  --foreground: #e9ecef;
+  --card: #171b1f;
+  --card-foreground: #e9ecef;
+  --popover: #1c2126;
+  --popover-foreground: #e9ecef;
+  --primary: #2e7d93;
+  --primary-foreground: #ffffff;
+  --primary-strong: #3c93aa;
+  --primary-deep: #1f5e70;
+  --primary-ink: #6fb4c6;
+  --primary-tint: #14323c;
+  --primary-soft: #1e4a58;
+  --secondary: #1d2227;
+  --secondary-foreground: #e9ecef;
+  --muted: #1d2227;
+  --muted-foreground: #9ba4ad;
+  --accent: #1d2227;
+  --accent-foreground: #e9ecef;
+  --destructive: #e06a5f;
+  --border: #262c32;
+  --input: #3a424a;
+  --ring: #3c93aa;
+
+  --ink-2: #9ba4ad;
+  --ink-3: #6f7880;
+  --line-strong: #333a41;
+
+  --ok: #4fae7e;
+  --ok-tint: #122a20;
+  --warn: #c99a3f;
+  --warn-tint: #2e2515;
+  --danger: #e06a5f;
+  --danger-tint: #331a18;
+  --neutral: #8b939b;
+  --neutral-tint: #22282e;
+
+  --select-bg: #1e4a58;
+  --scroll-thumb: #333a41;
+  --scroll-thumb-hover: #414a52;
+  --scroll-edge: #101316;
 }
 
 @layer base {
@@ -131,17 +158,31 @@
     border-radius: 2px;
   }
   ::selection {
-    background: #fde3c8;
+    background: var(--select-bg);
   }
   th {
     font-weight: 500;
   }
 }
 
+/*
+ * Continuous curvature (squircles).
+ * Native progressive enhancement: Chrome/Edge 139+ render squircle corners
+ * wherever a border-radius exists. Browsers without support fall back to the
+ * small circular radii defined above. See design.md.
+ */
+@supports (corner-shape: squircle) {
+  *,
+  *::before,
+  *::after {
+    corner-shape: squircle;
+  }
+}
+
 /* Slim, quiet scrollbars */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #d6cec0 transparent;
+  scrollbar-color: var(--scroll-thumb) transparent;
 }
 ::-webkit-scrollbar {
   width: 10px;
@@ -151,30 +192,30 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d6cec0;
+  background: var(--scroll-thumb);
   border-radius: 5px;
-  border: 3px solid #faf8f3;
+  border: 3px solid var(--scroll-edge);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c8bfae;
+  background: var(--scroll-thumb-hover);
 }
 
-/* Payo mascot — a gentle blink */
+/* Payo mascot — a gentle, infrequent blink */
 @keyframes payo-blink {
   0%,
-  91%,
+  92%,
   100% {
     transform: scaleY(1);
   }
-  94%,
-  96% {
+  95%,
+  96.5% {
     transform: scaleY(0.12);
   }
 }
 .payo-blink {
   transform-box: fill-box;
   transform-origin: center;
-  animation: payo-blink 4.6s ease-in-out infinite;
+  animation: payo-blink 7.2s ease-in-out infinite;
 }
 
 /* Respect reduced motion */
@@ -193,5 +234,3 @@
     animation: none;
   }
 }
-
-/* retheme-bump */

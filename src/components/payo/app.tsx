@@ -43,7 +43,7 @@ function Router() {
     <>
       {route.name === "landing" ? view : <WorkspaceShell route={route}>{view}</WorkspaceShell>}
       <AboutDemoDialog />
-      <Toaster theme="light" position="bottom-right" />
+      <Toaster position="bottom-right" />
     </>
   );
 }
