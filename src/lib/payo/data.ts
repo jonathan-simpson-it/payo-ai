@@ -1,4 +1,5 @@
 import type {
+  ActivityEvent,
   FieldOption,
   Run,
   RunStepRecord,
@@ -8,6 +9,7 @@ import type {
   StepTypeId,
   TemplateDef,
   Workflow,
+  WorkflowStatus,
 } from "./types";
 
 /**
@@ -239,6 +241,33 @@ export const MARKET_SOURCES = [
 ];
 
 export const BRIEFING_DATE = "30 September 2026";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sample data — SME cashflow (landing role preview)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface SmeCashflowLine {
+  label: string;
+  /** Signed amount in HKD. */
+  amount: number;
+  note: string;
+}
+
+export const SME_CASHFLOW = {
+  period: "28 Sep – 2 Oct 2026",
+  opening: 1284500,
+  lines: [
+    { label: "Customer receipts", amount: 186400, note: "6 invoices settled" },
+    { label: "Supplier payments", amount: -142300, note: "3 invoices awaiting approval" },
+    { label: "Payroll", amount: -210000, note: "September run" },
+    { label: "Rent and utilities", amount: -41000, note: "October" },
+  ] as SmeCashflowLine[],
+  closing: 1077600,
+  tasks: [
+    { label: "Confirm supplier payment run", status: "Needs review" },
+    { label: "Send cashflow update to the bank", status: "Ready" },
+  ],
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Templates
@@ -560,6 +589,22 @@ export const TEMPLATES: TemplateDef[] = [
     stepLabels: ["Select close period", "Collect sample tasks", "Calculate completion", "Review blockers", "Create close summary"],
   },
   {
+    id: "cashflow-update",
+    category: "SME finance",
+    name: "Cashflow update",
+    outcome:
+      "Prepare a weekly cashflow update from the bank and invoice files a small business already keeps.",
+    sampleData: false,
+    comingSoon: true,
+    stepLabels: [
+      "Load bank and invoice files",
+      "Map categories",
+      "Calculate net movement",
+      "Review large payments",
+      "Create cashflow update",
+    ],
+  },
+  {
     id: "client-report",
     category: "Reporting",
     name: "Client report preparation",
@@ -771,11 +816,114 @@ export function makeDefaultStep(type: StepTypeId): StepDef {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function seedWorkflows(): Workflow[] {
+  const statusById: Record<string, WorkflowStatus> = {
+    "nav-reconciliation": "ready",
+    "position-risk": "tested",
+    "market-movements": "ready",
+  };
   return TEMPLATES.filter((t) => t.steps).map((t) => {
     const wf = workflowFromTemplate(t);
     wf.createdAt = "2026-09-26T09:00:00+01:00";
+    wf.status = statusById[t.id] ?? "draft";
     return wf;
   });
+}
+
+/** Simulated workflow activity — every entry is fictional. */
+export function seedActivity(): ActivityEvent[] {
+  return [
+    {
+      id: "act-1",
+      workflowId: "nav-reconciliation",
+      at: "2026-09-26T09:00:00+01:00",
+      label: "Created from the NAV reconciliation template",
+      tone: "draft",
+    },
+    {
+      id: "act-2",
+      workflowId: "nav-reconciliation",
+      at: "2026-09-27T10:12:00+01:00",
+      label: "Tolerance set to ±0.50%",
+      tone: "draft",
+    },
+    {
+      id: "act-3",
+      workflowId: "nav-reconciliation",
+      at: "2026-09-28T09:30:00+01:00",
+      label: "Tested on sample data — 2 exceptions previewed at review",
+      tone: "tested",
+    },
+    {
+      id: "act-4",
+      workflowId: "nav-reconciliation",
+      at: "2026-09-29T14:02:07+01:00",
+      label: "Run PR-0031 completed and approved",
+      tone: "done",
+    },
+    {
+      id: "act-5",
+      workflowId: "nav-reconciliation",
+      at: "2026-09-29T14:03:00+01:00",
+      label: "Marked ready to publish",
+      tone: "ready",
+    },
+    {
+      id: "act-6",
+      workflowId: "position-risk",
+      at: "2026-09-26T09:05:00+01:00",
+      label: "Created from the position risk template",
+      tone: "draft",
+    },
+    {
+      id: "act-7",
+      workflowId: "position-risk",
+      at: "2026-09-27T11:40:00+01:00",
+      label: "Review threshold set to 90% of the applicable limit",
+      tone: "draft",
+    },
+    {
+      id: "act-8",
+      workflowId: "position-risk",
+      at: "2026-09-28T10:05:00+01:00",
+      label: "Tested on sample data — 1 over limit, 1 near limit previewed",
+      tone: "tested",
+    },
+    {
+      id: "act-9",
+      workflowId: "position-risk",
+      at: "2026-09-29T09:11:02+01:00",
+      label: "Run PR-0030 returned for review — awaiting analyst decision",
+      tone: "review",
+    },
+    {
+      id: "act-10",
+      workflowId: "market-movements",
+      at: "2026-09-26T09:10:00+01:00",
+      label: "Created from the daily market movements template",
+      tone: "draft",
+    },
+    {
+      id: "act-11",
+      workflowId: "market-movements",
+      at: "2026-09-28T08:15:00+01:00",
+      label: "Tested on sample data — 3 notable moves previewed",
+      tone: "tested",
+    },
+    {
+      id: "act-12",
+      workflowId: "market-movements",
+      at: "2026-09-29T07:35:06+01:00",
+      label: "Run PR-0029 completed and approved",
+      tone: "done",
+    },
+    {
+      id: "act-13",
+      workflowId: "market-movements",
+      at: "2026-09-29T07:36:00+01:00",
+      label: "Marked ready to publish",
+      tone: "ready",
+    },
+  ];
 }
 
 function seedTimeline(
