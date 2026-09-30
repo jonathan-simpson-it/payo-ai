@@ -292,10 +292,11 @@ export function reducer(state: State, action: Action): State {
       const wf = state.workflows.find((w) => w.id === action.workflowId);
       const template = wf ? getTemplate(wf.templateId) : undefined;
       if (!wf || !template?.steps) return state;
+      const templateSteps = template.steps.map(cloneStep);
       return mutateWorkflow(state, action.workflowId, () => ({
         ...wf,
         name: template.name,
-        steps: template.steps.map(cloneStep),
+        steps: templateSteps,
       }));
     }
 

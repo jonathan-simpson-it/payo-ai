@@ -1,7 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { TEMPLATES, type TemplateDef } from "@/lib/payo/data";
+import { TEMPLATES } from "@/lib/payo/data";
+import type { TemplateDef } from "@/lib/payo/types";
 import { usePayo } from "@/lib/payo/store";
 import { SampleTag } from "@/components/payo/ui";
 

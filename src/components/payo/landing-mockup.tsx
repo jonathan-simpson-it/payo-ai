@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Check, ChevronRight, CircleAlert, Plus } from "lucide-react";
 
 import { PayoMark } from "@/components/payo/mark";
@@ -32,12 +31,7 @@ const EXCEPTIONS = [
 
 export function ProductMockup() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="relative"
-    >
+    <div className="relative">
       <div
         aria-hidden="true"
         className="pointer-events-none select-none overflow-hidden rounded-lg border border-line-strong bg-card shadow-[0_1px_2px_rgba(66,44,15,0.06),0_16px_40px_-16px_rgba(66,44,15,0.18)]"
@@ -135,6 +129,6 @@ export function ProductMockup() {
       </div>
 
       <p className="mt-3 text-center text-[12px] text-ink-3">Simulated preview · Sample data</p>
-    </motion.div>
+    </div>
   );
 }
