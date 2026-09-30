@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { usePayo, useUI } from "@/lib/payo/store";
 import type { Route } from "@/lib/payo/router";
 import { PayoMark } from "@/components/payo/mark";
+import { ThemeToggle } from "@/components/payo/theme-toggle";
 import { RunStatusChip } from "@/components/payo/ui";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +41,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
   const { state, workflowById, runById } = usePayo();
   const activeArea = areaOfRoute(route);
   const engine = state.engine && state.engine.phase !== "done" ? state.engine : null;
+  const needsReviewCount = state.runs.filter((r) => r.status === "needs-review").length;
 
   // Breadcrumb for the current screen
   let crumbParent = "Workspace";
@@ -92,6 +94,11 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
               >
                 <Icon className="size-4" aria-hidden="true" />
                 {item.label}
+                {item.area === "runs" && needsReviewCount > 0 && (
+                  <span className="ml-auto inline-flex items-center rounded-sm bg-warn-tint px-1.5 text-[10.5px] font-medium tabular-nums text-warn">
+                    {needsReviewCount}
+                  </span>
+                )}
               </a>
             );
           })}
@@ -133,6 +140,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 <RunStatusChip status={runById(engine.runId)?.status ?? "running"} />
               </a>
             )}
+            <ThemeToggle className="size-8" />
             <button
               type="button"
               onClick={openAbout}
@@ -170,6 +178,11 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 )}
               >
                 {item.label}
+                {item.area === "runs" && needsReviewCount > 0 && (
+                  <span className="ml-1.5 inline-flex items-center rounded-sm bg-warn-tint px-1.5 text-[10.5px] font-medium tabular-nums text-warn">
+                    {needsReviewCount}
+                  </span>
+                )}
               </a>
             );
           })}

@@ -62,7 +62,7 @@ export function ScrollFade({ show, to = "to-card" }: { show: boolean; to?: strin
   return (
     <div
       className={cn(
-        "pointer-events-none absolute inset-y-[1px] right-[1px] z-10 w-10 rounded-r-md bg-gradient-to-r from-transparent",
+        "pointer-events-none absolute inset-y-[1px] right-[1px] z-10 w-14 rounded-r-md bg-gradient-to-r from-transparent",
         to,
       )}
       aria-hidden="true"
@@ -144,7 +144,8 @@ export function RunStatusChip({
 
 const WORKFLOW_STATUS: Record<WorkflowStatus, { label: string; cls: string }> = {
   draft: { label: "Draft", cls: "bg-neutral-tint text-ink-2" },
-  ready: { label: "Ready", cls: "bg-ok-tint text-ok" },
+  tested: { label: "Tested", cls: "bg-primary-tint text-primary-ink" },
+  ready: { label: "Ready to publish", cls: "bg-ok-tint text-ok" },
 };
 
 export function WorkflowStatusChip({
@@ -158,7 +159,7 @@ export function WorkflowStatusChip({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center rounded-sm px-1.5 py-0.5 text-[11.5px] font-medium",
+        "inline-flex shrink-0 items-center whitespace-nowrap rounded-sm px-1.5 py-0.5 text-[11.5px] font-medium",
         s.cls,
         className,
       )}

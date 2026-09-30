@@ -1,9 +1,12 @@
 "use client";
 
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight, FileText } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { runSummary } from "@/lib/payo/data";
+import { PLANNED_CONNECTORS, SAMPLE_INPUTS } from "@/lib/payo/connectors";
+import { reviewApproveLabel } from "@/components/payo/reports";
 import { fmtDateTime, fmtLongDate } from "@/lib/payo/format";
 import { usePayo } from "@/lib/payo/store";
 import { PayoMark } from "@/components/payo/mark";
@@ -14,9 +17,12 @@ const SECTION_HEADING = "text-[11.5px] font-semibold uppercase tracking-[0.12em]
 // ─── Overview ────────────────────────────────────────────────────────────────
 
 export function OverviewScreen() {
-  const { state, lastRunFor } = usePayo();
+  const { state, lastRunFor, decideRun } = usePayo();
   const recentRuns = state.runs.slice(0, 4);
   const today = fmtLongDate(new Date());
+  const needsReview = state.runs.filter((r) => r.status === "needs-review");
+  const liveRunId =
+    state.engine && state.engine.phase !== "done" ? state.engine.runId : null;
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10 md:px-10">
@@ -35,6 +41,81 @@ export function OverviewScreen() {
 
       <div className="mt-10 grid gap-x-12 gap-y-10 lg:grid-cols-[1fr_290px]">
         <div className="min-w-0 space-y-10">
+          <section aria-labelledby="review-queue">
+            <div className="flex items-center justify-between">
+              <h2 id="review-queue" className={SECTION_HEADING}>
+                Needs review
+              </h2>
+              <a
+                href="#/workspace/runs"
+                className="text-[12.5px] font-medium text-primary-ink transition-colors hover:text-primary-deep"
+              >
+                All runs
+              </a>
+            </div>
+            {needsReview.length === 0 ? (
+              <p className="mt-4 rounded-md border border-dashed border-line-strong bg-card/60 px-4 py-3 text-[13px] text-ink-2">
+                No sample exceptions are waiting for review.
+              </p>
+            ) : (
+              <ul className="mt-4">
+                {needsReview.map((run) => {
+                  const isLive = run.id === liveRunId;
+                  const wf = state.workflows.find((w) => w.id === run.workflowId);
+                  return (
+                    <li
+                      key={run.id}
+                      className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border py-3 last:border-b"
+                    >
+                      <a
+                        href={`#/workspace/runs/${run.id}`}
+                        className="text-[12.5px] font-medium tabular-nums text-primary-ink transition-colors hover:text-primary-deep"
+                      >
+                        {run.code}
+                      </a>
+                      <span className="text-[13.5px] font-medium">{run.workflowName}</span>
+                      <RunStatusChip status={run.status} />
+                      <span className="w-full text-[12.5px] text-ink-2 sm:w-auto sm:flex-1">
+                        {run.statusNote ?? runSummary(run)}
+                      </span>
+                      <span className="flex items-center gap-2">
+                        {isLive ? (
+                          <Button asChild size="sm" variant="outline" className="h-7">
+                            <a href={`#/workspace/workflows/${run.workflowId}`}>Open review</a>
+                          </Button>
+                        ) : (
+                          <>
+                            <Button
+                              size="sm"
+                              className="h-7"
+                              onClick={() => {
+                                decideRun(run.id, "approved");
+                                toast(`${run.code} approved — simulated decision.`);
+                              }}
+                            >
+                              {wf ? reviewApproveLabel(wf.templateId) : "Approve"}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-7"
+                              onClick={() => {
+                                decideRun(run.id, "returned");
+                                toast(`${run.code} returned for review.`);
+                              }}
+                            >
+                              Return
+                            </Button>
+                          </>
+                        )}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+
           <section aria-labelledby="recent-runs">
             <div className="flex items-center justify-between">
               <h2 id="recent-runs" className={SECTION_HEADING}>
@@ -109,7 +190,8 @@ export function OverviewScreen() {
           </section>
         </div>
 
-        <aside className="space-y-5 rounded-md border border-border bg-card p-5">
+        <aside className="space-y-5">
+          <div className="space-y-4 rounded-lg border border-border bg-card p-5">
           <div className="flex items-center gap-3">
             <PayoMark className="size-8" />
             <h2 className="text-[14.5px] font-semibold">Start from a template</h2>
@@ -135,6 +217,50 @@ export function OverviewScreen() {
               <ArrowRight className="size-3.5" aria-hidden="true" />
             </a>
           </Button>
+          </div>
+
+          <div className="space-y-4 rounded-lg border border-border bg-card p-5">
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="text-[14.5px] font-semibold">Connections</h2>
+              <span className="inline-flex items-center rounded-sm bg-neutral-tint px-1.5 py-0.5 text-[10.5px] font-medium text-ink-2">
+                Sample only
+              </span>
+            </div>
+            <div>
+              <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
+                Available now · sample files
+              </p>
+              <ul className="mt-2 space-y-1.5">
+                {SAMPLE_INPUTS.map((s) => (
+                  <li key={s.name} className="flex items-start gap-2 text-[12.5px] leading-snug text-ink-2">
+                    <FileText className="mt-0.5 size-3.5 shrink-0 text-ink-3" aria-hidden="true" />
+                    <span>
+                      {s.name}
+                      <span className="text-ink-3"> · {s.detail}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
+                Planned — not connected
+              </p>
+              <ul className="mt-2 flex flex-wrap gap-1.5">
+                {PLANNED_CONNECTORS.map((c) => (
+                  <li
+                    key={c.id}
+                    className="rounded border border-dashed border-line-strong bg-background px-1.5 py-0.5 text-[11px] text-ink-2"
+                  >
+                    {c.name}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-2.5 text-[11.5px] leading-relaxed text-ink-3">
+                No live connections are configured. This prototype uses sample inputs.
+              </p>
+            </div>
+          </div>
         </aside>
       </div>
     </div>

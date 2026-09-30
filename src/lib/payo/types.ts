@@ -57,7 +57,7 @@ export interface TemplateDef {
   keySources?: string[];
 }
 
-export type WorkflowStatus = "draft" | "ready";
+export type WorkflowStatus = "draft" | "tested" | "ready";
 
 export interface Workflow {
   id: string;
@@ -130,4 +130,25 @@ export interface RunEngine {
   /** 0..1 progress of the active step */
   progress: number;
   phase: "running" | "awaiting-review" | "returned" | "done";
+}
+
+/** A sample-data test of a workflow; does not create a Run record. */
+export interface TestEngine {
+  workflowId: string;
+  steps: EngineStepMeta[];
+  states: Record<string, RunStepState>;
+  activeIndex: number;
+  /** 0..1 progress of the active step */
+  progress: number;
+  phase: "running" | "done";
+}
+
+export type ActivityTone = "draft" | "tested" | "ready" | "review" | "done";
+
+export interface ActivityEvent {
+  id: string;
+  workflowId: string;
+  at: string;
+  label: string;
+  tone: ActivityTone;
 }

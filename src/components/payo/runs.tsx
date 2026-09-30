@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { ArrowLeft, ChevronRight, FileText, RotateCcw } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { getTemplate, runSummary } from "@/lib/payo/data";
@@ -8,7 +10,7 @@ import { fmtDateTime } from "@/lib/payo/format";
 import { navigate } from "@/lib/payo/router";
 import { usePayo } from "@/lib/payo/store";
 import type { RunStepRecord } from "@/lib/payo/types";
-import { FindingsSection, ReportPreview } from "@/components/payo/reports";
+import { FindingsSection, ReportPreview, reviewApproveLabel } from "@/components/payo/reports";
 import { RunStatusChip, SampleTag, StepStateIcon } from "@/components/payo/ui";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +28,10 @@ const SECTION_HEADING =
 
 export function RunsList() {
   const { state } = usePayo();
+  const [filter, setFilter] = useState<"all" | "review">("all");
+  const needsReviewCount = state.runs.filter((r) => r.status === "needs-review").length;
+  const runs =
+    filter === "all" ? state.runs : state.runs.filter((r) => r.status === "needs-review");
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10 md:px-10">
@@ -37,7 +43,46 @@ export function RunsList() {
         </p>
       </header>
 
-      <div className="mt-8 overflow-hidden rounded-md border border-border bg-card">
+      <div
+        className="mt-6 flex w-fit items-center rounded-md border border-border bg-muted/50 p-0.5"
+        role="group"
+        aria-label="Filter runs"
+      >
+        <button
+          type="button"
+          aria-pressed={filter === "all"}
+          onClick={() => setFilter("all")}
+          className={cn(
+            "rounded-sm px-3 py-1.5 text-[12.5px] font-medium transition-colors",
+            filter === "all" ? "bg-card text-foreground shadow-sm" : "text-ink-2 hover:text-foreground",
+          )}
+        >
+          All runs
+        </button>
+        <button
+          type="button"
+          aria-pressed={filter === "review"}
+          onClick={() => setFilter("review")}
+          className={cn(
+            "rounded-sm px-3 py-1.5 text-[12.5px] font-medium transition-colors",
+            filter === "review" ? "bg-card text-foreground shadow-sm" : "text-ink-2 hover:text-foreground",
+          )}
+        >
+          Needs review
+          {needsReviewCount > 0 && (
+            <span className="ml-1.5 inline-flex items-center rounded-sm bg-warn-tint px-1.5 text-[11px] font-medium text-warn tabular-nums">
+              {needsReviewCount}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {runs.length === 0 ? (
+        <p className="mt-4 rounded-md border border-dashed border-line-strong bg-card/60 px-4 py-3 text-[13px] text-ink-2">
+          No sample exceptions are waiting for review.
+        </p>
+      ) : (
+      <div className="mt-4 overflow-hidden rounded-md border border-border bg-card">
         <div className="hidden gap-3 border-b border-border bg-muted/30 px-4 py-2.5 text-[11.5px] font-medium text-ink-3 md:grid md:grid-cols-[86px_1.1fr_160px_110px_1.7fr_16px]">
           <span>Run</span>
           <span>Workflow</span>
@@ -46,7 +91,7 @@ export function RunsList() {
           <span>Summary</span>
           <span />
         </div>
-        {state.runs.map((run) => (
+        {runs.map((run) => (
           <a
             key={run.id}
             href={`#/workspace/runs/${run.id}`}
@@ -65,6 +110,7 @@ export function RunsList() {
           </a>
         ))}
       </div>
+      )}
       <p className="mt-4 text-[12px] text-ink-3">
         Step durations shown in run details are simulated for demonstration.
       </p>
@@ -126,7 +172,7 @@ function TimelineRow({
 }
 
 export function RunDetail({ runId }: { runId: string }) {
-  const { state, runById, workflowById, startRun } = usePayo();
+  const { state, runById, workflowById, startRun, decideRun } = usePayo();
   const run = runById(runId);
 
   if (!run) {
@@ -205,6 +251,40 @@ export function RunDetail({ runId }: { runId: string }) {
           <Button asChild size="sm">
             <a href={`#/workspace/workflows/${run.workflowId}`}>Open workflow</a>
           </Button>
+        </div>
+      )}
+
+      {!liveEngine && run.status === "needs-review" && (
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-md border border-warn/40 bg-warn-tint/60 px-4 py-3">
+          <div>
+            <p className="text-[13.5px] font-medium text-foreground">
+              Awaiting a simulated human decision
+            </p>
+            <p className="mt-0.5 text-[12.5px] text-ink-2">
+              {run.statusNote ?? "This run is paused at its review step."}
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              onClick={() => {
+                decideRun(run.id, "approved");
+                toast(`${run.code} approved — simulated decision.`);
+              }}
+            >
+              {template ? reviewApproveLabel(template.id) : "Approve"}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                decideRun(run.id, "returned");
+                toast(`${run.code} returned for review.`);
+              }}
+            >
+              Return
+            </Button>
+          </div>
         </div>
       )}
 

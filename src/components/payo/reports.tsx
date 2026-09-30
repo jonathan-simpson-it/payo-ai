@@ -28,7 +28,7 @@ import { useRef } from "react";
 
 // ─── Shared table primitives ─────────────────────────────────────────────────
 
-function TableShell({ children, minWidth = 640 }: { children: React.ReactNode; minWidth?: number }) {
+function TableShell({ children, minWidth = 620 }: { children: React.ReactNode; minWidth?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollable, atEnd } = useScrollEdge(ref);
   return (
@@ -62,7 +62,7 @@ function NavTable({
   tolerance: number;
 }) {
   return (
-    <TableShell minWidth={full ? 820 : 660}>
+    <TableShell minWidth={full ? 780 : 640}>
       <thead>
         <tr className="border-b border-border">
           <th className={TH}>Fund</th>
