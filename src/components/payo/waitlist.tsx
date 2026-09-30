@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Check, Download, Lock, RefreshCcw } from "lucide-react";
+import { ArrowRight, Check, Download, Eye, EyeOff, Lock, RefreshCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Eyebrow, SampleTag } from "@/components/payo/ui";
@@ -33,6 +33,7 @@ export function WaitlistSection() {
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [entries, setEntries] = useState<WaitlistEntry[] | null>(null);
 
   const submit = async () => {
@@ -94,14 +95,22 @@ export function WaitlistSection() {
         setError("Too many attempts. Please try again later.");
         return;
       }
-      if (!res.ok || !data.ok) {
+      if (res.status === 401) {
         setError("That password does not match.");
+        return;
+      }
+      if (!res.ok || !data.ok) {
+        setError(
+          "The waitlist database is not reachable right now. Check the MongoDB connection and the Atlas IP allowlist.",
+        );
         return;
       }
       setEntries(data.entries ?? []);
       setPhase("admin");
     } catch {
-      setError("The waitlist is not available right now. Please try again later.");
+      setError(
+        "The waitlist database is not reachable right now. Check the MongoDB connection and the Atlas IP allowlist.",
+      );
     } finally {
       setBusy(false);
     }
@@ -282,15 +291,31 @@ export function WaitlistSection() {
                 <label htmlFor="waitlist-password" className="block text-[12.5px] font-medium text-ink-2">
                   Admin password
                 </label>
-                <input
-                  id="waitlist-password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="h-9 w-full rounded-md border border-input bg-background px-2.5 text-[13.5px] outline-none transition-colors focus:border-primary-strong"
-                />
+                <div className="relative">
+                  <input
+                    id="waitlist-password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="h-9 w-full rounded-md border border-input bg-background px-2.5 pr-9 text-[13.5px] outline-none transition-colors focus:border-primary-strong"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-pressed={showPassword}
+                    title={showPassword ? "Hide password" : "Show password"}
+                    className="absolute inset-y-0 right-0 grid w-9 place-items-center text-ink-3 transition-colors hover:text-foreground"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="size-4" aria-hidden="true" />
+                    ) : (
+                      <Eye className="size-4" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <Button type="submit" disabled={busy || password.length === 0}>
