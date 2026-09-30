@@ -54,8 +54,19 @@ async function connect(): Promise<typeof mongoose> {
   if (!uri) throw new Error("MONGO_URI is not configured");
 
   const cache = (globalCache.__payoMongoose ??= { conn: null, promise: null });
-  if (cache.conn) return cache.conn;
-  cache.promise ??= mongoose.connect(uri, { serverSelectionTimeoutMS: 8000 });
+  if (cache.conn && mongoose.connection.readyState === 1) return cache.conn;
+
+  // A failed attempt must not poison the cache: clear the promise so the next
+  // request retries (for example after fixing the Atlas IP allowlist).
+  if (!cache.promise) {
+    cache.promise = mongoose
+      .connect(uri, { serverSelectionTimeoutMS: 8000 })
+      .catch((error) => {
+        cache.promise = null;
+        cache.conn = null;
+        throw error;
+      });
+  }
   cache.conn = await cache.promise;
   return cache.conn;
 }
