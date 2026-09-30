@@ -45,14 +45,18 @@ Rules:
 - Sentence case for labels and actions; uppercase only for small section labels (`REVIEW QUEUE`).
 - Primary action labels are verbs: `Run workflow`, `Test on sample data`, `Approve summary`,
   `Return for review`, `Mark ready`, `Explore the workspace`.
+- Currency is HKD across every sample figure, written `HK$34,155,000` (never `£`), with tabular
+  numerals. Market instrument tickers such as `GBP/USD` keep their own symbols.
+- No em dashes anywhere in the product copy; use commas, colons, full stops or parentheses.
 - No marketing language inside the workspace.
 
 ## 4. Shape, surface and squircles
 
 - **Continuous curvature everywhere.** A global `@supports (corner-shape: squircle)` rule applies
-  `corner-shape: squircle` to all elements, so every radius reads as a smooth superellipse corner
-  instead of a circular arc. Native Chrome/Edge 139+ today; Safari/Firefox fall back to the same
-  small radii until they ship the standard. Never add per-element squircle hacks.
+  `corner-shape: superellipse(2.5)` where supported (softer than the Apple-style exponent 4; the
+  `squircle` keyword is kept as a middle fallback), so every radius reads as a subtly rounded
+  continuous corner instead of a circular arc. Native Chrome/Edge today; Safari/Firefox fall back
+  to the same small radii until they ship the standard. Never add per-element squircle hacks.
 - Radii: controls and chips 5–8px (`radius-sm`–`radius-lg`), overlays up to 11px (`radius-xl`).
   Pills are reserved for status, category and filter labels.
 - Flat surfaces and 1px borders define structure. Shadows only separate overlays and inspectors.

@@ -13,14 +13,14 @@ import {
   notableMoves,
   riskResults,
 } from "@/lib/payo/data";
-import { fmtInt, fmtPct, fmtSignedGBP, fmtSignedPct } from "@/lib/payo/format";
+import { fmtInt, fmtPct, fmtSignedHKD, fmtSignedPct } from "@/lib/payo/format";
 import type { RunStepState, StepTypeId } from "@/lib/payo/types";
 import { SampleTag, StepStateIcon, StepTypeIcon, ToneChip, rowStatusTone } from "@/components/payo/ui";
 import { cn } from "@/lib/utils";
 
 /**
  * Landing feature demo: one compact, interactive preview of how a Payo run
- * behaves — visible steps, a review pause with a human decision, and a test
+ * behaves: visible steps, a review pause with a human decision, and a test
  * panel that moves a workflow from draft to tested to ready.
  * All figures are sample data; nothing here is live.
  */
@@ -57,7 +57,7 @@ const SCENARIOS: Scenario[] = [
     reviewIndex: 4,
     approveLabel: "Approve summary",
     returnLabel: "Return for review",
-    testedNote: "Sample test complete — 2 exceptions will pause the run at review.",
+    testedNote: "Sample test complete: 2 exceptions will pause the run at review.",
   },
   {
     id: "risk",
@@ -76,7 +76,7 @@ const SCENARIOS: Scenario[] = [
     reviewIndex: 4,
     approveLabel: "Approve summary",
     returnLabel: "Return for review",
-    testedNote: "Sample test complete — 1 position over limit and 1 near limit will need review.",
+    testedNote: "Sample test complete: 1 position over limit and 1 near limit will need review.",
   },
   {
     id: "briefing",
@@ -95,7 +95,7 @@ const SCENARIOS: Scenario[] = [
     reviewIndex: 4,
     approveLabel: "Approve briefing",
     returnLabel: "Return for review",
-    testedNote: "Sample test complete — 3 holdings-related moves go to the editor.",
+    testedNote: "Sample test complete: 3 holdings-related moves go to the editor.",
   },
 ];
 
@@ -127,7 +127,7 @@ function ReconcileResult() {
           <thead>
             <tr className="border-b border-border bg-muted/40">
               <th className={TH}>Fund</th>
-              <th className={TH_R}>Internal NAV (£)</th>
+              <th className={TH_R}>Internal NAV (HK$)</th>
               <th className={TH_R}>Difference %</th>
               <th className={TH}>Status</th>
             </tr>
@@ -160,7 +160,7 @@ function RiskResult() {
   return (
     <div className="space-y-3">
       <p className="text-[12.5px] text-ink-2">
-        Portfolio {fmtSignedGBP(RISK_PORTFOLIO_TOTAL).replace("+", "")} ·{" "}
+        Portfolio {fmtSignedHKD(RISK_PORTFOLIO_TOTAL).replace("+", "")} ·{" "}
         {flagged.length} positions flagged at the 90% review threshold
       </p>
       <div className="overflow-x-auto rounded-md border border-border">
@@ -224,8 +224,8 @@ function BriefingResult() {
       <div className="space-y-1.5 border-t border-border pt-2.5">
         {HOLDING_LINKS.slice(0, 2).map((h) => (
           <p key={h.holding} className="text-[11.5px] leading-snug text-ink-2">
-            <span className="font-medium text-foreground">{h.holding}</span> — {h.move},{" "}
-            <span className="tabular-nums">{fmtSignedGBP(h.estImpact)}</span> estimated effect
+            <span className="font-medium text-foreground">{h.holding}</span>: {h.move},{" "}
+            <span className="tabular-nums">{fmtSignedHKD(h.estImpact)}</span> estimated effect
           </p>
         ))}
       </div>
@@ -475,7 +475,7 @@ export function FeatureDemo() {
                       <div className="rounded-md border border-warn/40 bg-warn-tint/40 px-3.5 py-3">
                         <p className="flex items-center gap-2 text-[12.5px] font-medium text-foreground">
                           <CircleAlert className="size-3.5 text-warn" aria-hidden="true" />
-                          Paused — {scenario.steps[scenario.reviewIndex].label} needs a person.
+                          Paused: {scenario.steps[scenario.reviewIndex].label} needs a person.
                         </p>
                         <p className="mt-1 text-[11.5px] text-ink-2">
                           Approving completes the remaining steps; returning keeps the run paused.
@@ -498,7 +498,7 @@ export function FeatureDemo() {
                     )}
                     {phase === "returned" && (
                       <div className="rounded-md border border-warn/40 bg-warn-tint/40 px-3.5 py-3 text-[12.5px] text-ink-2">
-                        Returned for review — the run stays paused and the final step does not run
+                        Returned for review. The run stays paused and the final step does not run
                         until a person approves.{" "}
                         <button
                           type="button"
@@ -511,7 +511,7 @@ export function FeatureDemo() {
                     )}
                     {phase === "done" && (
                       <p className="rounded-md border border-ok/30 bg-ok-tint/50 px-3.5 py-2.5 text-[12.5px] font-medium text-ok">
-                        Run complete — reviewed and finalised in this simulation.
+                        Run complete. Reviewed and finalised in this simulation.
                       </p>
                     )}
                   </div>
@@ -540,7 +540,7 @@ export function FeatureDemo() {
               {phase === "idle" && "Runs on sample data before anything is marked ready."}
               {phase === "running" && "Running the workflow on sample data…"}
               {tested && !ready && scenario.testedNote}
-              {ready && "Marked ready — a simulated publish state."}
+              {ready && "Marked ready (simulated publish state)."}
             </p>
             {tested && !ready && (
               <Button

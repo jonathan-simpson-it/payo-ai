@@ -22,14 +22,14 @@ function testOutcome(wf: Workflow): string {
     case "nav-reconciliation": {
       const ex = navExceptions(config.tolerance ?? 0.5).length;
       return ex === 0
-        ? "No exceptions at the current tolerance — the run would complete without a review pause."
+        ? "No exceptions at the current tolerance. The run would complete without a review pause."
         : `${ex} exceptions will pause the run at “Review material variances”.`;
     }
     case "position-risk": {
       const rows = riskResults(config.reviewThreshold ?? 90);
       const over = rows.filter((r) => r.status === "Over limit").length;
       const near = rows.filter((r) => r.status === "Near limit").length;
-      return `${over} over limit and ${near} near limit — those positions pause the run at “Analyst review”.`;
+      return `${over} over limit and ${near} near limit. Those positions pause the run at “Analyst review”.`;
     }
     case "market-movements": {
       const n = notableMoves(config.notableThreshold ?? 0.75).length;
@@ -134,7 +134,7 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
             {/* Results beside the progress */}
             <section aria-label="Test results" className="min-w-0">
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
-                Results preview — sample data
+                Results preview: sample data
               </p>
               <div className="mt-3 space-y-4">
                 <FindingsSection templateId={workflow.templateId} config={snapshotConfig(workflow)} />
@@ -143,7 +143,7 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
                   <div className="rounded-md border border-ok/30 bg-ok-tint/50 px-4 py-3">
                     <p className="flex items-center gap-2 text-[13px] font-medium text-ok">
                       <Check className="size-4" aria-hidden="true" />
-                      Test complete — {testOutcome(workflow)}
+                      Test complete. {testOutcome(workflow)}
                     </p>
                   </div>
                 )}
@@ -163,7 +163,7 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
                     <>
                       <p className="text-[12.5px] text-ink-2">
                         {workflow.status === "tested"
-                          ? "Test passed — mark the workflow ready when you are satisfied with it."
+                          ? "Test passed. Mark the workflow ready when you are satisfied with it."
                           : "Mark the workflow ready once the test looks right."}
                       </p>
                       <Button

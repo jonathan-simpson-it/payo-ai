@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Payo — the little workflow helper.
+ * Payo: the little workflow helper.
  *
  * A simple, friendly mark in the spirit of classic developer pets:
  * one rounded body with a small tuft, two eyes, a soft smile and a
  * hint of blush. Flat shapes, minimal colours (brand orange, warm
- * ink, a white eye shine) — no gradients, no glow.
+ * ink, a white eye shine), no gradients, no glow.
  */
 export function PayoMark({
   className,

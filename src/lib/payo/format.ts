@@ -14,14 +14,14 @@ export function fmtNum(n: number, dp = 2): string {
   return nf(dp).format(n);
 }
 
-export function fmtGBP(n: number, dp = 0): string {
-  return `£${nf(dp).format(n)}`;
+export function fmtHKD(n: number, dp = 0): string {
+  return `HK$${nf(dp).format(n)}`;
 }
 
-/** Signed money, e.g. +£37,550 / −£133,580 (true minus sign). */
-export function fmtSignedGBP(n: number, dp = 0): string {
+/** Signed money, e.g. +HK$37,550 / −HK$133,580 (true minus sign). */
+export function fmtSignedHKD(n: number, dp = 0): string {
   const sign = n > 0 ? "+" : n < 0 ? "−" : "";
-  return `${sign}£${nf(dp).format(Math.abs(n))}`;
+  return `${sign}HK$${nf(dp).format(Math.abs(n))}`;
 }
 
 export function fmtPct(n: number, dp = 2): string {

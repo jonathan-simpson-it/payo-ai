@@ -112,7 +112,7 @@ export function TemplateLibrary() {
           ))}
         </div>
         <p className="mt-4 text-[12.5px] text-ink-3">
-          These templates are shown as a preview of the planned library — they are not runnable in
+          These templates are shown as a preview of the planned library. They are not runnable in
           this demo.
         </p>
       </section>

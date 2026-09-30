@@ -20,7 +20,7 @@ import {
   type NavResultRow,
   type RiskResultRow,
 } from "@/lib/payo/data";
-import { fmtGBP, fmtInt, fmtPct, fmtSignedGBP, fmtSignedPct } from "@/lib/payo/format";
+import { fmtHKD, fmtInt, fmtPct, fmtSignedHKD, fmtSignedPct } from "@/lib/payo/format";
 import type { RunConfig, RunReview, TemplateDef } from "@/lib/payo/types";
 import { SampleTag, ScrollFade, ToneChip, rowStatusTone, useScrollEdge } from "@/components/payo/ui";
 import { cn } from "@/lib/utils";
@@ -58,9 +58,9 @@ function NavTable({ rows, full }: { rows: NavResultRow[]; full?: boolean }) {
       <thead>
         <tr className="border-b border-border">
           <th className={TH}>Fund</th>
-          <th className={TH_R}>Administrator NAV (£)</th>
-          <th className={TH_R}>Internal NAV (£)</th>
-          <th className={TH_R}>Difference (£)</th>
+          <th className={TH_R}>Administrator NAV (HK$)</th>
+          <th className={TH_R}>Internal NAV (HK$)</th>
+          <th className={TH_R}>Difference (HK$)</th>
           <th className={TH_R}>Difference %</th>
           {full && <th className={TH}>Status</th>}
           <th className={TH}>Note</th>
@@ -80,7 +80,7 @@ function NavTable({ rows, full }: { rows: NavResultRow[]; full?: boolean }) {
             <td className={TD_R}>{fmtInt(r.adminNav)}</td>
             <td className={TD_R}>{fmtInt(r.internalNav)}</td>
             <td className={cn(TD_R, r.status === "Exception" && "font-medium text-danger")}>
-              {fmtSignedGBP(r.difference)}
+              {fmtSignedHKD(r.difference)}
             </td>
             <td className={cn(TD_R, r.status === "Exception" && "font-medium text-danger")}>
               {fmtSignedPct(r.diffPct)}
@@ -107,7 +107,7 @@ function RiskTable({ rows }: { rows: RiskResultRow[] }) {
         <tr className="border-b border-border">
           <th className={TH}>Position</th>
           <th className={TH}>Asset type</th>
-          <th className={TH_R}>Market value (£)</th>
+          <th className={TH_R}>Market value (HK$)</th>
           <th className={TH_R}>Portfolio weight</th>
           <th className={TH_R}>Applicable limit</th>
           <th className={TH}>Status</th>
@@ -196,7 +196,7 @@ function HoldingLinksTable() {
             <td className="whitespace-nowrap px-3 py-2.5 font-medium text-foreground">{h.holding}</td>
             <td className={cn(TD, "text-[12px]")}>{h.exposure}</td>
             <td className={cn(TD, "whitespace-nowrap text-[12px]")}>{h.move}</td>
-            <td className={cn(TD_R, "font-medium")}>{fmtSignedGBP(h.estImpact)}</td>
+            <td className={cn(TD_R, "font-medium")}>{fmtSignedHKD(h.estImpact)}</td>
             <td className={cn(TD, "max-w-[200px] text-[12px] leading-snug")}>{h.note}</td>
           </tr>
         ))}
@@ -355,7 +355,7 @@ function ApprovalLine({ review, fallbackBy }: { review?: RunReview; fallbackBy: 
       <span className="grid size-4 shrink-0 place-items-center rounded-full bg-ok-tint">
         <Check className="size-2.5" strokeWidth={3} aria-hidden="true" />
       </span>
-      Approved by {by} — simulated decision
+      Approved by {by} (simulated decision)
     </p>
   );
 }
@@ -388,12 +388,12 @@ export function ReportPreview({
       <ReportFrame
         title={String(config.reportTitle ?? template.name)}
         meta={`Valuation date ${NAV_VALUATION_DATE} · 8 funds · Tolerance ±${tol.toFixed(2)}% · Sample data`}
-        footer="Preview only — not an official report. Prepared from sample data for demonstration."
+        footer="Preview only. Not an official report. Prepared from sample data for demonstration."
       >
         <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
-          <Stat label="Total administrator NAV" value={fmtGBP(t.adminTotal)} />
-          <Stat label="Total internal NAV" value={fmtGBP(t.internalTotal)} />
-          <Stat label="Net difference" value={fmtSignedGBP(t.difference)} tone={t.exceptions > 0 ? "danger" : undefined} />
+          <Stat label="Total administrator NAV" value={fmtHKD(t.adminTotal)} />
+          <Stat label="Total internal NAV" value={fmtHKD(t.internalTotal)} />
+          <Stat label="Net difference" value={fmtSignedHKD(t.difference)} tone={t.exceptions > 0 ? "danger" : undefined} />
           <Stat label="Difference %" value={fmtSignedPct(t.diffPct)} tone={t.exceptions > 0 ? "danger" : undefined} />
         </dl>
         <p className="text-[13px] text-ink-2">
@@ -404,7 +404,7 @@ export function ReportPreview({
           <NavTable rows={ex} />
         ) : (
           <p className="rounded-md border border-border bg-muted/30 px-4 py-3 text-[13px] text-ink-2">
-            No exceptions — all funds are within the ±{tol.toFixed(2)}% tolerance.
+            No exceptions: all funds are within the ±{tol.toFixed(2)}% tolerance.
           </p>
         )}
         <ApprovalLine review={review} fallbackBy="Operations reviewer" />
@@ -422,10 +422,10 @@ export function ReportPreview({
       <ReportFrame
         title={String(config.reportTitle ?? template.name)}
         meta={`As at ${RISK_AS_AT} · Review threshold ${threshold}% of applicable limit · Sample data`}
-        footer="Preview only — not an official report. Prepared from sample data for demonstration."
+        footer="Preview only. Not an official report. Prepared from sample data for demonstration."
       >
         <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
-          <Stat label="Portfolio total" value={fmtGBP(RISK_PORTFOLIO_TOTAL)} />
+          <Stat label="Portfolio total" value={fmtHKD(RISK_PORTFOLIO_TOTAL)} />
           <Stat label="Positions checked" value={String(rows.length)} />
           <Stat label="Over limit" value={String(over)} tone="danger" />
           <Stat label="Near limit" value={String(near)} />
@@ -446,13 +446,13 @@ export function ReportPreview({
     <ReportFrame
       title={String(config.reportTitle ?? template.name)}
       meta={`${BRIEFING_DATE} · 07:45 snapshot · Sample data`}
-      footer="AI-assisted draft prepared from sample data. Preview only — not investment advice."
+      footer="AI-assisted draft prepared from sample data. Preview only. Not investment advice."
     >
       <div className="flex items-center gap-2.5">
         <span className="inline-flex items-center rounded-sm bg-primary-tint px-2 py-0.5 text-[11.5px] font-semibold text-primary-ink">
           AI-assisted draft
         </span>
-        <span className="text-[12px] text-ink-3">Generated from the sample snapshot — check before use.</span>
+        <span className="text-[12px] text-ink-3">Generated from the sample snapshot. Check before use.</span>
       </div>
       <section className="space-y-3">
         <h4 className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-3">

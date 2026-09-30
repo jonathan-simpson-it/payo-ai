@@ -13,7 +13,7 @@ import type {
 } from "./types";
 
 /**
- * Payo AI — local mock data and template definitions.
+ * Payo AI: local mock data and template definitions.
  * Every dataset here is fictional and labelled as sample data in the interface.
  */
 
@@ -35,7 +35,7 @@ const opts = (...labels: string[]): FieldOption[] =>
   labels.map((l) => ({ value: l, label: l }));
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Sample data — NAV reconciliation
+// Sample data: NAV reconciliation
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface NavFundRow {
@@ -48,10 +48,10 @@ export interface NavFundRow {
 export const NAV_FUNDS: NavFundRow[] = [
   { fund: "Ashbourne Global Equity", adminNav: 48215600, internalNav: 48214850, note: "Matched within tolerance" },
   { fund: "Brookfield Income", adminNav: 12684320, internalNav: 12684320, note: "Matched" },
-  { fund: "Calverton Emerging Markets", adminNav: 8942150, internalNav: 8904600, note: "Pricing timing difference — immaterial" },
-  { fund: "Delmore Credit", adminNav: 21308900, internalNav: 21318400, note: "Fee accrual difference — immaterial" },
+  { fund: "Calverton Emerging Markets", adminNav: 8942150, internalNav: 8904600, note: "Pricing timing difference (immaterial)" },
+  { fund: "Delmore Credit", adminNav: 21308900, internalNav: 21318400, note: "Fee accrual difference (immaterial)" },
   { fund: "Elmwood Sterling Bond", adminNav: 15770450, internalNav: 15770450, note: "Matched" },
-  { fund: "Ferngate Diversified", adminNav: 9864720, internalNav: 9998300, note: "Unlisted holding priced differently — query raised with administrator" },
+  { fund: "Ferngate Diversified", adminNav: 9864720, internalNav: 9998300, note: "Unlisted holding priced differently. Query raised with administrator" },
   { fund: "Greystoke Alternatives", adminNav: 6203440, internalNav: 6199080, note: "Matched within tolerance" },
   { fund: "Harborpoint Property", adminNav: 4518300, internalNav: 4438250, note: "Late valuation adjustment missing from administrator file" },
 ];
@@ -98,13 +98,13 @@ export function navTotals(tolerance: number) {
 
 export const NAV_VALUATION_DATE = "29 September 2026";
 export const NAV_SOURCES = [
-  "Sample administrator NAV — 29 Sep 2026",
-  "Sample internal valuation — 29 Sep 2026",
-  "Fund reference list — sample",
+  "Sample administrator NAV (29 Sep 2026)",
+  "Sample internal valuation (29 Sep 2026)",
+  "Fund reference list (sample)",
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Sample data — Position risk review
+// Sample data: Position risk review
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface RiskPosition {
@@ -116,16 +116,16 @@ export interface RiskPosition {
 }
 
 export const RISK_POSITIONS: RiskPosition[] = [
-  { position: "Ashbourne Global Equity", assetType: "Global equity", marketValue: 6850000, limitPct: 18, reviewerNote: "Concentration rose after the March inflow — reduction scheduled" },
-  { position: "US Treasury 10Y", assetType: "Government bond", marketValue: 5830000, limitPct: 25, reviewerNote: "—" },
+  { position: "Ashbourne Global Equity", assetType: "Global equity", marketValue: 6850000, limitPct: 18, reviewerNote: "Concentration rose after the March inflow. Reduction scheduled" },
+  { position: "US Treasury 10Y", assetType: "Government bond", marketValue: 5830000, limitPct: 25, reviewerNote: "None" },
   { position: "Delmore Credit Fund", assetType: "Credit", marketValue: 4940000, limitPct: 12, reviewerNote: "Awaiting credit committee decision on the limit" },
-  { position: "Brookfield Income Fund", assetType: "Multi-asset income", marketValue: 3120000, limitPct: 15, reviewerNote: "—" },
-  { position: "Calverton Emerging Markets", assetType: "EM equity", marketValue: 2890000, limitPct: 12, reviewerNote: "—" },
-  { position: "Elmwood Sterling Bond", assetType: "Bond fund", marketValue: 2670000, limitPct: 12, reviewerNote: "—" },
-  { position: "Greystoke Alternatives", assetType: "Alternatives", marketValue: 2280000, limitPct: 7, reviewerNote: "Approaching limit — monitored monthly" },
-  { position: "Ferngate Diversified", assetType: "Diversified growth", marketValue: 2240000, limitPct: 12, reviewerNote: "—" },
-  { position: "EUR/GBP forward", assetType: "FX forward", marketValue: 1875000, limitPct: 8, reviewerNote: "—" },
-  { position: "Gold futures", assetType: "Commodity", marketValue: 1460000, limitPct: 6, reviewerNote: "—" },
+  { position: "Brookfield Income Fund", assetType: "Multi-asset income", marketValue: 3120000, limitPct: 15, reviewerNote: "None" },
+  { position: "Calverton Emerging Markets", assetType: "EM equity", marketValue: 2890000, limitPct: 12, reviewerNote: "None" },
+  { position: "Elmwood Sterling Bond", assetType: "Bond fund", marketValue: 2670000, limitPct: 12, reviewerNote: "None" },
+  { position: "Greystoke Alternatives", assetType: "Alternatives", marketValue: 2280000, limitPct: 7, reviewerNote: "Approaching limit. Monitored monthly" },
+  { position: "Ferngate Diversified", assetType: "Diversified growth", marketValue: 2240000, limitPct: 12, reviewerNote: "None" },
+  { position: "EUR/GBP forward", assetType: "FX forward", marketValue: 1875000, limitPct: 8, reviewerNote: "None" },
+  { position: "Gold futures", assetType: "Commodity", marketValue: 1460000, limitPct: 6, reviewerNote: "None" },
 ];
 
 export const RISK_PORTFOLIO_TOTAL = RISK_POSITIONS.reduce((s, p) => s + p.marketValue, 0);
@@ -154,12 +154,12 @@ export function riskResults(reviewThreshold: number): RiskResultRow[] {
 }
 
 export const RISK_SOURCES = [
-  "Sample positions — 29 Sep 2026",
-  "Sample limit policy — standard",
+  "Sample positions (29 Sep 2026)",
+  "Sample limit policy (standard)",
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Sample data — Daily market movements
+// Sample data: Daily market movements
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface MarketMove {
@@ -225,8 +225,8 @@ export const BRIEFING_SNAPSHOT_NOTES = [
 ];
 
 export const BRIEFING_RELEVANCE = [
-  "Ashbourne Global Equity holds around 28% in Japanese equities; the Nikkei 225 decline of 1.2% is an estimated £23,000 effect on the portfolio (simulated estimate).",
-  "Calverton Emerging Markets broadly tracks emerging-market indices; the 0.9% decline is an estimated £26,000 effect (simulated estimate).",
+  "Ashbourne Global Equity holds around 28% in Japanese equities; the Nikkei 225 decline of 1.2% is an estimated HK$23,000 effect on the portfolio (simulated estimate).",
+  "Calverton Emerging Markets broadly tracks emerging-market indices; the 0.9% decline is an estimated HK$26,000 effect (simulated estimate).",
   "Brookfield Income Fund carries gilt exposure; the 1bp move in 10-year gilts is a minor mark-to-market effect.",
 ];
 
@@ -236,14 +236,14 @@ export const BRIEFING_ITEMS = [
 ];
 
 export const MARKET_SOURCES = [
-  "Sample market snapshot — 30 Sep 2026, 07:45",
-  "Sample holdings — 29 Sep 2026",
+  "Sample market snapshot (30 Sep 2026, 07:45)",
+  "Sample holdings (29 Sep 2026)",
 ];
 
 export const BRIEFING_DATE = "30 September 2026";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Sample data — SME cashflow (landing role preview)
+// Sample data: SME cashflow (landing role preview)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface SmeCashflowLine {
@@ -254,7 +254,7 @@ export interface SmeCashflowLine {
 }
 
 export const SME_CASHFLOW = {
-  period: "28 Sep – 2 Oct 2026",
+  period: "28 Sep to 2 Oct 2026",
   opening: 1284500,
   lines: [
     { label: "Customer receipts", amount: 186400, note: "6 invoices settled" },
@@ -320,7 +320,7 @@ export const TEMPLATES: TemplateDef[] = [
         purpose: "Works out the difference between the two valuations for each fund.",
         durationMs: 1100,
         fields: [
-          { key: "measure", label: "Variance measure", kind: "select", options: opts("Difference % of administrator NAV", "Absolute difference (£)", "Both") },
+          { key: "measure", label: "Variance measure", kind: "select", options: opts("Difference % of administrator NAV", "Absolute difference (HK$)", "Both") },
           { key: "rounding", label: "Round to", kind: "select", options: opts("2 decimal places", "3 decimal places", "4 decimal places") },
           { key: "sign", label: "Sign convention", kind: "select", options: opts("Internal minus administrator", "Administrator minus internal"), advanced: true },
         ],
@@ -335,8 +335,8 @@ export const TEMPLATES: TemplateDef[] = [
         durationMs: 1000,
         fields: [
           { key: "tolerance", label: "Tolerance", kind: "number", suffix: "%", min: 0.05, max: 5, step: 0.05, hint: "Funds whose difference % exceeds this tolerance are marked as exceptions." },
-          { key: "basis", label: "Apply tolerance to", kind: "select", options: opts("Difference %", "Absolute difference (£)") },
-          { key: "absFlag", label: "Also flag absolute differences over £50,000", kind: "select", options: opts("No", "Yes"), advanced: true },
+          { key: "basis", label: "Apply tolerance to", kind: "select", options: opts("Difference %", "Absolute difference (HK$)") },
+          { key: "absFlag", label: "Also flag absolute differences over HK$50,000", kind: "select", options: opts("No", "Yes"), advanced: true },
         ],
         config: { tolerance: 0.5, basis: "Difference %", absFlag: "No" },
         summary: (c) => `Tolerance ±${Number(c.tolerance).toFixed(2)}%`,
@@ -373,7 +373,7 @@ export const TEMPLATES: TemplateDef[] = [
           { key: "contents", label: "Contents", kind: "select", options: opts("Exceptions and totals", "All funds", "Exceptions only") },
           { key: "reviewerNotes", label: "Include reviewer notes", kind: "select", options: opts("Yes", "No"), advanced: true },
         ],
-        config: { title: "NAV reconciliation — 29 September 2026", contents: "Exceptions and totals", reviewerNotes: "Yes" },
+        config: { title: "NAV reconciliation (29 September 2026)", contents: "Exceptions and totals", reviewerNotes: "Yes" },
         summary: (c) => `${c.title}`,
       },
     ],
@@ -408,11 +408,11 @@ export const TEMPLATES: TemplateDef[] = [
         purpose: "Works out each position's weight of the portfolio total.",
         durationMs: 1100,
         fields: [
-          { key: "basis", label: "Exposure basis", kind: "select", options: opts("Market value as % of portfolio", "Market value in GBP") },
+          { key: "basis", label: "Exposure basis", kind: "select", options: opts("Market value as % of portfolio", "Market value in HKD") },
           { key: "portfolioTotal", label: "Portfolio total", kind: "static" },
           { key: "unsettled", label: "Include unsettled trades", kind: "select", options: opts("No", "Yes"), advanced: true },
         ],
-        config: { basis: "Market value as % of portfolio", portfolioTotal: "£34,155,000 — sample portfolio total", unsettled: "No" },
+        config: { basis: "Market value as % of portfolio", portfolioTotal: "HK$34,155,000 (sample portfolio total)", unsettled: "No" },
         summary: (c) => `${c.basis}`,
       },
       {
@@ -470,7 +470,7 @@ export const TEMPLATES: TemplateDef[] = [
           { key: "title", label: "Report title", kind: "text" },
           { key: "contents", label: "Contents", kind: "select", options: opts("Breaches and near-limit positions", "All positions") },
         ],
-        config: { title: "Position risk summary — 29 September 2026", contents: "Breaches and near-limit positions" },
+        config: { title: "Position risk summary (29 September 2026)", contents: "Breaches and near-limit positions" },
         summary: (c) => `${c.title}`,
       },
     ],
@@ -494,7 +494,7 @@ export const TEMPLATES: TemplateDef[] = [
           { key: "source", label: "Source file", kind: "select", options: opts("Sample market snapshot (30 Sep, 07:45)", "Sample market snapshot (29 Sep, 07:45)") },
           { key: "includes", label: "Snapshot includes", kind: "static" },
         ],
-        config: { source: "Sample market snapshot (30 Sep, 07:45)", includes: "Indices, FX and rates — 11 instruments" },
+        config: { source: "Sample market snapshot (30 Sep, 07:45)", includes: "Indices, FX and rates: 11 instruments" },
         summary: (c) => `${c.source}`,
       },
       {
@@ -565,7 +565,7 @@ export const TEMPLATES: TemplateDef[] = [
           { key: "title", label: "Report title", kind: "text" },
           { key: "format", label: "Format", kind: "select", options: opts("Structured brief", "Table-first brief") },
         ],
-        config: { title: "Morning market briefing — 30 September 2026", format: "Structured brief" },
+        config: { title: "Morning market briefing (30 September 2026)", format: "Structured brief" },
         summary: (c) => `${c.title}`,
       },
     ],
@@ -712,8 +712,8 @@ export function runSummary(run: Run): string {
       const ex = navExceptions(run.config.tolerance ?? 0.5).length;
       if (run.status === "completed") {
         return ex === 0
-          ? "Completed — no exceptions"
-          : `Completed — ${ex} exception${ex === 1 ? "" : "s"} reviewed`;
+          ? "Completed: no exceptions"
+          : `Completed: ${ex} exception${ex === 1 ? "" : "s"} reviewed`;
       }
       return `${ex} material variance${ex === 1 ? "" : "s"} awaiting review`;
     }
@@ -723,13 +723,13 @@ export function runSummary(run: Run): string {
       const over = rows.filter((r) => r.status === "Over limit").length;
       const near = rows.filter((r) => r.status === "Near limit").length;
       if (run.status === "completed") {
-        return `Completed — ${over} over limit, ${near} near limit`;
+        return `Completed: ${over} over limit, ${near} near limit`;
       }
-      return `${over} position${over === 1 ? "" : "s"} over limit — awaiting analyst review`;
+      return `${over} position${over === 1 ? "" : "s"} over limit, awaiting analyst review`;
     }
     case "market-movements": {
       if (run.status === "draft") return "Configured, not yet run";
-      if (run.status === "completed") return "Completed — briefing approved and exported";
+      if (run.status === "completed") return "Completed: briefing approved and exported";
       return "Briefing awaiting editor review";
     }
     default:
@@ -812,7 +812,7 @@ export function makeDefaultStep(type: StepTypeId): StepDef {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Seeded workspace state — workflows and historical simulated runs
+// Seeded workspace state: workflows and historical simulated runs
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function seedWorkflows(): Workflow[] {
@@ -829,7 +829,7 @@ export function seedWorkflows(): Workflow[] {
   });
 }
 
-/** Simulated workflow activity — every entry is fictional. */
+/** Simulated workflow activity. Every entry is fictional. */
 export function seedActivity(): ActivityEvent[] {
   return [
     {
@@ -850,7 +850,7 @@ export function seedActivity(): ActivityEvent[] {
       id: "act-3",
       workflowId: "nav-reconciliation",
       at: "2026-09-28T09:30:00+01:00",
-      label: "Tested on sample data — 2 exceptions previewed at review",
+      label: "Tested on sample data: 2 exceptions previewed at review",
       tone: "tested",
     },
     {
@@ -885,14 +885,14 @@ export function seedActivity(): ActivityEvent[] {
       id: "act-8",
       workflowId: "position-risk",
       at: "2026-09-28T10:05:00+01:00",
-      label: "Tested on sample data — 1 over limit, 1 near limit previewed",
+      label: "Tested on sample data: 1 over limit, 1 near limit previewed",
       tone: "tested",
     },
     {
       id: "act-9",
       workflowId: "position-risk",
       at: "2026-09-29T09:11:02+01:00",
-      label: "Run PR-0030 returned for review — awaiting analyst decision",
+      label: "Run PR-0030 returned for review, awaiting analyst decision",
       tone: "review",
     },
     {
@@ -906,7 +906,7 @@ export function seedActivity(): ActivityEvent[] {
       id: "act-11",
       workflowId: "market-movements",
       at: "2026-09-28T08:15:00+01:00",
-      label: "Tested on sample data — 3 notable moves previewed",
+      label: "Tested on sample data: 3 notable moves previewed",
       tone: "tested",
     },
     {
@@ -956,7 +956,7 @@ export function seedRuns(): Run[] {
       startedAt: "2026-09-29T16:20:00+01:00",
       status: "draft",
       statusNote: "Configured, not yet run",
-      config: { tolerance: 0.5, reportTitle: "NAV reconciliation — 29 September 2026" },
+      config: { tolerance: 0.5, reportTitle: "NAV reconciliation (29 September 2026)" },
       timeline: seedTimeline("nav-reconciliation", ["queued", "queued", "queued", "queued", "queued", "queued"]),
       sources: NAV_SOURCES,
     },
@@ -968,8 +968,8 @@ export function seedRuns(): Run[] {
       startedAt: "2026-09-29T14:02:00+01:00",
       finishedAt: "2026-09-29T14:02:09+01:00",
       status: "completed",
-      config: { tolerance: 0.5, reportTitle: "NAV reconciliation — 29 September 2026" },
-      timeline: seedTimeline("nav-reconciliation", allComplete, "Approved by Operations reviewer — simulated"),
+      config: { tolerance: 0.5, reportTitle: "NAV reconciliation (29 September 2026)" },
+      timeline: seedTimeline("nav-reconciliation", allComplete, "Approved by Operations reviewer (simulated)"),
       sources: NAV_SOURCES,
       review: { decision: "approved", at: "2026-09-29T14:02:07+01:00", by: "Operations reviewer" },
     },
@@ -980,9 +980,9 @@ export function seedRuns(): Run[] {
       workflowName: "Position risk review",
       startedAt: "2026-09-29T09:10:00+01:00",
       status: "needs-review",
-      statusNote: "Returned for review — awaiting analyst decision",
-      config: { reviewThreshold: 90, reportTitle: "Position risk summary — 29 September 2026" },
-      timeline: seedTimeline("position-risk", pausedAtReview, "Returned for review — awaiting analyst decision"),
+      statusNote: "Returned for review, awaiting analyst decision",
+      config: { reviewThreshold: 90, reportTitle: "Position risk summary (29 September 2026)" },
+      timeline: seedTimeline("position-risk", pausedAtReview, "Returned for review, awaiting analyst decision"),
       sources: RISK_SOURCES,
       review: { decision: "returned", at: "2026-09-29T09:11:02+01:00", by: "Risk analyst" },
     },
@@ -994,8 +994,8 @@ export function seedRuns(): Run[] {
       startedAt: "2026-09-29T07:35:00+01:00",
       finishedAt: "2026-09-29T07:35:08+01:00",
       status: "completed",
-      config: { notableThreshold: 0.75, reportTitle: "Morning market briefing — 29 September 2026" },
-      timeline: seedTimeline("market-movements", allComplete, "Approved by Research editor — simulated"),
+      config: { notableThreshold: 0.75, reportTitle: "Morning market briefing (29 September 2026)" },
+      timeline: seedTimeline("market-movements", allComplete, "Approved by Research editor (simulated)"),
       sources: MARKET_SOURCES,
       review: { decision: "approved", at: "2026-09-29T07:35:06+01:00", by: "Research editor" },
     },
@@ -1007,9 +1007,9 @@ export function seedRuns(): Run[] {
       startedAt: "2026-09-26T14:05:00+01:00",
       finishedAt: "2026-09-26T14:05:09+01:00",
       status: "completed",
-      statusNote: "No exceptions — all funds within tolerance",
-      config: { tolerance: 2.0, reportTitle: "NAV reconciliation — 26 September 2026" },
-      timeline: seedTimeline("nav-reconciliation", allComplete, "Approved by Operations reviewer — simulated"),
+      statusNote: "No exceptions: all funds within tolerance",
+      config: { tolerance: 2.0, reportTitle: "NAV reconciliation (26 September 2026)" },
+      timeline: seedTimeline("nav-reconciliation", allComplete, "Approved by Operations reviewer (simulated)"),
       sources: NAV_SOURCES,
       review: { decision: "approved", at: "2026-09-26T14:05:07+01:00", by: "Operations reviewer" },
     },

@@ -68,7 +68,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
         <a
           href="#/"
           className="flex h-14 items-center gap-2.5 border-b border-border px-5"
-          aria-label="Payo AI — back to landing page"
+          aria-label="Payo AI: back to landing page"
         >
           <PayoMark className="size-[26px]" />
           <span className="text-[14.5px] font-semibold tracking-tight">Payo AI</span>
@@ -140,12 +140,12 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 <RunStatusChip status={runById(engine.runId)?.status ?? "running"} />
               </a>
             )}
-            <ThemeToggle className="size-8" />
+            <ThemeToggle />
             <button
               type="button"
               onClick={openAbout}
               className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-[12px] font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-foreground"
-              aria-label="About this demo — sample data is simulated"
+              aria-label="About this demo: sample data is simulated"
             >
               <span className="size-1.5 rounded-full bg-ink-3/80" aria-hidden="true" />
               Sample data

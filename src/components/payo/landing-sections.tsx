@@ -141,7 +141,7 @@ const MINI_TD = "px-2 py-1.5 align-top text-[11.5px] text-ink-2";
 function AnalystPreview() {
   const rows = riskResults(90).slice(0, 5);
   return (
-    <MiniFrame title="Position risk review — sample">
+    <MiniFrame title="Position risk review (sample)">
       <table className="w-full border-collapse">
         <thead>
           <tr className="border-b border-border">
@@ -174,7 +174,7 @@ function AnalystPreview() {
 function OperationsPreview() {
   const rows = navResults(0.5).slice(3, 7);
   return (
-    <MiniFrame title="NAV reconciliation — sample">
+    <MiniFrame title="NAV reconciliation (sample)">
       <table className="w-full border-collapse">
         <thead>
           <tr className="border-b border-border">
@@ -218,7 +218,7 @@ function hkd(n: number): string {
 
 function SmePreview() {
   return (
-    <MiniFrame title="Cashflow update — week of 28 Sep">
+    <MiniFrame title="Cashflow update (week of 28 Sep)">
       <dl className="space-y-1.5">
         <div className="flex items-baseline justify-between gap-3 text-[12px]">
           <dt className="text-ink-2">Opening balance</dt>
@@ -375,7 +375,7 @@ export function ConnectorsSection() {
         <h2 className={SECTION_HEADING}>The sources behind every step.</h2>
         <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink-2">
           Payo is designed to read the files and feeds finance teams already use. Everything below
-          is a planned connection for future releases — nothing here is connected in this
+          is a planned connection for future releases. Nothing here is connected in this
           prototype.
         </p>
 
@@ -458,7 +458,7 @@ export function ConnectorsSection() {
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="text-[14.5px] font-semibold">{selected.name}</h3>
               <span className="inline-flex items-center rounded-sm bg-neutral-tint px-1.5 py-0.5 text-[10.5px] font-medium text-ink-2">
-                Planned — not connected
+                Planned, not connected
               </span>
             </div>
             <p className="mt-2 max-w-xl text-[13px] leading-relaxed text-ink-2">
@@ -538,7 +538,7 @@ export function ConnectorsSection() {
 const CONTROL_POINTS = [
   {
     title: "Every workflow has visible steps",
-    body: "Load, calculate, check, review, report — visible before and during every run.",
+    body: "Load, calculate, check, review, report. All visible before and during every run.",
   },
   {
     title: "Review before release",

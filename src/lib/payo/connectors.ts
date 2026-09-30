@@ -1,7 +1,7 @@
 import type { StepTypeId } from "./types";
 
 /**
- * Planned connections for Payo — every entry is fictional/illustrative and is
+ * Planned connections for Payo: every entry is fictional/illustrative and is
  * labelled "Planned" in the interface. Nothing here is connected in this
  * prototype; no external service is called.
  */

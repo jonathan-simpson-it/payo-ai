@@ -90,7 +90,7 @@ export function OverviewScreen() {
                               className="h-7"
                               onClick={() => {
                                 decideRun(run.id, "approved");
-                                toast(`${run.code} approved — simulated decision.`);
+                                toast(`${run.code} approved (simulated decision).`);
                               }}
                             >
                               {wf ? reviewApproveLabel(wf.templateId) : "Approve"}
@@ -209,7 +209,7 @@ export function OverviewScreen() {
             ))}
           </ol>
           <p className="text-[12.5px] leading-relaxed text-ink-3">
-            Templates are the starting point in Payo — never a blank canvas.
+            Templates are the starting point in Payo, never a blank canvas.
           </p>
           <Button asChild size="sm" className="w-full">
             <a href="#/workspace/templates">
@@ -244,7 +244,7 @@ export function OverviewScreen() {
             </div>
             <div>
               <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
-                Planned — not connected
+                Planned, not connected
               </p>
               <ul className="mt-2 flex flex-wrap gap-1.5">
                 {PLANNED_CONNECTORS.map((c) => (

@@ -276,12 +276,12 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
 
   const handleApprove = () => {
     approveReview();
-    toast("Summary approved — completing the remaining steps.");
+    toast("Summary approved. Completing the remaining steps.");
   };
 
   const handleReturn = () => {
     returnReview();
-    toast("Run paused — returned for review.");
+    toast("Run paused: returned for review.");
   };
 
   // DnD handlers
@@ -450,7 +450,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             {enginePhase === "running" && (
               <>
                 <p className="text-[12.5px] text-ink-2">
-                  Step {engineHere.activeIndex + 1} of {engineHere.steps.length} —{" "}
+                  Step {engineHere.activeIndex + 1} of {engineHere.steps.length}:{" "}
                   <span className="font-medium text-foreground">
                     {engineHere.steps[engineHere.activeIndex]?.label}
                   </span>
@@ -474,7 +474,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             {enginePhase === "awaiting-review" && (
               <>
                 <p className="text-[12.5px] font-medium text-warn">
-                  Paused — {reviewStep?.label} needs your decision.
+                  Paused: {reviewStep?.label} needs your decision.
                 </p>
                 <Button size="sm" className="ml-auto h-7" onClick={() => setReviewDismissed(false)}>
                   Open review
@@ -485,7 +485,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             {enginePhase === "returned" && (
               <>
                 <p className="max-w-xl text-[12.5px] leading-snug text-warn">
-                  Run paused — returned for review. The final steps will not run until the review is
+                  Run paused, returned for review. The final steps will not run until the review is
                   approved.
                 </p>
                 <div className="ml-auto flex gap-2">
@@ -495,7 +495,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
                     className="h-7"
                     onClick={() => {
                       endRun();
-                      toast("Run ended — saved to Runs as Needs review.");
+                      toast("Run ended. Saved to Runs as Needs review.");
                     }}
                   >
                     End run
@@ -509,7 +509,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
 
             {enginePhase === "done" && (
               <p className="text-[12.5px] font-medium text-ok">
-                Run completed — opening the result…
+                Run completed. Opening the result…
               </p>
             )}
           </div>
@@ -636,7 +636,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             </>
           ) : (
             <span className="text-[12.5px] text-ink-3">
-              No runs yet — this workflow has not been run. Runs use labelled sample data.
+              No runs yet. This workflow has not been run. Runs use labelled sample data.
             </span>
           )}
         </div>
@@ -657,7 +657,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             <DialogDescription className="text-[13px] leading-relaxed">
               {runHere ? `Run ${runHere.code} · ` : ""}
               {reviewerLabel ? `The run is paused at this step. ` : ""}
-              Your decision is recorded on the run — this review is simulated.
+              Your decision is recorded on the run. This review is simulated.
             </DialogDescription>
           </DialogHeader>
           <div className="max-h-[52vh] overflow-y-auto px-6 py-5">

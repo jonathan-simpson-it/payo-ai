@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Hero preview: a believable NAV reconciliation screen paused at its review
- * gate. Decorative only — every figure is sample data and nothing here is
+ * gate. Decorative only: every figure is sample data and nothing here is
  * interactive (the real screens live in the workspace).
  */
 
@@ -108,8 +108,8 @@ export function ProductMockup() {
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-left text-[10.5px] font-medium text-ink-3">
                     <th className="px-2.5 py-1.5 font-medium">Fund</th>
-                    <th className="px-2.5 py-1.5 text-right font-medium">Administrator NAV (£)</th>
-                    <th className="px-2.5 py-1.5 text-right font-medium">Internal NAV (£)</th>
+                    <th className="px-2.5 py-1.5 text-right font-medium">Administrator NAV (HK$)</th>
+                    <th className="px-2.5 py-1.5 text-right font-medium">Internal NAV (HK$)</th>
                     <th className="px-2.5 py-1.5 text-right font-medium">Difference %</th>
                     <th className="px-2.5 py-1.5 font-medium">Status</th>
                   </tr>
@@ -159,7 +159,7 @@ export function ProductMockup() {
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
               <CircleAlert className="size-3.5 text-warn" />
               <p className="text-[12px] font-medium text-foreground">
-                Paused for review — 2 material variances above tolerance
+                Paused for review: 2 material variances above tolerance
               </p>
             </div>
             <div className="mt-2 flex flex-wrap items-center justify-between gap-2">

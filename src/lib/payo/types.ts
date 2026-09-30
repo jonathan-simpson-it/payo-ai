@@ -1,4 +1,4 @@
-/** Payo AI — domain types for the V0 prototype. All data is simulated. */
+/** Payo AI: domain types for the V0 prototype. All data is simulated. */
 
 export type StepTypeId =
   | "load"
@@ -84,11 +84,11 @@ export interface RunStepRecord {
 export type RunStatus = "draft" | "running" | "needs-review" | "completed";
 
 export interface RunConfig {
-  /** NAV reconciliation — variance tolerance, e.g. 0.50 */
+  /** NAV reconciliation: variance tolerance, e.g. 0.50 */
   tolerance?: number;
-  /** Position risk — review threshold as % of applicable limit, e.g. 90 */
+  /** Position risk: review threshold as % of applicable limit, e.g. 90 */
   reviewThreshold?: number;
-  /** Market movements — notable move threshold in %, e.g. 0.75 */
+  /** Market movements: notable move threshold in %, e.g. 0.75 */
   notableThreshold?: number;
   reportTitle?: string;
 }

@@ -47,7 +47,7 @@
 }
 
 /*
- * Payo light theme — quiet warm paper, ink text, deep petrol for action.
+ * Payo light theme: quiet warm paper, ink text, deep petrol for action.
  * Colour is semantic: petrol = action/selection, green = complete,
  * amber = needs review, red = exception, orange = Payo brand mark only.
  */
@@ -166,9 +166,10 @@
 }
 
 /*
- * Continuous curvature (squircles).
- * Native progressive enhancement: Chrome/Edge 139+ render squircle corners
- * wherever a border-radius exists. Browsers without support fall back to the
+ * Continuous curvature (squircles), softened.
+ * Native progressive enhancement: where `superellipse()` is supported the
+ * corners use exponent 2.5 (subtle, rounded continuous curvature); browsers
+ * with only the `squircle` keyword use exponent 4; the rest fall back to the
  * small circular radii defined above. See design.md.
  */
 @supports (corner-shape: squircle) {
@@ -176,6 +177,13 @@
   *::before,
   *::after {
     corner-shape: squircle;
+  }
+}
+@supports (corner-shape: superellipse(2.5)) {
+  *,
+  *::before,
+  *::after {
+    corner-shape: superellipse(2.5);
   }
 }
 
@@ -200,7 +208,7 @@
   background: var(--scroll-thumb-hover);
 }
 
-/* Payo mascot — a gentle, infrequent blink */
+/* Payo mascot: a gentle, infrequent blink */
 @keyframes payo-blink {
   0%,
   92%,

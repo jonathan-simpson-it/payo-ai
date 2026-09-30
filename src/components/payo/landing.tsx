@@ -16,6 +16,7 @@ import {
 } from "@/components/payo/landing-sections";
 import { FeatureDemo } from "@/components/payo/feature-demo";
 import { ThemeToggle } from "@/components/payo/theme-toggle";
+import { WaitlistSection } from "@/components/payo/waitlist";
 
 const WORKSPACE_URL = "#/workspace/templates";
 
@@ -68,7 +69,13 @@ export function LandingPage() {
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">
-            <ThemeToggle className="size-8" />
+            <a
+              href="#waitlist"
+              className="hidden text-[13px] font-medium text-primary-ink transition-colors hover:text-primary-deep sm:inline"
+            >
+              Join the waitlist
+            </a>
+            <ThemeToggle />
             <Button asChild className="h-8 px-3.5 text-[13px]">
               <a href={WORKSPACE_URL}>Explore the workspace</a>
             </Button>
@@ -86,7 +93,7 @@ export function LandingPage() {
             </h1>
             <p className="mt-4 max-w-md text-[15.5px] leading-relaxed text-ink-2">
               Build repeatable reconciliations, risk checks and daily briefings in a visual
-              workspace your team can inspect — with a person in the loop before anything is
+              workspace your team can inspect, with a person in the loop before anything is
               released.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -103,6 +110,13 @@ export function LandingPage() {
             <p className="mt-4 text-[12px] text-ink-3">
               No sign-in needed · every run uses labelled sample data.
             </p>
+            <a
+              href="#waitlist"
+              className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-primary-ink transition-colors hover:text-primary-deep"
+            >
+              Want early access? Join the waitlist
+              <ArrowRight className="size-3.5" aria-hidden="true" />
+            </a>
           </div>
           <ProductMockup />
         </div>
@@ -190,24 +204,8 @@ export function LandingPage() {
       {/* Review & licensing */}
       <TrustSection />
 
-      {/* Final CTA */}
-      <section className="border-t border-border/70 bg-card/50">
-        <div className="mx-auto max-w-6xl px-6 py-16 text-center md:py-20">
-          <h2 className="mx-auto max-w-xl text-[28px] font-semibold leading-tight tracking-[-0.01em] md:text-[32px]">
-            See it in the demo workspace.
-          </h2>
-          <p className="mx-auto mt-4 max-w-md text-[14.5px] leading-relaxed text-ink-2">
-            No sign-in needed. Every workflow opens ready to run on labelled sample data, with a
-            review gate you can try yourself.
-          </p>
-          <Button asChild size="lg" className="mt-8 px-5">
-            <a href={WORKSPACE_URL}>
-              Explore the workspace
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </a>
-          </Button>
-        </div>
-      </section>
+      {/* Waitlist */}
+      <WaitlistSection />
 
       {/* Footer */}
       <footer className="border-t border-border">

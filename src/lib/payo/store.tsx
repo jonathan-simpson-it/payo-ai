@@ -213,13 +213,13 @@ function approveReview(state: State): State {
     review: { decision: "approved" as const, at: now, by },
     timeline: r.timeline.map((t) =>
       t.stepId === cur.id
-        ? { ...t, state: "complete" as const, durationSec: 0.8, note: `Approved by ${by} — simulated` }
+        ? { ...t, state: "complete" as const, durationSec: 0.8, note: `Approved by ${by} (simulated)` }
         : t,
     ),
   }));
   ns = {
     ...ns,
-    activity: [activityEvent(eng.workflowId, `Review approved by ${by} — simulated`, "review"), ...ns.activity],
+    activity: [activityEvent(eng.workflowId, `Review approved by ${by} (simulated)`, "review"), ...ns.activity],
   };
 
   const nextIdx = eng.activeIndex + 1;
@@ -242,12 +242,12 @@ function returnReview(state: State): State {
   const ns = setRun(state, eng.runId, (r) => ({
     ...r,
     status: "needs-review",
-    statusNote: "Returned for review — run paused before the final steps",
+    statusNote: "Returned for review, run paused before the final steps",
     review: { decision: "returned" as const, at: now, by },
   }));
   return {
     ...ns,
-    activity: [activityEvent(eng.workflowId, `Returned for review by ${by} — simulated`, "review"), ...ns.activity],
+    activity: [activityEvent(eng.workflowId, `Returned for review by ${by} (simulated)`, "review"), ...ns.activity],
     engine: { ...eng, phase: "returned" },
   };
 }
@@ -290,7 +290,7 @@ function testFinish(state: State, t: TestEngine): State {
       w.id === t.workflowId ? { ...w, status: nextStatus } : w,
     ),
     activity: [
-      activityEvent(t.workflowId, "Tested on sample data — all steps previewed", "tested"),
+      activityEvent(t.workflowId, "Tested on sample data: all steps previewed", "tested"),
       ...state.activity,
     ],
   };
@@ -312,12 +312,12 @@ function decideRun(state: State, runId: string, decision: "approved" | "returned
   if (decision === "returned") {
     const ns = setRun(state, runId, (r) => ({
       ...r,
-      statusNote: "Returned for review — awaiting decision",
+      statusNote: "Returned for review, awaiting decision",
       review: { decision: "returned" as const, at: now, by },
     }));
     return {
       ...ns,
-      activity: [activityEvent(run.workflowId, `Run ${run.code} returned for review — simulated`, "review"), ...ns.activity],
+      activity: [activityEvent(run.workflowId, `Run ${run.code} returned for review (simulated)`, "review"), ...ns.activity],
     };
   }
 
@@ -334,7 +334,7 @@ function decideRun(state: State, runId: string, decision: "approved" | "returned
             ...t,
             state: "complete" as const,
             durationSec: t.durationSec ?? 0.8,
-            note: t.state === "needs-review" ? `Approved by ${by} — simulated` : t.note,
+            note: t.state === "needs-review" ? `Approved by ${by} (simulated)` : t.note,
           },
     ),
   }));

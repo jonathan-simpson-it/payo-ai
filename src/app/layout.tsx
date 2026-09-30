@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Payo AI — Finance workflows, made clear.",
+  title: "Payo AI | Finance workflows, made clear.",
   description:
     "Build repeatable reconciliations, risk checks and daily market briefings in a visual workspace your team can inspect.",
   icons: {

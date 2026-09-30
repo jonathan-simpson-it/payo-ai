@@ -217,7 +217,7 @@ export function RunDetail({ runId }: { runId: string }) {
       <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
           <h1 className="text-[22px] font-semibold leading-tight tracking-[-0.01em]">
-            {run.workflowName} — Run {run.code}
+            Run {run.code}: {run.workflowName}
           </h1>
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[13px] text-ink-2">
             <RunStatusChip status={run.status} />
@@ -269,7 +269,7 @@ export function RunDetail({ runId }: { runId: string }) {
               size="sm"
               onClick={() => {
                 decideRun(run.id, "approved");
-                toast(`${run.code} approved — simulated decision.`);
+                toast(`${run.code} approved (simulated decision).`);
               }}
             >
               {template ? reviewApproveLabel(template.id) : "Approve"}
@@ -289,7 +289,7 @@ export function RunDetail({ runId }: { runId: string }) {
       )}
 
       <div className="mt-8 grid gap-x-10 gap-y-10 xl:grid-cols-[260px_1fr]">
-        {/* Left column — steps and sources */}
+        {/* Left column: steps and sources */}
         <div className="space-y-8">
           <section aria-labelledby="run-steps">
             <h2 id="run-steps" className={SECTION_HEADING}>
@@ -323,7 +323,7 @@ export function RunDetail({ runId }: { runId: string }) {
           </section>
         </div>
 
-        {/* Right column — results and report */}
+        {/* Right column: results and report */}
         <div className="min-w-0 space-y-10">
           {run.status === "draft" ? (
             <section aria-labelledby="run-draft">
@@ -345,7 +345,7 @@ export function RunDetail({ runId }: { runId: string }) {
               {wf && template && (
                 <section aria-labelledby="run-findings">
                   <h2 id="run-findings" className={SECTION_HEADING}>
-                    Results — sample data
+                    Results: sample data
                   </h2>
                   <div className="mt-4">
                     <FindingsSection templateId={wf.templateId} config={run.config} />
