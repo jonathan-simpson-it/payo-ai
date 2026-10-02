@@ -1,8 +1,7 @@
-# Payoo — Product Character
+# Payoo
 
-Payoo is the Payo AI character: a small orange workflow helper. He appears
-wherever the product signs its work, and he is the planned face of the
-Payoo chat assistant.
+Payoo is the Payo AI character, a small orange workflow helper. He appears in
+the product as the brand mark, and he is the planned chat assistant.
 
 **Current status:** the chat assistant is not functional yet. Clicking the
 Payoo bubble opens a small chat panel preview labelled **"Coming soon"**

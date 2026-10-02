@@ -247,7 +247,7 @@ const ROLES: RoleDef[] = [
       role: "Fund Operations Lead",
       org: "Atlas Fund Services",
       quote:
-        "Chasing variance notes eats the morning — the review pack is always the last thing done.",
+        "Chasing variance notes eats the morning; the review pack is always the last thing done.",
     },
     impact: "Reduces manual reconciliation backlog by 85%",
     title: "Reconcile NAV files and resolve exceptions.",
@@ -294,11 +294,11 @@ function MiniFrame({ title, children }: { title: string; children: React.ReactNo
 const MINI_TH = "px-2 pb-2 text-left text-[11px] font-mono uppercase tracking-wider text-slate-400";
 const MINI_TD = "px-2 py-1.5 align-top text-[11.5px] text-ink-2";
 
-/* Light-canvas status pills for the position-risk table (spec: emerald/red, amber for near-limit). */
+/* Light-canvas status pills for the position-risk table (tokens: green/red, amber for near-limit). */
 const RISK_PILL: Record<string, string> = {
   "Over limit": "bg-red-50 text-red-700 border border-red-200/80",
   "Near limit": "bg-amber-50 text-amber-700 border border-amber-200/80",
-  "Within limit": "bg-emerald-50 text-emerald-700 border border-emerald-200/80",
+  "Within limit": "bg-ok-tint text-ok border border-ok-border",
 };
 
 function RiskStatusPill({ status }: { status: string }) {
@@ -506,7 +506,7 @@ function RolePanel({ role }: { role: RoleDef }) {
       <div>
         <PersonaBadge persona={role.persona} />
         <blockquote className="mt-4 border-l-2 border-[#FF6B00]/50 pl-4 text-sm font-normal italic leading-relaxed text-slate-600">
-          “{role.persona.quote}”
+          "{role.persona.quote}"
         </blockquote>
 
         <div className="mt-5 grid gap-3">
@@ -516,8 +516,8 @@ function RolePanel({ role }: { role: RoleDef }) {
             </p>
             <p className="text-slate-600">{role.slow}</p>
           </div>
-          <div className="rounded-r-lg border-l-2 border-emerald-500 bg-slate-50/80 p-3 text-xs">
-            <p className="mb-1 font-mono font-semibold uppercase tracking-wider text-emerald-700 text-[11px]">
+          <div className="rounded-r-lg border-l-2 border-ok bg-slate-50/80 p-3 text-xs">
+            <p className="mb-1 font-mono font-semibold uppercase tracking-wider text-ok text-[11px]">
               What Payo delivers
             </p>
             <p className="text-slate-600">{role.prepare}</p>
@@ -809,7 +809,7 @@ export function TrustSection() {
           {CONTROL_POINTS.map((c) => (
             <div key={c.title} className="glass glass-hover rounded-xl p-5">
               <span
-                className="grid size-8 place-items-center rounded-lg border border-emerald-200/80 bg-emerald-50 text-emerald-600"
+                className=                "grid size-8 place-items-center rounded-lg border border-ok-border bg-ok-tint text-ok"
                 aria-hidden="true"
               >
                 <Check className="size-4" strokeWidth={2.5} />

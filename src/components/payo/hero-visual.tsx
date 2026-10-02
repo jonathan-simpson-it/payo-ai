@@ -22,8 +22,8 @@ const SHOWN_FUNDS = [
 
 /* Rounded status badges: red = exception, muted green = matched, amber = tolerance. */
 const STATUS_CHIP: Record<string, string> = {
-  Matched: "border border-emerald-500/25 bg-emerald-500/10 text-emerald-400",
-  "Within tolerance": "border border-emerald-500/25 bg-emerald-500/10 text-emerald-400",
+  Matched: "border border-[#4FAE7E]/25 bg-[#4FAE7E]/10 text-[#4FAE7E]",
+  "Within tolerance": "border border-[#4FAE7E]/25 bg-[#4FAE7E]/10 text-[#4FAE7E]",
   Exception: "border border-[rgba(252,165,165,0.25)] bg-[rgba(220,38,38,0.12)] text-[#F87171]",
 };
 
@@ -323,8 +323,8 @@ function ReconciliationWindow() {
           <span className="size-1.5 rounded-full bg-white/[0.35]" aria-hidden="true" />
           Sample data
         </span>
-        <span className="hidden shrink-0 items-center gap-1.5 rounded border border-[#FBBF24]/30 bg-[#FBBF24]/[0.10] px-1.5 py-px text-[10px] font-medium text-[#FBBF24] sm:inline-flex">
-          <span className="size-1.5 rounded-full bg-[#FBBF24]" aria-hidden="true" />
+        <span className="hidden shrink-0 items-center gap-1.5 rounded border border-amber-500/20 bg-amber-500/10 px-1.5 py-px text-[10px] font-medium text-amber-400 sm:inline-flex">
+          <span className="size-1.5 rounded-full bg-amber-400" aria-hidden="true" />
           Needs review
         </span>
       </div>

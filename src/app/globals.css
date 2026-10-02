@@ -55,7 +55,7 @@
 
 /*
  * Payo light theme: quiet warm paper, ink text, Payo orange for action.
- * Colour is semantic: orange = action/selection/brand, emerald = complete,
+ * Colour is semantic: orange = action/selection/brand, green = complete,
  * amber = needs review, red = exception. Status pills use muted tints with
  * 1px borders (enterprise standard), never saturated or neon fills.
  */
@@ -90,9 +90,9 @@
   --ink-3: #8a9199;
   --line-strong: #d5d3cc;
 
-  --ok: #047857;
-  --ok-tint: #ecfdf5;
-  --ok-border: #a7f3d0;
+  --ok: #1F7350;
+  --ok-tint: #E9F3EE;
+  --ok-border: #CEE0D9;
   --warn: #d97706;
   --warn-tint: #fffbeb;
   --warn-border: #fde68a;
@@ -169,7 +169,7 @@
 /*
  * Landing-only dark scope ("ui-only-dark-mode").
  * Enterprise financial-terminal surfaces: deep slate, clean translucent
- * borders, a single orange brand accent and muted emerald success states.
+ * borders, a single orange brand accent and muted green success states.
  * Scoped to .payo-neon so the workspace keeps its own theme.
  */
 .payo-neon {
@@ -462,7 +462,7 @@
 
 /*
  * Alternating sections: every other band flips to a light surface while
- * keeping the enterprise accents (orange brand, muted emerald success).
+ * keeping the enterprise accents (orange brand, muted green success).
  * Re-scoping the tokens here lets all token-driven styles adapt, and the
  * panel overrides restyle the translucent surfaces for a white ground.
  * Zebra spec: off-white stage, light 24px gridlines, clean gray borders.
@@ -490,8 +490,9 @@
   --ink-2: #475569;
   --ink-3: #64748b;
   --line-strong: #cbd5e1;
-  --ok: #047857;
-  --ok-tint: #ecfdf5;
+  --ok: #1F7350;
+  --ok-tint: #E9F3EE;
+  --ok-border: #CEE0D9;
   --warn: #d97706;
   --warn-tint: #fffbeb;
   --danger: #dc2626;

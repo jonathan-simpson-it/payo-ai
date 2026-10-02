@@ -209,7 +209,7 @@ function RiskGraphic() {
       </div>
 
       <div className="grid h-8 place-items-center">
-        <span className="warn-pill absolute inline-flex items-center gap-1.5 rounded-full border border-[rgba(253,230,138,0.25)] bg-[rgba(217,119,6,0.15)] px-3 py-1 text-[11px] font-medium text-[#FBBF24]">
+        <span className="warn-pill absolute inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[11px] font-medium text-amber-400">
           <TriangleAlert className="size-3 text-[#FF6B00]" aria-hidden="true" />
           Limit exceeded
         </span>
@@ -244,7 +244,7 @@ function BriefingGraphic() {
 
       <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-2.5 py-2">
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-medium text-[#F8FAFC]">Morning briefing — draft</p>
+          <p className="text-[10px] font-medium text-[#F8FAFC]">Morning briefing (draft)</p>
           <span className="text-[9px] text-[#7C8894]">auto-filed</span>
         </div>
         <div className="mt-1.5 space-y-1" aria-hidden="true">

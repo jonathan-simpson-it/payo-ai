@@ -34,9 +34,9 @@ export function PayooChat() {
               <p className="text-[13px] font-semibold leading-tight text-white">Payoo</p>
               <p className="text-[11px] leading-tight text-[#8B939B]">Your workflow helper</p>
             </div>
-            <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border border-warn/25 bg-warn-tint px-2 py-0.5 text-[10.5px] font-medium text-warn">
+            <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[10.5px] font-medium text-amber-400">
               <span
-                className="size-1.5 animate-pulse rounded-full bg-warn"
+                className="size-1.5 animate-pulse rounded-full bg-amber-400"
                 aria-hidden="true"
               />
               Coming soon

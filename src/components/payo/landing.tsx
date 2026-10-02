@@ -168,7 +168,7 @@ export function LandingPage() {
                 </h1>
                 <p className="mt-6 max-w-[520px] text-[16px] leading-[1.6] text-[#CBD5E1]">
                   Turn plain-English descriptions into visual, deterministic financial
-                  pipelines—backed by human sign-off and complete line-item lineage.
+                  pipelines, backed by human sign-off and complete line-item lineage.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-3">
                   <a

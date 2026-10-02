@@ -207,7 +207,7 @@ function ResearchCanvas() {
 
       <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2.5">
         <div className="flex items-center justify-between">
-          <p className="text-[10.5px] font-medium text-[#F8FAFC]">Morning briefing — ready</p>
+          <p className="text-[10.5px] font-medium text-[#F8FAFC]">Morning briefing (ready)</p>
           <span className="text-[9px] text-[#7C8894]">06:45</span>
         </div>
         <div className="mt-1.5 space-y-1" aria-hidden="true">

@@ -546,7 +546,7 @@ export function FeatureDemo() {
                         </div>
                       )}
                       {phase === "done" && (
-                        <p className="rounded-xl border border-[#059669]/30 bg-[#059669]/[0.08] px-3.5 py-2.5 text-[12.5px] font-medium text-[#047857]">
+                        <p className="rounded-xl border border-ok/30 bg-ok-tint px-3.5 py-2.5 text-[12.5px] font-medium text-ok">
                           Run complete. Reviewed and finalised in this simulation.
                         </p>
                       )}
