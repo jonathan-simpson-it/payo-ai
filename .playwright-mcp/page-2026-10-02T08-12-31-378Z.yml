@@ -1,0 +1,600 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - link "Payo AI home" [ref=e6] [cursor=pointer]:
+          - /url: "#/"
+          - generic [ref=e18]: Payo AI
+        - navigation "Landing sections" [ref=e19]:
+          - link "How it works" [ref=e20] [cursor=pointer]:
+            - /url: "#what-payo-does"
+          - link "Templates" [ref=e21] [cursor=pointer]:
+            - /url: "#templates"
+          - link "Governance & audit" [ref=e22] [cursor=pointer]:
+            - /url: "#trust"
+          - link "Integrations" [ref=e23] [cursor=pointer]:
+            - /url: "#connections"
+        - generic [ref=e24]:
+          - link "Sign In" [ref=e25] [cursor=pointer]:
+            - /url: "#/workspace"
+          - link "Build a Workflow" [ref=e26] [cursor=pointer]:
+            - /url: "#/workspace/templates"
+    - generic [ref=e30]:
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - heading "Describe your workflow. AI builds the auditable graph." [level=1] [ref=e33]: Describe your workflow.AI builds the auditable graph.
+          - paragraph [ref=e34]: Turn plain-English descriptions into visual, deterministic financial pipelines—backed by human sign-off and complete line-item lineage.
+          - generic [ref=e35]:
+            - link "Generate Your First Graph" [ref=e36] [cursor=pointer]:
+              - /url: "#/workspace/templates"
+            - link "Explore Template Library" [ref=e39] [cursor=pointer]:
+              - /url: "#templates"
+          - paragraph [ref=e40]: No code required · Zero execution without human approval · Sample data sandbox
+        - generic [ref=e41]:
+          - 'img "Simulated preview of the Payo AI workspace: a NAV reconciliation table in front of layered workflow and briefing windows, using sample data." [ref=e42]':
+            - generic [aria-hidden] [ref=e44]:
+              - generic [ref=e45]:
+                - generic [ref=e50]: Reconciliation workflow · 6 steps
+                - generic [ref=e51]: Needs review
+              - generic [ref=e54]:
+                - generic [ref=e66]: Load NAV file
+                - generic [ref=e75]: Map funds
+                - generic [ref=e82]: Calculate variance
+                - generic [ref=e95]: Review variance
+              - generic [ref=e101]: 4 complete · 1 needs review
+            - generic [aria-hidden] [ref=e104]:
+              - generic [ref=e105]:
+                - generic [ref=e110]: Daily risk briefing
+                - generic [ref=e111]: Sample data
+              - generic [ref=e114]:
+                - generic [ref=e115]:
+                  - paragraph [ref=e116]: "2"
+                  - paragraph [ref=e117]: Exceptions
+                - generic [ref=e118]:
+                  - paragraph [ref=e119]: "8"
+                  - paragraph [ref=e120]: Funds checked
+            - generic [aria-hidden] [ref=e132]:
+              - generic [ref=e133]: Run history
+              - list [ref=e139]:
+                - listitem [ref=e140]:
+                  - generic [ref=e142]: 09:12
+                  - generic [ref=e143]: NAV reconciliation
+                - listitem [ref=e144]:
+                  - generic [ref=e146]: 08:47
+                  - generic [ref=e147]: Risk limit checks
+                - listitem [ref=e148]:
+                  - generic [ref=e150]: 08:15
+                  - generic [ref=e151]: Daily briefing
+            - generic [ref=e152]:
+              - generic [ref=e153]:
+                - generic [ref=e158]: Payo AI
+                - generic [ref=e159]: /
+                - generic [ref=e160]: NAV Reconciliation
+                - generic [ref=e161]: Sample data
+                - generic [ref=e163]: Needs review
+              - generic [ref=e165]:
+                - paragraph [ref=e166]: NAV Reconciliation
+                - paragraph [ref=e167]: Valuation 29 September 2026 · Tolerance ±0.50%
+              - table [ref=e169]:
+                - rowgroup [ref=e170]:
+                  - row [ref=e171]:
+                    - columnheader "Fund" [ref=e172]
+                    - columnheader "Administrator NAV (HK$)" [ref=e173]:
+                      - text: Administrator NAV
+                      - generic [ref=e174]: (HK$)
+                    - columnheader "Internal NAV (HK$)" [ref=e175]:
+                      - text: Internal NAV
+                      - generic [ref=e176]: (HK$)
+                    - columnheader "Difference %" [ref=e177]
+                    - columnheader "Status" [ref=e178]
+                - rowgroup [ref=e179]:
+                  - row [ref=e180]:
+                    - cell "Ashbourne Global Equity" [ref=e181]
+                    - cell "48,215,600" [ref=e182]
+                    - cell "48,214,850" [ref=e183]
+                    - cell "0.00%" [ref=e184]
+                    - cell "Within tolerance" [ref=e185]
+                  - row [ref=e187]:
+                    - cell "Brookfield Income" [ref=e188]
+                    - cell "12,684,320" [ref=e189]
+                    - cell "12,684,320" [ref=e190]
+                    - cell "0.00%" [ref=e191]
+                    - cell "Matched" [ref=e192]
+                  - row [ref=e194]:
+                    - cell "Delmore Credit" [ref=e195]
+                    - cell "21,308,900" [ref=e196]
+                    - cell "21,318,400" [ref=e197]
+                    - cell "+0.04%" [ref=e198]
+                    - cell "Within tolerance" [ref=e199]
+                  - row [ref=e201]:
+                    - cell "Ferngate Diversified" [ref=e202]
+                    - cell "9,864,720" [ref=e203]
+                    - cell "9,998,300" [ref=e204]
+                    - cell "+1.35%" [ref=e205]
+                    - cell "Exception" [ref=e206]
+                  - row [ref=e208]:
+                    - cell "Harborpoint Property" [ref=e209]
+                    - cell "4,518,300" [ref=e210]
+                    - cell "4,438,250" [ref=e211]
+                    - cell "−1.77%" [ref=e212]
+                    - cell "Exception" [ref=e213]
+              - paragraph [ref=e216]: Difference by fund
+              - generic [ref=e223]:
+                - paragraph [ref=e224]: 2 exceptions routed for human review
+                - generic [ref=e227]:
+                  - generic [ref=e228]: Return for review
+                  - generic [ref=e229]: Approve summary
+          - paragraph [ref=e230]: Simulated preview. Sample data.
+      - generic [ref=e231]:
+        - paragraph [ref=e232]: Trusted concept for modern finance ops
+        - generic [ref=e234]:
+          - generic "BlackRock" [ref=e235]:
+            - img "BlackRock" [ref=e236]
+          - generic "Blackstone" [ref=e238]:
+            - img "Blackstone" [ref=e239]
+          - generic "Morgan Stanley" [ref=e241]:
+            - img "Morgan Stanley" [ref=e242]
+          - generic "HSBC" [ref=e244]:
+            - img "HSBC" [ref=e245]:
+              - img [aria-hidden] [ref=e248]:
+                - generic [ref=e249]: HSBC
+    - generic [ref=e251]:
+      - generic [ref=e252]:
+        - paragraph [ref=e253]: Why this exists
+        - heading "Bridging the AI ROI gap in financial operations." [level=2] [ref=e255]
+        - paragraph [ref=e256]: Finance ops cannot risk black-box outputs. Every prompt generates a fully inspectable node graph. Every calculation retains its underlying line-item lineage.
+      - generic [ref=e257]:
+        - generic [ref=e258]:
+          - paragraph [ref=e259]: 71%
+          - paragraph [ref=e262]: of financial institutions struggle to prove value from black-box AI tools due to lack of auditability.
+          - generic [ref=e263]:
+            - 'img "Area chart: AI-related investment by global financial institutions, USD 78bn in 2025 rising to a forecast USD 132bn by 2030." [ref=e264]':
+              - generic [ref=e265]: +$54B Growth
+              - generic [ref=e267]:
+                - generic [ref=e272]: 2025 · $78B
+                - generic [ref=e274]: 2030 · $132B
+            - paragraph [ref=e275]: AI-related investment by global financial institutions (2025 → 2030).
+          - paragraph [ref=e276]:
+            - text: "Source:"
+            - link "Quinlan & Associates (July 2026)" [ref=e277] [cursor=pointer]:
+              - /url: https://www.quinlanandassociates.com/wp-content/uploads/2026/07/Quinlan-Associates-From-Pie-in-the-Sky-to-ROI.pdf
+        - list [ref=e281]:
+          - listitem [ref=e282]:
+            - generic [ref=e283]:
+              - generic [ref=e284]: "01"
+              - heading "Visual & Traceable Graph Logic" [level=3] [ref=e285]
+              - generic [ref=e286]: 100% Visible Pipelines
+            - paragraph [ref=e287]: Watch your data flow from raw input feeds to final reports. Every transformation step displays its source, formula, and pass/fail criteria in real time.
+          - listitem [ref=e288]:
+            - generic [ref=e289]:
+              - generic [ref=e290]: "02"
+              - heading "Smart Exception Triage" [level=3] [ref=e291]
+              - generic [ref=e292]: Zero Manual Spreadsheets
+            - paragraph [ref=e293]: Clean data passes automatically. Material differences or limit breaches are instantly flagged and routed directly to designated reviewers with full context attached.
+          - listitem [ref=e294]:
+            - generic [ref=e295]:
+              - generic [ref=e296]: "03"
+              - heading "Human-in-the-Loop Governance" [level=3] [ref=e297]
+              - generic [ref=e298]: Enterprise Compliance
+            - paragraph [ref=e299]: Payo pauses at critical decision nodes until an authorized team member approves the summary. Every decision is logged, exportable, and audit-ready.
+    - generic [ref=e301]:
+      - generic [ref=e302]:
+        - paragraph [ref=e303]: The Payo pipeline
+        - heading "From plain text to production-grade workflow." [level=2] [ref=e305]
+      - generic [ref=e312]:
+        - generic [ref=e313]:
+          - generic [ref=e315]:
+            - generic [ref=e316]:
+              - paragraph [ref=e317]: Describe the workflow
+              - paragraph [ref=e318]: Compare custodian NAV against internal valuations and flag variances over 0.5%
+            - generic [ref=e320]:
+              - paragraph [ref=e321]: Or choose a template
+              - generic [ref=e322]:
+                - generic [ref=e323]: Reconcile NAV
+                - generic [ref=e324]: Check limits
+                - generic [ref=e325]: Draft briefing
+            - generic [ref=e326]: Generate the graph
+          - generic [ref=e331]:
+            - generic [ref=e332]: "01"
+            - generic [ref=e333]:
+              - heading "Prompt in plain text or choose a template." [level=3] [ref=e334]
+              - paragraph [ref=e335]: Type your business logic naturally ("Compare custodian NAV against internal valuations and flag variances over 0.5%") or start from a pre-configured template.
+        - generic [ref=e336]:
+          - generic [ref=e338]:
+            - paragraph [ref=e339]: Generated pipeline
+            - generic [ref=e342]:
+              - generic [ref=e343]:
+                - generic [ref=e344]: "1"
+                - generic [ref=e345]: Load valuations
+              - generic [ref=e346]:
+                - generic [ref=e347]: "2"
+                - generic [ref=e348]: Map fields
+              - generic [ref=e349]:
+                - generic [ref=e350]: "3"
+                - generic [ref=e351]: Calculate variance
+              - generic [ref=e352]:
+                - generic [ref=e353]: "4"
+                - generic [ref=e354]: Check tolerance
+              - generic [ref=e355]:
+                - generic [ref=e356]: "5"
+                - generic [ref=e357]: Review & report
+          - generic [ref=e358]:
+            - generic [ref=e359]: "02"
+            - generic [ref=e360]:
+              - heading "Instant visual pipeline generation." [level=3] [ref=e361]
+              - paragraph [ref=e362]: Payo translates your request into a clean, node-based visual workflow graph. See every input feed, formula step, and logic gate laid out visually.
+        - generic [ref=e363]:
+          - generic [ref=e365]:
+            - generic [ref=e366]:
+              - generic [ref=e372]: 85%
+              - generic [ref=e373]:
+                - paragraph [ref=e374]: Exposure vs limit · 80% cap
+                - generic [ref=e378]: Single name
+                - generic [ref=e382]: Sector
+            - generic [ref=e386]: Limit exceeded
+          - generic [ref=e390]:
+            - generic [ref=e391]: "03"
+            - generic [ref=e392]:
+              - heading "Inspect data sources and rules line by line." [level=3] [ref=e393]
+              - paragraph [ref=e394]: Click into any node to verify calculations, inspect field mappings, and test edge-case tolerance thresholds using sample sandboxed data.
+        - generic [ref=e395]:
+          - generic [ref=e397]:
+            - generic [ref=e402]:
+              - paragraph [ref=e403]: Morning briefing — draft
+              - generic [ref=e404]: auto-filed
+            - generic [ref=e408]:
+              - generic [ref=e409]: Approved by editor
+              - generic [ref=e412]: Export briefing
+          - generic [ref=e419]:
+            - generic [ref=e420]: "04"
+            - generic [ref=e421]:
+              - heading "Human-in-the-loop review and one-click deploy." [level=3] [ref=e422]
+              - paragraph [ref=e423]: Set mandatory approval gates for exceptions. Once tested, publish your workflow with a complete, tamper-proof audit trail.
+      - paragraph [ref=e424]:
+        - generic [ref=e425]: Simulated graphics · sample data. Nothing here is live.
+        - link "See the workflows" [ref=e426] [cursor=pointer]:
+          - /url: "#/workspace/templates"
+    - generic [ref=e431]:
+      - paragraph [ref=e432]: Built for your entire finance team
+      - heading "One visual language. Three core personas." [level=2] [ref=e434]
+      - generic [ref=e435]:
+        - tablist "Choose a role" [ref=e436]:
+          - tab "Investment & risk analyst" [selected] [ref=e437]
+          - tab "Finance operations" [ref=e438]
+          - tab "SME & corporate finance" [ref=e439]
+        - tabpanel "Investment & risk analyst" [ref=e440]:
+          - generic [ref=e441]:
+            - generic [ref=e442]:
+              - generic [ref=e443]:
+                - generic [aria-hidden] [ref=e444]: SC
+                - generic [ref=e445]:
+                  - paragraph [ref=e446]: Sarah Chen
+                  - paragraph [ref=e447]: Senior Risk Analyst · Horizon Asset Management
+              - blockquote [ref=e448]: “By the time I manual-paste exposures across three spreadsheets, the market context has changed.”
+              - generic [ref=e449]:
+                - generic [ref=e450]:
+                  - paragraph [ref=e451]: Friction
+                  - paragraph [ref=e452]: Assembling positions, concentration caps, and historical notes across fragmented workbooks.
+                - generic [ref=e453]:
+                  - paragraph [ref=e454]: What Payo delivers
+                  - paragraph [ref=e455]: An auto-generated visual graph that pulls holdings, calculates limits, and flags breaches instantly.
+              - paragraph [ref=e456]: "Efficiency gain: Cuts prep time from 3 hours to 4 minutes"
+              - link "Open the position risk review" [ref=e459] [cursor=pointer]:
+                - /url: "#/workspace/workflows/position-risk"
+              - paragraph [ref=e462]: Simulated persona, for illustration.
+            - generic [ref=e464]:
+              - generic [ref=e465]:
+                - generic [ref=e466]: Position risk review (sample)
+                - generic [ref=e467]: Sample data
+              - generic [ref=e469]:
+                - generic [aria-hidden] [ref=e470]:
+                  - generic [ref=e471]:
+                    - generic [ref=e472]: Ashbourne Global Equity
+                    - generic [ref=e476]: 100%
+                  - generic [ref=e477]:
+                    - generic [ref=e478]: US Treasury 10Y
+                    - generic [ref=e482]: 68%
+                  - generic [ref=e483]:
+                    - generic [ref=e484]: Delmore Credit Fund
+                    - generic [ref=e488]: 100%
+                  - generic [ref=e489]:
+                    - generic [ref=e490]: Brookfield Income Fund
+                    - generic [ref=e494]: 61%
+                  - generic [ref=e495]:
+                    - generic [ref=e496]: Calverton Emerging Markets
+                    - generic [ref=e500]: 71%
+                - table [ref=e501]:
+                  - rowgroup [ref=e502]:
+                    - row [ref=e503]:
+                      - columnheader "Position" [ref=e504]
+                      - columnheader "Weight" [ref=e505]
+                      - columnheader "Limit" [ref=e506]
+                      - columnheader "Status" [ref=e507]
+                  - rowgroup [ref=e508]:
+                    - row [ref=e509]:
+                      - cell "Ashbourne Global Equity" [ref=e510]
+                      - cell "20.1%" [ref=e511]
+                      - cell "18%" [ref=e512]
+                      - cell "Over limit" [ref=e513]
+                    - row [ref=e515]:
+                      - cell "US Treasury 10Y" [ref=e516]
+                      - cell "17.1%" [ref=e517]
+                      - cell "25%" [ref=e518]
+                      - cell "Within limit" [ref=e519]
+                    - row [ref=e521]:
+                      - cell "Delmore Credit Fund" [ref=e522]
+                      - cell "14.5%" [ref=e523]
+                      - cell "12%" [ref=e524]
+                      - cell "Over limit" [ref=e525]
+                    - row [ref=e527]:
+                      - cell "Brookfield Income Fund" [ref=e528]
+                      - cell "9.1%" [ref=e529]
+                      - cell "15%" [ref=e530]
+                      - cell "Within limit" [ref=e531]
+                    - row [ref=e533]:
+                      - cell "Calverton Emerging Markets" [ref=e534]
+                      - cell "8.5%" [ref=e535]
+                      - cell "12%" [ref=e536]
+                      - cell "Within limit" [ref=e537]
+                - paragraph [ref=e539]: "Review threshold 90% of limit · source: sample positions file"
+    - generic [ref=e541]:
+      - paragraph [ref=e542]: Planned connections
+      - heading "The sources behind every step." [level=2] [ref=e544]
+      - paragraph [ref=e545]: Payo is designed to read the files and feeds finance teams already use. Everything below is a planned connection for future releases. Nothing here is connected in this prototype.
+      - generic [aria-hidden] [ref=e546]:
+        - generic [ref=e547]: Load data
+        - generic [ref=e552]: Map fields
+        - generic [ref=e559]: Calculate
+        - generic [ref=e565]: Check limit
+        - generic [ref=e573]: Review
+        - generic [ref=e581]: Report
+      - generic [ref=e591]:
+        - button "U Planned Custodian & fund administration Daily NAV and valuation files from custodian portals" [pressed] [ref=e592]:
+          - generic [ref=e593]:
+            - generic [ref=e594]: U
+            - generic [ref=e600]: Planned
+          - paragraph [ref=e602]: Custodian & fund administration
+          - paragraph [ref=e603]: Daily NAV and valuation files from custodian portals
+        - button "Planned Portfolio & market data Positions, IBOR and market levels for checks" [ref=e604]:
+          - generic [ref=e605]: Planned
+          - paragraph [ref=e612]: Portfolio & market data
+          - paragraph [ref=e613]: Positions, IBOR and market levels for checks
+        - button "Q Planned Accounting & ERP Ledger, bank and close data for finance operations" [ref=e614]:
+          - generic [ref=e615]:
+            - generic [ref=e616]: Q
+            - generic [ref=e621]: Planned
+          - paragraph [ref=e623]: Accounting & ERP
+          - paragraph [ref=e624]: Ledger, bank and close data for finance operations
+        - button "Planned Microsoft 365 Excel workbooks, mail attachments and shared drives" [ref=e625]:
+          - generic [ref=e626]: Planned
+          - paragraph [ref=e634]: Microsoft 365
+          - paragraph [ref=e635]: Excel workbooks, mail attachments and shared drives
+        - button "Planned Google Workspace Sheets, Docs, Drive and Calendar inputs" [ref=e636]:
+          - generic [ref=e637]: Planned
+          - paragraph [ref=e645]: Google Workspace
+          - paragraph [ref=e646]: Sheets, Docs, Drive and Calendar inputs
+        - button "Planned Meeting intelligence Notes and transcripts for the draft step" [ref=e647]:
+          - generic [ref=e648]: Planned
+          - paragraph [ref=e655]: Meeting intelligence
+          - paragraph [ref=e656]: Notes and transcripts for the draft step
+        - button "Planned Knowledge & procedures Runbooks, policies and process notes" [ref=e657]:
+          - generic [ref=e658]: Planned
+          - paragraph [ref=e664]: Knowledge & procedures
+          - paragraph [ref=e665]: Runbooks, policies and process notes
+        - button "Planned Alerts & comms Review requests and report delivery" [ref=e666]:
+          - generic [ref=e667]: Planned
+          - paragraph [ref=e674]: Alerts & comms
+          - paragraph [ref=e675]: Review requests and report delivery
+      - generic [ref=e676]:
+        - generic [ref=e677]:
+          - generic [ref=e678]:
+            - heading "Custodian & fund administration" [level=3] [ref=e679]
+            - generic [ref=e680]: Planned, not connected
+          - paragraph [ref=e681]: Would pull administrator valuations and holdings files into the load and map steps, so reconciliations start from the file your administrator already issues.
+          - paragraph [ref=e682]: "Illustrative method: Session-based portal access. No external service is called in this prototype."
+        - generic [ref=e683]:
+          - generic [ref=e684]:
+            - paragraph [ref=e685]: Sources
+            - list [ref=e686]:
+              - listitem [ref=e687]: HSBC
+              - listitem [ref=e689]:
+                - generic [ref=e690]: U
+                - text: UBS
+              - listitem [ref=e692]: Julius Baer
+              - listitem [ref=e694]: LGT
+          - generic [ref=e696]:
+            - paragraph [ref=e697]: Would feed
+            - list [ref=e698]:
+              - listitem [ref=e699]: Load data
+              - listitem [ref=e703]: Map fields
+      - generic [ref=e707]:
+        - generic [ref=e708]:
+          - generic [ref=e709]: Available now
+          - generic [ref=e710]:
+            - text: Sample administrator NAV
+            - generic [ref=e714]: · 29 Sep 2026 · 8 funds
+          - generic [ref=e715]:
+            - text: Sample internal valuation
+            - generic [ref=e719]: · 29 Sep 2026 · 8 funds
+          - generic [ref=e720]:
+            - text: Sample positions file
+            - generic [ref=e724]: · 29 Sep 2026 · 10 positions
+          - generic [ref=e725]:
+            - text: Sample market snapshot
+            - generic [ref=e729]: · 30 Sep 2026 · 07:45
+        - paragraph [ref=e730]: No live connections are configured. This prototype uses sample inputs.
+    - generic [ref=e732]:
+      - generic [ref=e733]:
+        - generic [ref=e734]:
+          - paragraph [ref=e735]: Interactive sandbox
+          - heading "Watch a promoted workflow execute step-by-step." [level=2] [ref=e737]
+          - paragraph [ref=e738]: "Select a workflow below to test the pipeline: watch inputs process, inspect exception pauses, and approve the output."
+        - generic [ref=e739]: Simulated preview · Sample data
+      - generic [ref=e741]:
+        - tablist [ref=e743]:
+          - tab "Reconcile NAV data" [selected] [ref=e744]
+          - tab "Review position risk" [ref=e745]
+          - tab "Draft market briefing" [ref=e746]
+        - generic [ref=e747]:
+          - generic [ref=e748]:
+            - generic [ref=e749]:
+              - paragraph [ref=e750]: NAV reconciliation
+              - paragraph [ref=e751]: Compare administrator and internal valuations, flag tolerance breaches, and prepare the summary for a reviewer.
+            - generic [ref=e752]:
+              - generic [ref=e753]: Sample data
+              - button "Run again" [ref=e755]
+          - generic [ref=e756]:
+            - paragraph [ref=e757]: This runs the selected workflow on labelled sample data.
+            - button "Run on sample data" [ref=e758]
+          - generic [ref=e759]:
+            - paragraph [ref=e760]: Status
+            - generic [ref=e761]:
+              - generic [ref=e762]: Draft
+              - generic [aria-hidden] [ref=e763]: →
+              - generic [ref=e764]: Tested
+              - generic [aria-hidden] [ref=e765]: →
+              - generic [ref=e766]: Ready to publish
+            - paragraph [ref=e767]: Runs on sample data before anything is marked ready.
+          - paragraph [ref=e768]: Demo ready. Press run to start the sample workflow.
+      - generic [ref=e769]:
+        - paragraph [ref=e770]: 1. Start from a template. Input, calculation, check, review and output arrive as an ordered workflow.
+        - paragraph [ref=e771]: 2. Watch every step. The timeline moves from queued to complete, with the key setting shown beside it.
+        - paragraph [ref=e772]: 3. Test, then publish. A sample test shows the outcome before a workflow is marked ready.
+    - generic [ref=e774]:
+      - generic [ref=e775]:
+        - generic [ref=e776]:
+          - paragraph [ref=e777]: Pre-built flows
+          - heading "Start from a battle-tested template." [level=2] [ref=e779]
+        - link "View all templates" [ref=e780] [cursor=pointer]:
+          - /url: "#/workspace/templates"
+      - generic [ref=e783]:
+        - generic [ref=e785]:
+          - paragraph [ref=e786]: Operations
+          - generic [ref=e788]:
+            - generic [ref=e789]:
+              - generic [ref=e790]:
+                - generic [ref=e791]: Fund
+                - generic [ref=e792]: Diff
+                - generic [ref=e793]: Status
+              - generic [ref=e794]:
+                - generic [ref=e795]: Ashbourne Equity
+                - generic [ref=e796]: 0.00%
+                - generic [ref=e797]: Matched
+              - generic [ref=e801]:
+                - generic [ref=e802]: Harborpoint
+                - generic [ref=e803]: −1.77%
+                - generic [ref=e804]: Exception
+            - generic [ref=e806]: 2 exceptions routed to human review
+          - heading "NAV & valuation reconciliation" [level=3] [ref=e809]
+          - paragraph [ref=e810]: Automatically load custodian CSVs, map internal ledger accounts, flag discrepancies outside custom tolerance %, and generate review summaries.
+          - generic [ref=e811]:
+            - paragraph [ref=e812]: "Key sources:"
+            - generic [ref=e813]:
+              - generic [ref=e814]: Admin_NAV.csv
+              - generic [ref=e819]: Internal_Val.xlsx
+          - generic [ref=e824]:
+            - generic [ref=e825]: Sample data
+            - link "Customize template" [ref=e827] [cursor=pointer]:
+              - /url: "#/workspace/workflows/nav-reconciliation"
+        - generic [ref=e831]:
+          - paragraph [ref=e832]: Risk & Compliance
+          - generic [ref=e834]:
+            - generic [ref=e835]:
+              - generic [ref=e840]: 85%
+              - generic [ref=e841]:
+                - paragraph [ref=e843]: Concentration threshold
+                - paragraph [ref=e847]: "Max Position: $12.4M / $10.0M Limit"
+            - generic [ref=e848]: Concentration limit breach
+          - heading "Position exposure & concentration monitor" [level=3] [ref=e852]
+          - paragraph [ref=e853]: Monitor portfolio holdings against hard risk caps. Instantly isolate single-name or sector breaches before trading closes.
+          - generic [ref=e854]:
+            - paragraph [ref=e855]: "Key sources:"
+            - generic [ref=e856]:
+              - generic [ref=e857]: Positions_Feed
+              - generic [ref=e861]: Limit_Policy.pdf
+          - generic [ref=e866]:
+            - generic [ref=e867]: Sample data
+            - link "Customize template" [ref=e869] [cursor=pointer]:
+              - /url: "#/workspace/workflows/position-risk"
+        - generic [ref=e873]:
+          - paragraph [ref=e874]: Research & Reporting
+          - generic [ref=e876]:
+            - generic [ref=e882]:
+              - paragraph [ref=e883]: Morning briefing — ready
+              - generic [ref=e884]: 06:45
+            - generic [ref=e889]: Briefing approved by editor
+          - heading "Automated daily market briefing" [level=3] [ref=e893]
+          - paragraph [ref=e894]: Aggregate overnight market trends against portfolio holdings, generate a structured narrative, and route to senior editors.
+          - generic [ref=e895]:
+            - paragraph [ref=e896]: "Key sources:"
+            - generic [ref=e897]:
+              - generic [ref=e898]: Market_Snapshot
+              - generic [ref=e903]: Holdings_Context
+          - generic [ref=e908]:
+            - generic [ref=e909]: Sample data
+            - link "Customize template" [ref=e911] [cursor=pointer]:
+              - /url: "#/workspace/workflows/market-movements"
+    - generic [ref=e915]:
+      - paragraph [ref=e916]: Enterprise control & governance
+      - heading "Designed for regulated standards. Built for zero risk." [level=2] [ref=e918]
+      - generic [ref=e919]:
+        - generic [ref=e920]:
+          - heading "Step-by-step node visibility" [level=3] [ref=e924]
+          - paragraph [ref=e925]: Every data transformation is visually rendered before execution. What you see in the graph is exactly what runs.
+        - generic [ref=e926]:
+          - heading "Mandatory approval gates" [level=3] [ref=e930]
+          - paragraph [ref=e931]: Configure strict criteria where execution must pause for a human sign-off. No automated actions occur silently.
+        - generic [ref=e932]:
+          - heading "Complete lineage & source tracking" [level=3] [ref=e936]
+          - paragraph [ref=e937]: Every output cell references its exact source file, timestamp, and mathematical formula for painless internal audit reviews.
+      - generic [ref=e938]:
+        - heading "About licensed firms" [level=3] [ref=e939]
+        - paragraph [ref=e940]: Some Hong Kong financial firms need a licence from the Securities and Futures Commission (SFC) to carry out particular regulated activities. For example, Type 9 covers asset management. Payo is designed for the operational work used by finance teams, including teams at licensed firms. Payo is not an SFC-licensed firm and this prototype does not provide compliance determinations.
+        - link "How SFC licensing works" [ref=e941] [cursor=pointer]:
+          - /url: https://www.sfc.hk/en/Regulatory-functions/Intermediaries/Licensing/Do-you-need-a-licence-or-registration
+        - paragraph [ref=e946]: General information only. This prototype is a design demonstration and does not provide legal or regulatory advice.
+    - generic [ref=e948]:
+      - generic [ref=e949]:
+        - paragraph [ref=e950]: Early access
+        - heading "Stop wrestling spreadsheets. Start describing workflows." [level=2] [ref=e952]: Stop wrestling spreadsheets.Start describing workflows.
+        - paragraph [ref=e953]: Join the early access program to turn your team's manual financial runbooks into visual, automated, and auditable pipelines.
+        - list [ref=e954]:
+          - listitem [ref=e955]: Early access before general release
+          - listitem [ref=e958]: Occasional launch updates, nothing else
+          - listitem [ref=e961]: The demo workspace stays open to explore in the meantime
+      - generic [ref=e965]:
+        - generic [ref=e966]:
+          - generic [ref=e967]: Email address
+          - textbox "Email address" [ref=e968]:
+            - /placeholder: Enter your enterprise email address
+        - group "I am joining as (optional)" [ref=e969]:
+          - group "I am joining as" [ref=e971]:
+            - button "Investment & risk" [ref=e972]
+            - button "Fund operations" [ref=e973]
+            - button "Corporate finance" [ref=e974]
+        - generic [ref=e975]:
+          - checkbox "I agree to the Privacy Policy and to receiving launch updates." [ref=e976]
+          - generic [ref=e977]:
+            - text: I agree to the
+            - link "Privacy Policy" [ref=e978] [cursor=pointer]:
+              - /url: /privacy
+            - text: and to receiving launch updates.
+        - generic [ref=e979]:
+          - button "Get early access" [ref=e980]
+          - paragraph [ref=e981]: Free during early access sandbox. Zero spam. Exportable audit trails included.
+        - paragraph [ref=e982]
+    - contentinfo [ref=e983]:
+      - generic [ref=e985]:
+        - generic [ref=e986]:
+          - generic [ref=e987]: Payo AI
+          - paragraph [ref=e1000]: V0 product prototype. Workflows, data, connections, approvals and outputs are simulated. Not investment advice or an official report.
+        - generic [ref=e1001]:
+          - link "Enter the workspace" [ref=e1002] [cursor=pointer]:
+            - /url: "#/workspace/templates"
+          - button "About this demo" [ref=e1003]
+          - generic [ref=e1004]: © 2026 Payo AI
+  - generic [ref=e1005]:
+    - generic [ref=e1006]: Hi, I'm Payoo, your assistant
+    - button "Payoo chat (coming soon)" [ref=e1007]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e1024] [cursor=pointer]

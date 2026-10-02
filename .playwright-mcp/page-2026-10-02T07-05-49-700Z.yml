@@ -1,0 +1,86 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - complementary [ref=f7e3]:
+      - 'link "Payo AI: back to landing page" [ref=f7e4] [cursor=pointer]':
+        - /url: "#/"
+        - generic [ref=f7e16]: Payo AI
+      - navigation "Workspace" [ref=f7e17]:
+        - paragraph [ref=f7e18]: Workspace
+        - link "Overview" [ref=f7e19] [cursor=pointer]:
+          - /url: "#/workspace/overview"
+        - link "Workflows" [ref=f7e24] [cursor=pointer]:
+          - /url: "#/workspace/workflows"
+        - link "Templates" [ref=f7e30] [cursor=pointer]:
+          - /url: "#/workspace/templates"
+        - link "Runs 1" [ref=f7e36] [cursor=pointer]:
+          - /url: "#/workspace/runs"
+          - text: Runs
+          - generic [ref=f7e42]: "1"
+      - generic [ref=f7e43]:
+        - button "About this demo" [ref=f7e44]
+        - paragraph [ref=f7e47]: V0 prototype · Simulated data
+    - generic [ref=f7e48]:
+      - banner [ref=f7e49]:
+        - navigation "Breadcrumb" [ref=f7e50]:
+          - generic [ref=f7e51]: Workspace
+          - generic [aria-hidden] [ref=f7e52]: /
+          - generic [ref=f7e53]: Runs
+        - generic [ref=f7e54]:
+          - 'button "About this demo: sample data is simulated" [ref=f7e55]': Sample data
+          - button "About this demo" [ref=f7e57]
+      - main [ref=f7e58]:
+        - generic [ref=f7e437]:
+          - generic [ref=f7e438]:
+            - heading "Runs" [level=1] [ref=f7e439]
+            - paragraph [ref=f7e440]: Every run of a workflow, with its steps, sample sources and findings. Runs are simulated and use labelled sample data.
+          - group "Filter runs" [ref=f7e441]:
+            - button "All runs" [pressed] [ref=f7e442]
+            - button "Needs review 1" [ref=f7e443]:
+              - text: Needs review
+              - generic [ref=f7e444]: "1"
+          - generic [ref=f7e445]:
+            - generic [ref=f7e446]:
+              - generic [ref=f7e447]: Run
+              - generic [ref=f7e448]: Workflow
+              - generic [ref=f7e449]: Started
+              - generic [ref=f7e450]: Status
+              - generic [ref=f7e451]: Summary
+            - link "PR-0032 NAV reconciliation 29 Sept 2026, 23:20 Draft Configured, not yet run" [ref=f7e453] [cursor=pointer]:
+              - /url: "#/workspace/runs/run-32"
+              - generic [ref=f7e454]: PR-0032
+              - generic [ref=f7e455]: NAV reconciliation
+              - generic [ref=f7e456]: 29 Sept 2026, 23:20
+              - generic [ref=f7e457]: Draft
+              - generic [ref=f7e459]: Configured, not yet run
+            - 'link "PR-0031 NAV reconciliation 29 Sept 2026, 21:02 Completed Completed: 2 exceptions reviewed" [ref=f7e462] [cursor=pointer]':
+              - /url: "#/workspace/runs/run-31"
+              - generic [ref=f7e463]: PR-0031
+              - generic [ref=f7e464]: NAV reconciliation
+              - generic [ref=f7e465]: 29 Sept 2026, 21:02
+              - generic [ref=f7e466]: Completed
+              - generic [ref=f7e468]: "Completed: 2 exceptions reviewed"
+            - link "PR-0030 Position risk review 29 Sept 2026, 16:10 Needs review Returned for review, awaiting analyst decision" [ref=f7e471] [cursor=pointer]:
+              - /url: "#/workspace/runs/run-30"
+              - generic [ref=f7e472]: PR-0030
+              - generic [ref=f7e473]: Position risk review
+              - generic [ref=f7e474]: 29 Sept 2026, 16:10
+              - generic [ref=f7e475]: Needs review
+              - generic [ref=f7e477]: Returned for review, awaiting analyst decision
+            - 'link "PR-0029 Daily market movements 29 Sept 2026, 14:35 Completed Completed: briefing approved and exported" [ref=f7e480] [cursor=pointer]':
+              - /url: "#/workspace/runs/run-29"
+              - generic [ref=f7e481]: PR-0029
+              - generic [ref=f7e482]: Daily market movements
+              - generic [ref=f7e483]: 29 Sept 2026, 14:35
+              - generic [ref=f7e484]: Completed
+              - generic [ref=f7e486]: "Completed: briefing approved and exported"
+            - 'link "PR-0028 NAV reconciliation 26 Sept 2026, 21:05 Completed No exceptions: all funds within tolerance" [ref=f7e489] [cursor=pointer]':
+              - /url: "#/workspace/runs/run-28"
+              - generic [ref=f7e490]: PR-0028
+              - generic [ref=f7e491]: NAV reconciliation
+              - generic [ref=f7e492]: 26 Sept 2026, 21:05
+              - generic [ref=f7e493]: Completed
+              - generic [ref=f7e495]: "No exceptions: all funds within tolerance"
+          - paragraph [ref=f7e498]: Step durations shown in run details are simulated for demonstration.
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f7e432] [cursor=pointer]
+  - alert [ref=f7e436]: Payo AI | Finance workflows, made clear.

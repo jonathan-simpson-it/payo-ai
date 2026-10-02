@@ -1,0 +1,377 @@
+- generic [active] [ref=f6e1]:
+  - generic [ref=f6e2]:
+    - complementary [ref=f6e3]:
+      - 'link "Payo AI: back to landing page" [ref=f6e4] [cursor=pointer]':
+        - /url: "#/"
+        - generic [ref=f6e16]: Payo AI
+      - navigation "Workspace" [ref=f6e17]:
+        - paragraph [ref=f6e18]: Workspace
+        - link "Overview" [ref=f6e19] [cursor=pointer]:
+          - /url: "#/workspace/overview"
+        - link "Workflows" [ref=f6e24] [cursor=pointer]:
+          - /url: "#/workspace/workflows"
+        - link "Templates" [ref=f6e30] [cursor=pointer]:
+          - /url: "#/workspace/templates"
+        - link "Runs 1" [ref=f6e36] [cursor=pointer]:
+          - /url: "#/workspace/runs"
+          - text: Runs
+          - generic [ref=f6e42]: "1"
+      - generic [ref=f6e43]:
+        - button "About this demo" [ref=f6e44]
+        - paragraph [ref=f6e47]: V0 prototype · Simulated data
+    - generic [ref=f6e48]:
+      - banner [ref=f6e49]:
+        - navigation "Breadcrumb" [ref=f6e50]:
+          - generic [ref=f6e51]: Workspace
+          - generic [aria-hidden] [ref=f6e52]: /
+          - generic [ref=f6e53]: Templates
+        - generic [ref=f6e54]:
+          - 'button "About this demo: sample data is simulated" [ref=f6e55]': Sample data
+          - button "About this demo" [ref=f6e57]
+      - main [ref=f6e58]:
+        - generic [ref=f6e59]:
+          - generic [ref=f6e60]:
+            - heading "Template library" [level=1] [ref=f6e61]
+            - paragraph [ref=f6e62]: Curated finance workflows, ready to adjust and run. Each template opens as an editable workflow and runs on labelled sample data. Hover a step in a card to see its settings.
+          - generic [ref=f6e63]:
+            - generic [ref=f6e64]:
+              - generic [ref=f6e65]:
+                - searchbox "Search finance templates" [ref=f6e66]
+                - generic: ⌘K
+              - generic [ref=f6e67]:
+                - combobox "Sort templates" [ref=f6e68]:
+                  - generic [ref=f6e69]: "Sort by:"
+                  - generic: Popularity
+                - group "Library view" [ref=f6e70]:
+                  - button "Grid view" [pressed] [ref=f6e71]
+                  - button "Pipeline view" [ref=f6e77]
+            - group "Filter by category" [ref=f6e82]:
+              - button "All Templates 7" [pressed] [ref=f6e83]:
+                - text: All Templates
+                - generic [ref=f6e84]: "7"
+              - button "Operations 2" [ref=f6e85]:
+                - text: Operations
+                - generic [ref=f6e86]: "2"
+              - button "Risk & Compliance 1" [ref=f6e87]:
+                - text: Risk & Compliance
+                - generic [ref=f6e88]: "1"
+              - button "Research & Reporting 2" [ref=f6e89]:
+                - text: Research & Reporting
+                - generic [ref=f6e90]: "2"
+              - button "Finance 2" [ref=f6e91]:
+                - text: Finance
+                - generic [ref=f6e92]: "2"
+          - region [ref=f6e93]:
+            - generic [ref=f6e94]:
+              - heading "Available now" [level=2] [ref=f6e95]
+              - generic [ref=f6e96]: 3 templates
+            - generic [ref=f6e97]:
+              - article [ref=f6e98]:
+                - generic [ref=f6e99]:
+                  - paragraph [ref=f6e100]: Operations
+                  - generic [ref=f6e101]:
+                    - generic [ref=f6e102]: Human-in-the-loop
+                    - generic [ref=f6e107]: ~2 min run time
+                - heading "NAV reconciliation" [level=3] [ref=f6e110]
+                - paragraph [ref=f6e111]: Compare administrator NAV with internal NAV and route material differences for review.
+                - list "Workflow steps" [ref=f6e112]:
+                  - listitem [ref=f6e113]:
+                    - generic [ref=f6e114]:
+                      - 'button "Load data: Load sample valuations. Shows step settings on hover." [ref=f6e115]'
+                      - tooltip "Load sample valuations ≈1.2s Brings in the administrator and internal valuations used for the comparison. Sample administrator NAV (29 Sep) Load data · Simulated settings":
+                        - generic:
+                          - generic: Load sample valuations
+                          - generic: ≈1.2s
+                        - paragraph: Brings in the administrator and internal valuations used for the comparison.
+                        - paragraph: Sample administrator NAV (29 Sep)
+                        - paragraph: Load data · Simulated settings
+                  - listitem [ref=f6e120]:
+                    - generic [ref=f6e121]:
+                      - 'button "Map fields: Map funds. Shows step settings on hover." [ref=f6e122]'
+                      - tooltip "Map funds ≈0.9s Matches administrator fund names to the internal fund list so both files can be compared. Matched on fund name · 8 of 8 funds Map fields · Simulated settings":
+                        - generic:
+                          - generic: Map funds
+                          - generic: ≈0.9s
+                        - paragraph: Matches administrator fund names to the internal fund list so both files can be compared.
+                        - paragraph: Matched on fund name · 8 of 8 funds
+                        - paragraph: Map fields · Simulated settings
+                  - listitem [ref=f6e127]:
+                    - generic [ref=f6e128]:
+                      - 'button "Calculate: Calculate variance. Shows step settings on hover." [ref=f6e129]'
+                      - tooltip "Calculate variance ≈1.1s Works out the difference between the two valuations for each fund. Difference % of administrator NAV Calculate · Simulated settings":
+                        - generic:
+                          - generic: Calculate variance
+                          - generic: ≈1.1s
+                        - paragraph: Works out the difference between the two valuations for each fund.
+                        - paragraph: Difference % of administrator NAV
+                        - paragraph: Calculate · Simulated settings
+                  - listitem [ref=f6e133]:
+                    - generic [ref=f6e134]:
+                      - 'button "Check limit: Flag tolerance breaches. Shows step settings on hover." [ref=f6e135]'
+                      - tooltip "Flag tolerance breaches ≈1.0s Marks each fund whose variance is larger than the tolerance you set. Tolerance ±0.50% Check limit · Simulated settings":
+                        - generic:
+                          - generic: Flag tolerance breaches
+                          - generic: ≈1.0s
+                        - paragraph: Marks each fund whose variance is larger than the tolerance you set.
+                        - paragraph: Tolerance ±0.50%
+                        - paragraph: Check limit · Simulated settings
+                  - listitem [ref=f6e139]:
+                    - generic [ref=f6e140]:
+                      - 'button "Request review: Review material variances. Shows step settings on hover." [ref=f6e141]'
+                      - tooltip "Review material variances ≈0.8s Stops the run so a person can review material variances before the summary is created. Pauses for Operations reviewer Request review · Simulated settings":
+                        - generic:
+                          - generic: Review material variances
+                          - generic: ≈0.8s
+                        - paragraph: Stops the run so a person can review material variances before the summary is created.
+                        - paragraph: Pauses for Operations reviewer
+                        - paragraph: Request review · Simulated settings
+                  - listitem [ref=f6e147]:
+                    - generic [ref=f6e148]:
+                      - 'button "Create report: Create reconciliation summary. Shows step settings on hover." [ref=f6e149]'
+                      - tooltip "Create reconciliation summary ≈1.4s Prepares the reconciliation summary from the checked results. NAV reconciliation (29 September 2026) Create report · Simulated settings":
+                        - generic:
+                          - generic: Create reconciliation summary
+                          - generic: ≈1.4s
+                        - paragraph: Prepares the reconciliation summary from the checked results.
+                        - paragraph: NAV reconciliation (29 September 2026)
+                        - paragraph: Create report · Simulated settings
+                - generic [ref=f6e156]:
+                  - generic [ref=f6e157]: 6 steps · Editable workflow
+                  - button "Use template" [ref=f6e158]
+              - article [ref=f6e159]:
+                - generic [ref=f6e160]:
+                  - paragraph [ref=f6e161]: Risk
+                  - generic [ref=f6e162]:
+                    - generic [ref=f6e163]: Human-in-the-loop
+                    - generic [ref=f6e168]: ~2 min run time
+                - heading "Position risk review" [level=3] [ref=f6e171]
+                - paragraph [ref=f6e172]: Identify positions that exceed an exposure or concentration threshold.
+                - list "Workflow steps" [ref=f6e174]:
+                  - listitem [ref=f6e175]:
+                    - generic [ref=f6e176]:
+                      - 'button "Load data: Load sample positions. Shows step settings on hover." [ref=f6e177]'
+                      - tooltip "Load sample positions ≈1.2s Brings in the position list used for the risk review. Sample positions (29 Sep) Load data · Simulated settings":
+                        - generic:
+                          - generic: Load sample positions
+                          - generic: ≈1.2s
+                        - paragraph: Brings in the position list used for the risk review.
+                        - paragraph: Sample positions (29 Sep)
+                        - paragraph: Load data · Simulated settings
+                  - listitem [ref=f6e182]:
+                    - generic [ref=f6e183]:
+                      - 'button "Calculate: Calculate exposure. Shows step settings on hover." [ref=f6e184]'
+                      - tooltip "Calculate exposure ≈1.1s Works out each position's weight of the portfolio total. Market value as % of portfolio Calculate · Simulated settings":
+                        - generic:
+                          - generic: Calculate exposure
+                          - generic: ≈1.1s
+                        - paragraph: Works out each position's weight of the portfolio total.
+                        - paragraph: Market value as % of portfolio
+                        - paragraph: Calculate · Simulated settings
+                  - listitem [ref=f6e188]:
+                    - generic [ref=f6e189]:
+                      - 'button "Check limit: Compare with limits. Shows step settings on hover." [ref=f6e190]'
+                      - tooltip "Compare with limits ≈1.0s Reads the applicable limit for each position from the limit policy. Single-position concentration Check limit · Simulated settings":
+                        - generic:
+                          - generic: Compare with limits
+                          - generic: ≈1.0s
+                        - paragraph: Reads the applicable limit for each position from the limit policy.
+                        - paragraph: Single-position concentration
+                        - paragraph: Check limit · Simulated settings
+                  - listitem [ref=f6e194]:
+                    - generic [ref=f6e195]:
+                      - 'button "Check limit: Flag breaches. Shows step settings on hover." [ref=f6e196]'
+                      - tooltip "Flag breaches ≈1.0s Lists positions that are over their limit, or close enough to warrant a look. Review threshold 90% of limit Check limit · Simulated settings":
+                        - generic:
+                          - generic: Flag breaches
+                          - generic: ≈1.0s
+                        - paragraph: Lists positions that are over their limit, or close enough to warrant a look.
+                        - paragraph: Review threshold 90% of limit
+                        - paragraph: Check limit · Simulated settings
+                  - listitem [ref=f6e200]:
+                    - generic [ref=f6e201]:
+                      - 'button "Request review: Analyst review. Shows step settings on hover." [ref=f6e202]'
+                      - tooltip "Analyst review ≈0.8s Stops the run so a risk analyst can review flagged positions before the summary is published. Pauses for Risk analyst Request review · Simulated settings":
+                        - generic:
+                          - generic: Analyst review
+                          - generic: ≈0.8s
+                        - paragraph: Stops the run so a risk analyst can review flagged positions before the summary is published.
+                        - paragraph: Pauses for Risk analyst
+                        - paragraph: Request review · Simulated settings
+                  - listitem [ref=f6e208]:
+                    - generic [ref=f6e209]:
+                      - 'button "Create report: Publish risk summary. Shows step settings on hover." [ref=f6e210]'
+                      - tooltip "Publish risk summary ≈1.4s Prepares the risk summary from the checked results. Position risk summary (29 September 2026) Create report · Simulated settings":
+                        - generic:
+                          - generic: Publish risk summary
+                          - generic: ≈1.4s
+                        - paragraph: Prepares the risk summary from the checked results.
+                        - paragraph: Position risk summary (29 September 2026)
+                        - paragraph: Create report · Simulated settings
+                - generic [ref=f6e217]:
+                  - generic [ref=f6e218]: 6 steps · Editable workflow
+                  - button "Use template" [ref=f6e219]
+              - article [ref=f6e220]:
+                - generic [ref=f6e221]:
+                  - paragraph [ref=f6e222]: Research
+                  - generic [ref=f6e223]:
+                    - generic [ref=f6e224]: Human-in-the-loop
+                    - generic [ref=f6e229]: ~2 min run time
+                - heading "Daily market movements" [level=3] [ref=f6e232]
+                - paragraph [ref=f6e233]: Produce a concise morning brief from market moves and holdings context.
+                - list "Workflow steps" [ref=f6e234]:
+                  - listitem [ref=f6e235]:
+                    - generic [ref=f6e236]:
+                      - 'button "Load data: Load market snapshot. Shows step settings on hover." [ref=f6e237]'
+                      - tooltip "Load market snapshot ≈1.1s Brings in the morning snapshot of indices, FX and rates. Sample market snapshot (30 Sep, 07:45) Load data · Simulated settings":
+                        - generic:
+                          - generic: Load market snapshot
+                          - generic: ≈1.1s
+                        - paragraph: Brings in the morning snapshot of indices, FX and rates.
+                        - paragraph: Sample market snapshot (30 Sep, 07:45)
+                        - paragraph: Load data · Simulated settings
+                  - listitem [ref=f6e242]:
+                    - generic [ref=f6e243]:
+                      - 'button "Check limit: Identify notable moves. Shows step settings on hover." [ref=f6e244]'
+                      - tooltip "Identify notable moves ≈0.9s Separates the morning's notable moves from background noise. Moves over 0.75% Check limit · Simulated settings":
+                        - generic:
+                          - generic: Identify notable moves
+                          - generic: ≈0.9s
+                        - paragraph: Separates the morning's notable moves from background noise.
+                        - paragraph: Moves over 0.75%
+                        - paragraph: Check limit · Simulated settings
+                  - listitem [ref=f6e248]:
+                    - generic [ref=f6e249]:
+                      - 'button "Map fields: Match portfolio holdings. Shows step settings on hover." [ref=f6e250]'
+                      - tooltip "Match portfolio holdings ≈1.0s Connects notable moves to the portfolio's holdings. Matched against sample holdings Map fields · Simulated settings":
+                        - generic:
+                          - generic: Match portfolio holdings
+                          - generic: ≈1.0s
+                        - paragraph: Connects notable moves to the portfolio's holdings.
+                        - paragraph: Matched against sample holdings
+                        - paragraph: Map fields · Simulated settings
+                  - listitem [ref=f6e255]:
+                    - generic [ref=f6e256]:
+                      - 'button "Draft summary: Draft morning briefing. Shows step settings on hover." [ref=f6e257]'
+                      - tooltip "Draft morning briefing ≈1.6s Prepares an AI-assisted draft of the morning briefing for an editor to check. AI-assisted draft · 3 sections Draft summary · Simulated settings":
+                        - generic:
+                          - generic: Draft morning briefing
+                          - generic: ≈1.6s
+                        - paragraph: Prepares an AI-assisted draft of the morning briefing for an editor to check.
+                        - paragraph: AI-assisted draft · 3 sections
+                        - paragraph: Draft summary · Simulated settings
+                  - listitem [ref=f6e261]:
+                    - generic [ref=f6e262]:
+                      - 'button "Request review: Editor review. Shows step settings on hover." [ref=f6e263]'
+                      - tooltip "Editor review ≈0.8s Stops the run so an editor can check the draft before it is exported. Pauses for Research editor Request review · Simulated settings":
+                        - generic:
+                          - generic: Editor review
+                          - generic: ≈0.8s
+                        - paragraph: Stops the run so an editor can check the draft before it is exported.
+                        - paragraph: Pauses for Research editor
+                        - paragraph: Request review · Simulated settings
+                  - listitem [ref=f6e269]:
+                    - generic [ref=f6e270]:
+                      - 'button "Create report: Export briefing. Shows step settings on hover." [ref=f6e271]'
+                      - tooltip "Export briefing ≈1.2s Prepares the final briefing from the approved draft. Morning market briefing (30 September 2026) Create report · Simulated settings":
+                        - generic:
+                          - generic: Export briefing
+                          - generic: ≈1.2s
+                        - paragraph: Prepares the final briefing from the approved draft.
+                        - paragraph: Morning market briefing (30 September 2026)
+                        - paragraph: Create report · Simulated settings
+                - generic [ref=f6e278]:
+                  - generic [ref=f6e279]: 6 steps · Editable workflow
+                  - button "Use template" [ref=f6e280]
+          - region [ref=f6e281]:
+            - generic [ref=f6e282]:
+              - heading "In development" [level=2] [ref=f6e283]
+              - generic [ref=f6e284]: 4 templates
+            - generic [ref=f6e285]:
+              - article [ref=f6e286]:
+                - generic [ref=f6e287]:
+                  - generic [ref=f6e288]:
+                    - paragraph [ref=f6e289]: Finance
+                    - generic [ref=f6e290]: In development
+                  - heading "Monthly close pack" [level=3] [ref=f6e294]
+                  - paragraph [ref=f6e295]: Assemble a close checklist and list outstanding items.
+                  - list "Planned steps" [ref=f6e296]:
+                    - listitem [ref=f6e297]:
+                      - generic [ref=f6e298]: Select close period
+                    - listitem [ref=f6e301]:
+                      - generic [ref=f6e302]: Collect sample tasks
+                    - listitem [ref=f6e305]:
+                      - generic [ref=f6e306]: Calculate completion
+                    - listitem [ref=f6e309]:
+                      - generic [ref=f6e310]: Review blockers
+                    - listitem [ref=f6e313]:
+                      - generic [ref=f6e314]: Create close summary
+                  - generic [ref=f6e315]:
+                    - generic [ref=f6e316]: 5 steps · Planned workflow
+                    - button "Notify when ready" [ref=f6e317]
+              - article [ref=f6e321]:
+                - generic [ref=f6e322]:
+                  - generic [ref=f6e323]:
+                    - paragraph [ref=f6e324]: Operations
+                    - generic [ref=f6e325]: In development
+                  - heading "KYC document checklist" [level=3] [ref=f6e329]
+                  - paragraph [ref=f6e330]: Identify missing items in a client onboarding checklist.
+                  - list "Planned steps" [ref=f6e331]:
+                    - listitem [ref=f6e332]:
+                      - generic [ref=f6e333]: Select checklist
+                    - listitem [ref=f6e336]:
+                      - generic [ref=f6e337]: Compare sample documents
+                    - listitem [ref=f6e340]:
+                      - generic [ref=f6e341]: Flag missing items
+                    - listitem [ref=f6e344]:
+                      - generic [ref=f6e345]: Reviewer approval
+                    - listitem [ref=f6e348]:
+                      - generic [ref=f6e349]: Create checklist summary
+                  - generic [ref=f6e350]:
+                    - generic [ref=f6e351]: 5 steps · Planned workflow
+                    - button "Notify when ready" [ref=f6e352]
+              - article [ref=f6e356]:
+                - generic [ref=f6e357]:
+                  - generic [ref=f6e358]:
+                    - paragraph [ref=f6e359]: Reporting
+                    - generic [ref=f6e360]: In development
+                  - heading "Client report preparation" [level=3] [ref=f6e364]
+                  - paragraph [ref=f6e365]: Prepare a reviewable draft package from account data.
+                  - list "Planned steps" [ref=f6e366]:
+                    - listitem [ref=f6e367]:
+                      - generic [ref=f6e368]: Select client
+                    - listitem [ref=f6e371]:
+                      - generic [ref=f6e372]: Gather sample portfolio data
+                    - listitem [ref=f6e375]:
+                      - generic [ref=f6e376]: Generate draft
+                    - listitem [ref=f6e379]:
+                      - generic [ref=f6e380]: Compliance review
+                    - listitem [ref=f6e383]:
+                      - generic [ref=f6e384]: Mark ready to send
+                  - generic [ref=f6e385]:
+                    - generic [ref=f6e386]: 5 steps · Planned workflow
+                    - button "Notify when ready" [ref=f6e387]
+              - article [ref=f6e391]:
+                - generic [ref=f6e392]:
+                  - generic [ref=f6e393]:
+                    - paragraph [ref=f6e394]: SME finance
+                    - generic [ref=f6e395]: In development
+                  - heading "Cashflow update" [level=3] [ref=f6e399]
+                  - paragraph [ref=f6e400]: Prepare a weekly cashflow update from the bank and invoice files a small business already keeps.
+                  - list "Planned steps" [ref=f6e401]:
+                    - listitem [ref=f6e402]:
+                      - generic [ref=f6e403]: Load bank and invoice files
+                    - listitem [ref=f6e406]:
+                      - generic [ref=f6e407]: Map categories
+                    - listitem [ref=f6e410]:
+                      - generic [ref=f6e411]: Calculate net movement
+                    - listitem [ref=f6e414]:
+                      - generic [ref=f6e415]: Review large payments
+                    - listitem [ref=f6e418]:
+                      - generic [ref=f6e419]: Create cashflow update
+                  - generic [ref=f6e420]:
+                    - generic [ref=f6e421]: 5 steps · Planned workflow
+                    - button "Notify when ready" [ref=f6e422]
+            - paragraph [ref=f6e426]: These templates are shown as a preview of the planned library. They are not runnable in this demo, and every figure in the workspace is simulated.
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f6e432] [cursor=pointer]
+  - alert [ref=f6e436]
