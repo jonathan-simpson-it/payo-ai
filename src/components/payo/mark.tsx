@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Payo: the little workflow helper.
+ * Payoo: the little workflow helper (see docs/characters/PAYOO.md).
  *
  * A simple, friendly mark in the spirit of classic developer pets:
  * one rounded body with a small tuft, two eyes, a soft smile and a

@@ -34,12 +34,19 @@
   --color-line-strong: var(--line-strong);
   --color-ok: var(--ok);
   --color-ok-tint: var(--ok-tint);
+  --color-ok-border: var(--ok-border);
   --color-warn: var(--warn);
   --color-warn-tint: var(--warn-tint);
+  --color-warn-border: var(--warn-border);
   --color-danger: var(--danger);
   --color-danger-tint: var(--danger-tint);
+  --color-danger-border: var(--danger-border);
   --color-neutral: var(--neutral);
   --color-neutral-tint: var(--neutral-tint);
+  --color-neutral-border: var(--neutral-border);
+  --color-payo-orange: var(--payo-orange);
+  --color-payo-orange-strong: var(--payo-orange-strong);
+  --color-payo-orange-tint: var(--payo-orange-tint);
   --radius-sm: calc(var(--radius) - 3px);
   --radius-md: calc(var(--radius) - 1px);
   --radius-lg: var(--radius);
@@ -47,9 +54,10 @@
 }
 
 /*
- * Payo light theme: quiet warm paper, ink text, deep petrol for action.
- * Colour is semantic: petrol = action/selection, green = complete,
- * amber = needs review, red = exception, orange = Payo brand mark only.
+ * Payo light theme: quiet warm paper, ink text, Payo orange for action.
+ * Colour is semantic: orange = action/selection/brand, emerald = complete,
+ * amber = needs review, red = exception. Status pills use muted tints with
+ * 1px borders (enterprise standard), never saturated or neon fills.
  */
 :root {
   --radius: 0.5rem;
@@ -60,85 +68,488 @@
   --card-foreground: #1c2024;
   --popover: #ffffff;
   --popover-foreground: #1c2024;
-  --primary: #14556b;
+  --primary: #ff6b00;
   --primary-foreground: #ffffff;
-  --primary-strong: #0f4459;
-  --primary-deep: #0b3546;
-  --primary-ink: #14556b;
-  --primary-tint: #e9f1f4;
-  --primary-soft: #c7dbe2;
+  --primary-strong: #ea5f00;
+  --primary-deep: #c24300;
+  --primary-ink: #c24300;
+  --primary-tint: #fff0e6;
+  --primary-soft: rgba(255, 107, 0, 0.28);
   --secondary: #efeee9;
   --secondary-foreground: #1c2024;
   --muted: #efeee9;
   --muted-foreground: #5b636b;
   --accent: #efeee9;
   --accent-foreground: #1c2024;
-  --destructive: #b3261e;
+  --destructive: #dc2626;
   --border: #e5e3dd;
   --input: #d2cfc7;
-  --ring: #0f4459;
+  --ring: #ff6b00;
 
   --ink-2: #5b636b;
   --ink-3: #8a9199;
   --line-strong: #d5d3cc;
 
-  --ok: #1f7350;
-  --ok-tint: #e9f3ee;
-  --warn: #96650a;
-  --warn-tint: #faf2e1;
-  --danger: #b3261e;
-  --danger-tint: #faecEA;
-  --neutral: #6f7680;
-  --neutral-tint: #efefec;
+  --ok: #047857;
+  --ok-tint: #ecfdf5;
+  --ok-border: #a7f3d0;
+  --warn: #d97706;
+  --warn-tint: #fffbeb;
+  --warn-border: #fde68a;
+  --danger: #dc2626;
+  --danger-tint: #fef2f2;
+  --danger-border: #fecaca;
+  --neutral: #475569;
+  --neutral-tint: #f1f5f9;
+  --neutral-border: #e2e8f0;
 
-  --select-bg: #dce9ee;
+  /* Aliases kept for components that reference the brand accent directly. */
+  --payo-orange: #ff6b00;
+  --payo-orange-strong: #ea5f00;
+  --payo-orange-tint: #fff0e6;
+
+  --select-bg: #ffe8d9;
   --scroll-thumb: #d6d3cb;
   --scroll-thumb-hover: #c4c0b6;
   --scroll-edge: #f6f5f1;
 }
 
 .dark {
-  --background: #101316;
-  --foreground: #e9ecef;
-  --card: #171b1f;
-  --card-foreground: #e9ecef;
-  --popover: #1c2126;
-  --popover-foreground: #e9ecef;
-  --primary: #2e7d93;
+  --background: #0b0f17;
+  --foreground: #e2e8f0;
+  --card: #16202f;
+  --card-foreground: #e2e8f0;
+  --popover: #182234;
+  --popover-foreground: #e2e8f0;
+  --primary: #ff6b00;
   --primary-foreground: #ffffff;
-  --primary-strong: #3c93aa;
-  --primary-deep: #1f5e70;
-  --primary-ink: #6fb4c6;
-  --primary-tint: #14323c;
-  --primary-soft: #1e4a58;
-  --secondary: #1d2227;
-  --secondary-foreground: #e9ecef;
-  --muted: #1d2227;
-  --muted-foreground: #9ba4ad;
-  --accent: #1d2227;
-  --accent-foreground: #e9ecef;
-  --destructive: #e06a5f;
-  --border: #262c32;
-  --input: #3a424a;
-  --ring: #3c93aa;
+  --primary-strong: #ff8133;
+  --primary-deep: #d95400;
+  --primary-ink: #ffa45c;
+  --primary-tint: rgba(255, 107, 0, 0.14);
+  --primary-soft: rgba(255, 107, 0, 0.35);
+  --secondary: rgba(148, 163, 184, 0.1);
+  --secondary-foreground: #e2e8f0;
+  --muted: rgba(148, 163, 184, 0.1);
+  --muted-foreground: #94a3b8;
+  --accent: rgba(148, 163, 184, 0.1);
+  --accent-foreground: #e2e8f0;
+  --destructive: #f87171;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.14);
+  --ring: #ff8133;
 
-  --ink-2: #9ba4ad;
-  --ink-3: #6f7880;
-  --line-strong: #333a41;
+  --ink-2: #94a3b8;
+  --ink-3: #64748b;
+  --line-strong: rgba(255, 255, 255, 0.16);
 
   --ok: #4fae7e;
-  --ok-tint: #122a20;
-  --warn: #c99a3f;
-  --warn-tint: #2e2515;
-  --danger: #e06a5f;
-  --danger-tint: #331a18;
-  --neutral: #8b939b;
-  --neutral-tint: #22282e;
+  --ok-tint: rgba(79, 174, 126, 0.12);
+  --ok-border: rgba(79, 174, 126, 0.25);
+  --warn: #fbbf24;
+  --warn-tint: rgba(245, 158, 11, 0.12);
+  --warn-border: rgba(245, 158, 11, 0.25);
+  --danger: #f87171;
+  --danger-tint: rgba(239, 68, 68, 0.12);
+  --danger-border: rgba(239, 68, 68, 0.25);
+  --neutral: #94a3b8;
+  --neutral-tint: rgba(148, 163, 184, 0.12);
+  --neutral-border: rgba(148, 163, 184, 0.25);
 
-  --select-bg: #1e4a58;
-  --scroll-thumb: #333a41;
-  --scroll-thumb-hover: #414a52;
-  --scroll-edge: #101316;
+  --payo-orange: #ff6b00;
+  --payo-orange-strong: #ff7d1f;
+  --payo-orange-tint: rgba(255, 107, 0, 0.14);
+
+  --select-bg: rgba(255, 107, 0, 0.18);
+  --scroll-thumb: rgba(255, 255, 255, 0.14);
+  --scroll-thumb-hover: rgba(255, 255, 255, 0.24);
+  --scroll-edge: #0b0f17;
+}
+
+/*
+ * Landing-only dark scope ("ui-only-dark-mode").
+ * Enterprise financial-terminal surfaces: deep slate, clean translucent
+ * borders, a single orange brand accent and muted emerald success states.
+ * Scoped to .payo-neon so the workspace keeps its own theme.
+ */
+.payo-neon {
+  --radius: 0.625rem;
+
+  --background: #0b0f17;
+  --foreground: #edf1f5;
+  --card: rgba(30, 41, 59, 0.65);
+  --card-foreground: #edf1f5;
+  --popover: rgba(15, 23, 42, 0.92);
+  --popover-foreground: #edf1f5;
+  --primary: #ff6b00;
+  --primary-foreground: #ffffff;
+  --primary-strong: #ff8133;
+  --primary-deep: #d95400;
+  --primary-ink: #ffa45c;
+  --primary-tint: rgba(255, 107, 0, 0.14);
+  --primary-soft: rgba(255, 107, 0, 0.35);
+  --secondary: rgba(148, 163, 184, 0.08);
+  --secondary-foreground: #edf1f5;
+  --muted: rgba(148, 163, 184, 0.08);
+  --muted-foreground: #a7b0ba;
+  --accent: rgba(148, 163, 184, 0.1);
+  --accent-foreground: #edf1f5;
+  --destructive: #f87171;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.14);
+  --ring: #ff8133;
+
+  --ink-2: #a7b0ba;
+  --ink-3: #6b7480;
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --ok: #4fae7e;
+  --ok-tint: rgba(79, 174, 126, 0.12);
+  --warn: #fbbf24;
+  --warn-tint: rgba(245, 158, 11, 0.12);
+  --danger: #f87171;
+  --danger-tint: rgba(239, 68, 68, 0.12);
+  --neutral: #94a3b8;
+  --neutral-tint: rgba(148, 163, 184, 0.12);
+
+  --select-bg: rgba(255, 107, 0, 0.16);
+  --scroll-thumb: rgba(255, 255, 255, 0.14);
+  --scroll-thumb-hover: rgba(255, 255, 255, 0.24);
+  --scroll-edge: transparent;
+
+  /* Ambient palette: brand orange only; no cyan, purple or green light. */
+  --glow-cyan: transparent;
+  --glow-orange: rgba(255, 107, 0, 0.3);
+  --glow-purple: transparent;
+  --glow-green: transparent;
+}
+
+/* Panel surface: slate fill, 1px translucent border, quiet depth. */
+.payo-neon .glass {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 24px 60px -30px rgba(0, 0, 0, 0.7);
+}
+
+/* Heavier panel for floating windows (hero stack, widgets). */
+.payo-neon .glass-deep {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 30px 70px -28px rgba(0, 0, 0, 0.8);
+}
+
+/* Panel hover: brighter rim only, no bloom. */
+.payo-neon .glass-hover:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 30px 70px -28px rgba(0, 0, 0, 0.8);
+}
+
+/* Rim: a single quiet slate hairline, no gradient. */
+.payo-neon .edge-lit {
+  position: relative;
+}
+.payo-neon .edge-lit::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: rgba(255, 255, 255, 0.14);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* CTAs: brand orange with the standard ambient depth. */
+.payo-neon .neon-cta {
+  box-shadow: 0 2px 12px rgba(255, 107, 0, 0.25);
+}
+.payo-neon .neon-cta:hover {
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
+}
+
+/* Showcase window: slate frame with a restrained ambient drop. */
+.payo-neon .showcase-aura {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* Dotted connector: keyphrase → showcase links, drawn as static dashes. */
+.payo-neon .laser-flow {
+  stroke-dasharray: 5 7;
+}
+
+/*
+ * Helps pipeline: looping mini-UI timelines inside the three step nodes.
+ * Each graphic runs an 8s cycle; hovering the canvas speeds the data line.
+ */
+@keyframes pipe-dash {
+  to {
+    stroke-dashoffset: -64;
+  }
+}
+.payo-neon .pipe-pulse {
+  stroke-dasharray: 6 10;
+  animation: pipe-dash 1.8s linear infinite;
+}
+.pipe-canvas:hover .pipe-pulse {
+  animation-duration: 0.8s;
+}
+
+@keyframes pipe-merge-draw {
+  0% {
+    stroke-dashoffset: 70;
+  }
+  22%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.payo-neon .pipe-merge {
+  stroke-dasharray: 70 70;
+  animation: pipe-merge-draw 8s ease-in-out infinite;
+}
+
+@keyframes variance-a {
+  0%,
+  36% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  44%,
+  88% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  96%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes variance-b {
+  0%,
+  36% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  44%,
+  88% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  96%,
+  100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.payo-neon .pipe-variance-a {
+  animation: variance-a 8s ease-in-out infinite;
+}
+.payo-neon .pipe-variance-b {
+  animation: variance-b 8s ease-in-out infinite;
+}
+
+/* Dial gauge: sweep 0 → 85% and hold, cycling with the other pipe graphics.
+ * Values are stroke-dashoffsets for r=34 (C ≈ 213.6): empty → 15% remaining. */
+@keyframes dial-fill {
+  0% {
+    stroke-dashoffset: 213.6;
+  }
+  38% {
+    stroke-dashoffset: 32;
+  }
+  78% {
+    stroke-dashoffset: 32;
+  }
+  92%,
+  100% {
+    stroke-dashoffset: 213.6;
+  }
+}
+.payo-neon .dial-arc {
+  animation: dial-fill 8s cubic-bezier(0.3, 0.7, 0.3, 1) infinite;
+}
+
+@keyframes warn-pop {
+  0%,
+  40% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  48%,
+  84% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  94%,
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+.payo-neon .warn-pill {
+  animation: warn-pop 8s ease-in-out infinite;
+}
+
+@keyframes spark-draw {
+  0% {
+    stroke-dashoffset: 320;
+  }
+  42%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.payo-neon .spark-draw {
+  stroke-dasharray: 320 320;
+  animation: spark-draw 8s ease-in-out infinite;
+}
+
+@keyframes approve-pop {
+  0%,
+  36% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  42%,
+  62% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  68%,
+  100% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+@keyframes export-pop {
+  0%,
+  66% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  72%,
+  92% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.payo-neon .approve-pill {
+  animation: approve-pop 8s ease-in-out infinite;
+}
+.payo-neon .export-pill {
+  animation: export-pop 8s ease-in-out infinite;
+}
+
+/*
+ * Alternating sections: every other band flips to a light surface while
+ * keeping the enterprise accents (orange brand, muted emerald success).
+ * Re-scoping the tokens here lets all token-driven styles adapt, and the
+ * panel overrides restyle the translucent surfaces for a white ground.
+ * Zebra spec: off-white stage, light 24px gridlines, clean gray borders.
+ */
+.payo-neon .section-light {
+  --background: #fafafa;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #ff6b00;
+  --primary-strong: #e14e00;
+  --primary-deep: #c24300;
+  --primary-ink: #c24300;
+  --primary-tint: #fff0e6;
+  --primary-soft: rgba(255, 107, 0, 0.28);
+  --secondary: rgba(10, 20, 30, 0.04);
+  --muted: rgba(10, 20, 30, 0.05);
+  --muted-foreground: #475569;
+  --accent: rgba(10, 20, 30, 0.05);
+  --border: #e2e8f0;
+  --input: #cbd5e1;
+  --ring: #ff6b00;
+  --ink-2: #475569;
+  --ink-3: #64748b;
+  --line-strong: #cbd5e1;
+  --ok: #047857;
+  --ok-tint: #ecfdf5;
+  --warn: #d97706;
+  --warn-tint: #fffbeb;
+  --danger: #dc2626;
+  --danger-tint: #fef2f2;
+  --neutral: #475569;
+  --neutral-tint: #f1f5f9;
+
+  color: #0f172a;
+  background-color: #fafafa;
+  background-image:
+    linear-gradient(rgba(10, 20, 30, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 20, 30, 0.03) 1px, transparent 1px),
+    radial-gradient(640px 320px at 88% 100%, rgba(255, 107, 0, 0.03), transparent 70%);
+  background-size:
+    24px 24px,
+    24px 24px,
+    auto;
+}
+
+/* Per-section light tints from the master spec. */
+.payo-neon .section-light-f8 {
+  background-color: #f8fafc;
+}
+.payo-neon .section-light-white {
+  background-color: #ffffff;
+}
+
+/* Panels on white: white fill, soft slate shadows, no colored bloom. */
+.payo-neon .section-light .glass {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #e2e8f0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 24px 50px -30px rgba(15, 30, 50, 0.25);
+}
+.payo-neon .section-light .glass-deep {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e2e8f0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 30px 60px -30px rgba(15, 30, 50, 0.28);
+}
+.payo-neon .section-light .glass-hover:hover {
+  border-color: #cbd5e1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 30px 60px -28px rgba(15, 30, 50, 0.3);
+}
+.payo-neon .section-light .edge-lit::before {
+  background: rgba(10, 20, 30, 0.12);
+}
+
+/* Fine vector grid, barely visible on the dark surface. */
+.payo-neon .neon-grid {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
 }
 
 @layer base {
@@ -224,6 +635,20 @@
   transform-box: fill-box;
   transform-origin: center;
   animation: payo-blink 7.2s ease-in-out infinite;
+}
+
+/* Hero showcase: a slow ambient pulse on the orange aura */
+@keyframes hero-aura-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.hero-aura {
+  animation: hero-aura-pulse 7s ease-in-out infinite;
 }
 
 /* Respect reduced motion */

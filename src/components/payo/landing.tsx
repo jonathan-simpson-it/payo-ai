@@ -2,12 +2,8 @@
 
 import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { TEMPLATES } from "@/lib/payo/data";
 import { useUI } from "@/lib/payo/store";
-import { Eyebrow, SampleTag } from "@/components/payo/ui";
 import { PayoMark } from "@/components/payo/mark";
-import { ProductMockup } from "@/components/payo/landing-mockup";
 import {
   ConnectorsSection,
   EvidenceStrip,
@@ -15,229 +11,259 @@ import {
   TrustSection,
 } from "@/components/payo/landing-sections";
 import { FeatureDemo } from "@/components/payo/feature-demo";
-import { ThemeToggle } from "@/components/payo/theme-toggle";
 import { WaitlistSection } from "@/components/payo/waitlist";
+import { HeroVisual } from "@/components/payo/hero-visual";
+import { HelpsPipeline } from "@/components/payo/helps-pipeline";
+import { TemplateLibrarySection } from "@/components/payo/template-library";
+import {
+  BlackRockLogo,
+  BlackstoneLogo,
+  HsbcLogo,
+  MorganStanleyLogo,
+} from "@/components/payo/logos";
 
 const WORKSPACE_URL = "#/workspace/templates";
 
-const HELPS = [
-  {
-    title: "Reconcile NAV data and investigate exceptions.",
-    body: "Compare administrator and internal valuations fund by fund, and route material differences to a person before anything is signed off.",
-  },
-  {
-    title: "Review position risk against limits.",
-    body: "Check exposures and concentration against the limits that apply, and see exactly which positions need a second look.",
-  },
-  {
-    title: "Turn the day's market moves into a checked briefing.",
-    body: "Match the morning's moves to your holdings, draft a concise brief, and have an editor approve it before it goes out.",
-  },
+const NAV_LINKS = [
+  { href: "#what-payo-does", label: "How it works" },
+  { href: "#templates", label: "Templates" },
+  { href: "#trust", label: "Governance & audit" },
+  { href: "#connections", label: "Integrations" },
 ];
 
-const NAV_LINKS = [
-  { href: "#what-payo-does", label: "What Payo does" },
-  { href: "#roles", label: "Roles" },
-  { href: "#connections", label: "Connections" },
-  { href: "#product", label: "Product" },
-  { href: "#templates", label: "Templates" },
-  { href: "#trust", label: "Trust" },
-];
+/* Social-proof bar: real vector marks, uniform 32px frame, quiet until hover. */
+function LogoBar() {
+  const logos = [
+    { C: BlackRockLogo, name: "BlackRock" },
+    { C: BlackstoneLogo, name: "Blackstone" },
+    { C: MorganStanleyLogo, name: "Morgan Stanley" },
+    { C: HsbcLogo, name: "HSBC" },
+  ];
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-x-12 gap-y-6">
+      {logos.map(({ C, name }) => (
+        <span
+          key={name}
+          className="text-white opacity-50 transition-opacity hover:opacity-80"
+          title={name}
+        >
+          <C />
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/* Decorative bezier threads: keyphrases on the left wired to the showcase
+ * card on the right, drawn as quiet dotted lines. Hidden on small screens
+ * and from assistive tech. */
+function HeroThreads() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 hidden size-full lg:block"
+      viewBox="0 0 1100 560"
+      fill="none"
+      preserveAspectRatio="none"
+    >
+      {/* slate: "Automated &" → card header tabs */}
+      <path
+        d="M440 150 C 550 150, 560 108, 664 104"
+        stroke="rgba(148,163,184,0.4)"
+        strokeWidth="1.2"
+        className="laser-flow"
+      />
+      {/* orange: "Auditable." → card status column */}
+      <path
+        d="M448 330 C 556 330, 576 402, 656 410"
+        stroke="rgba(255,107,0,0.5)"
+        strokeWidth="1.2"
+        className="laser-flow"
+      />
+      <circle cx="440" cy="150" r="3" fill="#94A3B8" />
+      <circle cx="664" cy="104" r="2.5" fill="#94A3B8" />
+      <circle cx="448" cy="330" r="3" fill="#FF6B00" />
+      <circle cx="656" cy="410" r="2.5" fill="#FF6B00" />
+    </svg>
+  );
+}
 
 export function LandingPage() {
   const { openAbout } = useUI();
-  const available = TEMPLATES.filter((t) => !t.comingSoon);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-6">
-          <a href="#/" className="flex items-center gap-2.5" aria-label="Payo AI home">
-            <PayoMark className="size-[26px]" />
-            <span className="text-[15px] font-semibold tracking-tight">Payo AI</span>
-          </a>
-          <nav className="ml-auto hidden items-center gap-5 lg:flex" aria-label="Landing sections">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.href}
-                className="text-[13px] text-ink-2 transition-colors hover:text-foreground"
-                href={l.href}
-              >
-                {l.label}
-              </a>
-            ))}
-          </nav>
-          <div className="ml-auto flex items-center gap-2 lg:ml-0">
-            <a
-              href="#waitlist"
-              className="hidden text-[13px] font-medium text-primary-ink transition-colors hover:text-primary-deep sm:inline"
-            >
-              Join the waitlist
+    <div className="payo-neon relative min-h-screen bg-[#030712] text-[#EDF1F5]">
+      <div className="relative">
+        {/* Navigation */}
+        <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-[#050608]/70 backdrop-blur-xl">
+          <div className="relative mx-auto flex h-14 max-w-[1720px] items-center justify-between px-6 lg:px-10">
+            <a href="#/" className="flex items-center gap-2.5" aria-label="Payo AI home">
+              <PayoMark className="size-[26px]" />
+              <span className="text-[15px] font-semibold tracking-tight text-white">Payo AI</span>
             </a>
-            <ThemeToggle />
-            <Button asChild className="h-8 px-3.5 text-[13px]">
-              <a href={WORKSPACE_URL}>Explore the workspace</a>
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-6 pb-16 pt-12 md:pb-20 md:pt-16">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,440px)_minmax(0,1fr)] lg:gap-12">
-          <div className="min-w-0">
-            <Eyebrow>Finance workflow workspace</Eyebrow>
-            <h1 className="mt-4 text-[36px] font-semibold leading-[1.06] tracking-[-0.02em] md:text-[46px]">
-              Finance workflows, made clear.
-            </h1>
-            <p className="mt-4 max-w-md text-[15.5px] leading-relaxed text-ink-2">
-              Build repeatable reconciliations, risk checks and daily briefings in a visual
-              workspace your team can inspect, with a person in the loop before anything is
-              released.
-            </p>
-            <div className="mt-7 flex flex-wrap items-center gap-3">
-              <Button asChild size="lg" className="px-5">
-                <a href={WORKSPACE_URL}>
-                  Explore the workspace
-                  <ArrowRight className="size-4" aria-hidden="true" />
+            <nav
+              className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-7 lg:flex"
+              aria-label="Landing sections"
+            >
+              {NAV_LINKS.map((l) => (
+                <a
+                  key={l.href}
+                  className="text-[13px] text-white/60 transition-colors hover:text-white"
+                  href={l.href}
+                >
+                  {l.label}
                 </a>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="px-5">
-                <a href="#templates">View templates</a>
-              </Button>
-            </div>
-            <p className="mt-4 text-[12px] text-ink-3">
-              No sign-in needed · every run uses labelled sample data.
-            </p>
-            <a
-              href="#waitlist"
-              className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-primary-ink transition-colors hover:text-primary-deep"
-            >
-              Want early access? Join the waitlist
-              <ArrowRight className="size-3.5" aria-hidden="true" />
-            </a>
-          </div>
-          <ProductMockup />
-        </div>
-      </section>
-
-      {/* Evidence */}
-      <EvidenceStrip />
-
-      {/* What Payo helps teams do */}
-      <section id="what-payo-does" className="border-t border-border/70">
-        <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-          <Eyebrow>What Payo helps teams do</Eyebrow>
-          <h2 className="mt-4 max-w-xl text-[28px] font-semibold leading-tight tracking-[-0.01em] md:text-[32px]">
-            The repeatable work of a finance team, made visible.
-          </h2>
-          <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {HELPS.map((h, i) => (
-              <div key={h.title} className="border-t-2 border-primary/25 pt-5">
-                <span className="text-[12px] font-semibold tabular-nums text-ink-3">0{i + 1}</span>
-                <h3 className="mt-2 text-[15px] font-semibold leading-snug">{h.title}</h3>
-                <p className="mt-2.5 text-[13.5px] leading-relaxed text-ink-2">{h.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Built for three roles */}
-      <RolesSection />
-
-      {/* Planned connections */}
-      <ConnectorsSection />
-
-      {/* Product demo */}
-      <FeatureDemo />
-
-      {/* Templates preview */}
-      <section id="templates" className="border-t border-border/70">
-        <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <Eyebrow>Template library</Eyebrow>
-              <h2 className="mt-4 text-[28px] font-semibold leading-tight tracking-[-0.01em] md:text-[32px]">
-                Start from a template, not a blank canvas.
-              </h2>
-            </div>
-            <Button asChild variant="ghost" className="text-[13.5px] text-primary-ink">
-              <a href={WORKSPACE_URL}>
-                View all templates
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </a>
-            </Button>
-          </div>
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {available.map((t) => (
-              <div
-                key={t.id}
-                className="flex flex-col rounded-lg border border-border bg-card p-5 transition-colors hover:border-line-strong"
+              ))}
+            </nav>
+            <div className="flex items-center gap-4">
+              <a
+                href="#/workspace"
+                className="hidden text-[13px] font-medium text-white/85 transition-colors hover:text-white sm:inline"
               >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
-                  {t.category}
+                Sign In
+              </a>
+              <a
+                href={WORKSPACE_URL}
+                className="neon-cta inline-flex h-9 items-center gap-1.5 rounded-lg bg-[#FF6B00] px-3.5 text-[13px] font-semibold text-white transition-all duration-200 hover:-translate-y-px hover:bg-[#FF7A1A] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#FF6B00]/40"
+              >
+                Build a Workflow
+                <ArrowRight className="size-3.5" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </header>
+
+        {/* SECTION 1 — Hero & product showcase (dark) */}
+        <section className="relative flex min-h-[calc(100vh-3.5rem)] flex-col justify-center overflow-hidden bg-[#0B0F17]">
+          {/* Radial base + fine 24px grid, center-masked */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "radial-gradient(ellipse at center, #0B0F17 0%, #030712 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+                backgroundSize: "24px 24px",
+                maskImage: "radial-gradient(ellipse 72% 68% at 50% 46%, black 25%, transparent 76%)",
+                WebkitMaskImage:
+                  "radial-gradient(ellipse 72% 68% at 50% 46%, black 25%, transparent 76%)",
+              }}
+            />
+            {/* Ambient orange glow highlights behind the showcase card */}
+          </div>
+
+          <div className="relative mx-auto w-full max-w-[1920px] px-6 py-12 lg:px-20 xl:py-16">
+            <div className="relative grid items-center gap-12 lg:grid-cols-[45fr_55fr] lg:gap-10">
+              <HeroThreads />
+              <div className="min-w-0">
+                <h1 className="text-balance text-[32px] font-bold leading-[1.12] tracking-[-0.03em] text-white sm:text-[38px]">
+                  Describe your workflow.
+                  <br />
+                  AI builds the <span className="text-[#FF6B00]">auditable graph</span>.
+                </h1>
+                <p className="mt-6 max-w-[520px] text-[16px] leading-[1.6] text-[#CBD5E1]">
+                  Turn plain-English descriptions into visual, deterministic financial
+                  pipelines—backed by human sign-off and complete line-item lineage.
                 </p>
-                <h3 className="mt-2 text-[15.5px] font-semibold">{t.name}</h3>
-                <p className="mt-2 min-h-10 text-[13px] leading-relaxed text-ink-2">{t.outcome}</p>
-                <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-                  <span className="font-medium text-ink-2">Key sources: </span>
-                  {t.keySources?.join(" · ")}
-                </p>
-                <div className="mt-4 flex items-center justify-between border-t border-border pt-3.5">
-                  <SampleTag />
+                <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-3">
                   <a
-                    href={`#/workspace/workflows/${t.id}`}
-                    className="inline-flex items-center gap-1 text-[12.5px] font-medium text-primary-ink transition-colors hover:text-primary-deep"
+                    href={WORKSPACE_URL}
+                    className="inline-flex h-12 items-center gap-2 rounded-[10px] bg-[#FF6B00] px-7 text-[15px] font-semibold text-white shadow-[0_4px_20px_rgba(255,107,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#FF7A1A] hover:shadow-[0_8px_28px_rgba(255,107,0,0.5)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#FF6B00]/40"
                   >
-                    Open in workspace
-                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                    Generate Your First Graph
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </a>
+                  <a
+                    href="#templates"
+                    className="inline-flex h-12 items-center gap-2 rounded-[10px] border border-[#E2E8F0] bg-white px-7 text-[14.5px] font-semibold text-[#0F172A] transition-colors duration-200 hover:bg-[#F8FAFC] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#0F172A]/20"
+                  >
+                    Explore Template Library
                   </a>
                 </div>
+                <p className="mt-4 text-[12px] text-[#6B7480]">
+                  No code required · Zero execution without human approval · Sample data sandbox
+                </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Review & licensing */}
-      <TrustSection />
-
-      {/* Waitlist */}
-      <WaitlistSection />
-
-      {/* Footer */}
-      <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 md:flex-row md:items-start md:justify-between">
-          <div>
-            <div className="flex items-center gap-2.5">
-              <PayoMark className="size-6" />
-              <span className="text-[14px] font-semibold tracking-tight">Payo AI</span>
+              <HeroVisual />
             </div>
-            <p className="mt-3 max-w-xs text-[12px] leading-relaxed text-ink-3">
-              V0 product prototype. Workflows, data, connections, approvals and outputs are
-              simulated. Not investment advice or an official report.
-            </p>
+
+            {/* Social proof logo bar */}
+            <div className="relative mt-14 border-t border-white/[0.08] pt-8">
+              <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-[#6B7480]">
+                Trusted concept for modern finance ops
+              </p>
+              <div className="mt-6">
+                <LogoBar />
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col gap-2.5 text-[13px] md:items-end">
-            <a
-              href={WORKSPACE_URL}
-              className="font-medium text-primary-ink hover:text-primary-deep"
-            >
-              Enter the workspace
-            </a>
-            <button
-              type="button"
-              onClick={openAbout}
-              className="text-ink-2 transition-colors hover:text-foreground md:text-right"
-            >
-              About this demo
-            </button>
-            <span className="text-ink-3">© 2026 Payo AI</span>
+        </section>
+
+        {/* SECTION 2 — Why this exists (light) */}
+        <EvidenceStrip />
+
+        {/* SECTION 3 — What Payo helps teams do (dark, animated pipeline) */}
+        <HelpsPipeline />
+
+        {/* SECTION 4 — Built for three roles (light) */}
+        <RolesSection />
+
+        {/* SECTION 5 — Planned connections (dark) */}
+        <ConnectorsSection />
+
+        {/* SECTION 6 — See it work (light) */}
+        <FeatureDemo />
+
+        {/* SECTION 7 — Template library (dark) */}
+        <TemplateLibrarySection />
+
+        {/* SECTION 8 — Control by design (light) */}
+        <TrustSection />
+
+        {/* SECTION 9 — Early access waitlist (dark) */}
+        <WaitlistSection />
+
+        {/* SECTION 10 — Footer (dark) */}
+        <footer className="relative border-t border-white/[0.08] bg-[#030712]">
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 top-0 h-px bg-white/[0.08]"
+          />
+          <div className="mx-auto flex max-w-[1720px] flex-col gap-6 px-6 py-10 md:flex-row md:items-start md:justify-between lg:px-20">
+            <div>
+              <div className="flex items-center gap-2.5">
+                <PayoMark className="size-6" />
+                <span className="text-[14px] font-semibold tracking-tight text-white">Payo AI</span>
+              </div>
+              <p className="mt-3 max-w-xs text-[12px] leading-relaxed text-[#6B7480]">
+                V0 product prototype. Workflows, data, connections, approvals and outputs are
+                simulated. Not investment advice or an official report.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2.5 text-[13px] md:items-end">
+              <a
+                href={WORKSPACE_URL}
+                className="font-medium text-[#FF6B00] transition-colors hover:text-[#FF8A4C]"
+              >
+                Enter the workspace
+              </a>
+              <button
+                type="button"
+                onClick={openAbout}
+                className="text-[#A7B0BA] transition-colors hover:text-white md:text-right"
+              >
+                About this demo
+              </button>
+              <span className="text-[#6B7480]">© 2026 Payo AI</span>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }

@@ -112,10 +112,10 @@ export function SampleTag({
 // ─── Status ──────────────────────────────────────────────────────────────────
 
 const RUN_STATUS: Record<RunStatus, { label: string; dot: string; cls: string; pulse?: boolean }> = {
-  draft: { label: "Draft", dot: "bg-neutral", cls: "bg-neutral-tint text-ink-2" },
-  running: { label: "Running", dot: "bg-primary", cls: "bg-primary-tint text-primary-ink", pulse: true },
-  "needs-review": { label: "Needs review", dot: "bg-warn", cls: "bg-warn-tint text-warn" },
-  completed: { label: "Completed", dot: "bg-ok", cls: "bg-ok-tint text-ok" },
+  draft: { label: "Draft", dot: "bg-neutral", cls: "bg-neutral-tint text-ink-2 border border-neutral-border" },
+  running: { label: "Running", dot: "bg-primary", cls: "bg-primary-tint text-primary-ink border border-primary/30", pulse: true },
+  "needs-review": { label: "Needs review", dot: "bg-warn", cls: "bg-warn-tint text-warn border border-warn-border" },
+  completed: { label: "Completed", dot: "bg-ok", cls: "bg-ok-tint text-ok border border-ok-border" },
 };
 
 export function RunStatusChip({
@@ -143,9 +143,9 @@ export function RunStatusChip({
 }
 
 const WORKFLOW_STATUS: Record<WorkflowStatus, { label: string; cls: string }> = {
-  draft: { label: "Draft", cls: "bg-neutral-tint text-ink-2" },
-  tested: { label: "Tested", cls: "bg-primary-tint text-primary-ink" },
-  ready: { label: "Ready to publish", cls: "bg-ok-tint text-ok" },
+  draft: { label: "Draft", cls: "bg-neutral-tint text-ink-2 border border-neutral-border" },
+  tested: { label: "Tested", cls: "bg-primary-tint text-primary-ink border border-primary/30" },
+  ready: { label: "Ready to publish", cls: "bg-ok-tint text-ok border border-ok-border" },
 };
 
 export function WorkflowStatusChip({
@@ -173,13 +173,13 @@ export type Tone = "danger" | "warn" | "ok" | "neutral";
 
 export function ToneChip({ tone, children }: { tone: Tone; children: React.ReactNode }) {
   const tones: Record<Tone, string> = {
-    danger: "bg-danger-tint text-danger",
-    warn: "bg-warn-tint text-warn",
-    ok: "bg-ok-tint text-ok",
-    neutral: "bg-neutral-tint text-ink-2",
+    danger: "bg-danger-tint text-danger border border-danger-border",
+    warn: "bg-warn-tint text-warn border border-warn-border",
+    ok: "bg-ok-tint text-ok border border-ok-border",
+    neutral: "bg-neutral-tint text-ink-2 border border-neutral-border",
   };
   return (
-    <span className={cn("inline-flex items-center rounded-sm px-1.5 py-0.5 text-[11.5px] font-medium", tones[tone])}>
+    <span className={cn("inline-flex items-center whitespace-nowrap rounded-full px-2 py-0.5 text-[11.5px] font-medium", tones[tone])}>
       {children}
     </span>
   );

@@ -34,6 +34,7 @@ interface Scenario {
   blurb: string;
   steps: { label: string; type: StepTypeId }[];
   reviewIndex: number;
+  pauseNote: string;
   approveLabel: string;
   returnLabel: string;
   testedNote: string;
@@ -42,7 +43,7 @@ interface Scenario {
 const SCENARIOS: Scenario[] = [
   {
     id: "reconcile",
-    label: "Reconcile",
+    label: "Reconcile NAV data",
     title: "NAV reconciliation",
     blurb:
       "Compare administrator and internal valuations, flag tolerance breaches, and prepare the summary for a reviewer.",
@@ -55,13 +56,14 @@ const SCENARIOS: Scenario[] = [
       { label: "Create reconciliation summary", type: "report" },
     ],
     reviewIndex: 4,
-    approveLabel: "Approve summary",
+    pauseNote: "Material variance detected in Ferngate Diversified (+1.35%).",
+    approveLabel: "Approve summary & publish",
     returnLabel: "Return for review",
     testedNote: "Sample test complete: 2 exceptions will pause the run at review.",
   },
   {
     id: "risk",
-    label: "Review risk",
+    label: "Review position risk",
     title: "Position risk review",
     blurb:
       "Check each position against its applicable limit and route anything over or near the limit to an analyst.",
@@ -74,13 +76,14 @@ const SCENARIOS: Scenario[] = [
       { label: "Publish risk summary", type: "report" },
     ],
     reviewIndex: 4,
-    approveLabel: "Approve summary",
+    pauseNote: "Two positions sit over the 90% review threshold.",
+    approveLabel: "Approve summary & publish",
     returnLabel: "Return for review",
     testedNote: "Sample test complete: 1 position over limit and 1 near limit will need review.",
   },
   {
     id: "briefing",
-    label: "Prepare briefing",
+    label: "Draft market briefing",
     title: "Daily market movements",
     blurb:
       "Turn the morning's sample moves into an AI-assisted draft, then have an editor check it before export.",
@@ -93,7 +96,8 @@ const SCENARIOS: Scenario[] = [
       { label: "Export briefing", type: "report" },
     ],
     reviewIndex: 4,
-    approveLabel: "Approve briefing",
+    pauseNote: "Three holdings-related moves are waiting for the editor.",
+    approveLabel: "Approve briefing & publish",
     returnLabel: "Return for review",
     testedNote: "Sample test complete: 3 holdings-related moves go to the editor.",
   },
@@ -342,17 +346,12 @@ export function FeatureDemo() {
   const tested = phase === "awaiting" || phase === "returned" || phase === "done";
   const Result = RESULTS[scenario.id];
 
-  const statusChip = (label: string, active: boolean, tone: "neutral" | "ok" | "warn") => (
+  const statusChip = (label: string, active: boolean) => (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-sm px-1.5 py-0.5 text-[11px] font-medium",
-        active
-          ? tone === "ok"
-            ? "bg-ok-tint text-ok"
-            : tone === "warn"
-              ? "bg-warn-tint text-warn"
-              : "bg-neutral-tint text-ink-2"
-          : "text-ink-3",
+        "inline-flex items-center rounded-sm px-1.5 py-0.5 font-mono text-xs text-slate-500",
+        active &&
+          "rounded border border-slate-200 bg-slate-100 px-2 py-0.5 font-semibold text-slate-900",
       )}
     >
       {label}
@@ -360,220 +359,260 @@ export function FeatureDemo() {
   );
 
   return (
-    <section id="product" className="border-t border-border/70">
-      <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
+    <section
+      id="product"
+      className="section-light relative overflow-hidden"
+      style={{ backgroundColor: "#FFFFFF" }}
+    >
+      {/* 24px grid overlay, clamped to 1.5% opacity to sit behind the card frame */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.02) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+          opacity: 0.015,
+        }}
+      />
+
+      {/*
+       * Strict 16:9 stage at lg+ (1920×1080 at design size): fixed height,
+       * capped at 1080px, space-between so header / workspace / footer pin to
+       * the frame. Below lg it relaxes to a normal flowing section.
+       */}
+      <div className="relative mx-auto flex w-full max-w-full flex-col gap-10 px-6 py-14 md:px-12 lg:h-[100svh] lg:max-h-[1080px] lg:aspect-[16/9] lg:gap-0 lg:justify-between lg:overflow-hidden lg:px-24 lg:py-12">
+        {/* Section header */}
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-primary-ink">
-              <span className="h-px w-6 bg-primary/40" aria-hidden="true" />
-              See it work
+            <p className="flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#0F172A]">
+              <span
+                aria-hidden="true"
+                className="h-[3px] w-7 rounded-full bg-[#FF6B00] shadow-[0_0_8px_rgba(255,107,0,0.5)]"
+              />
+              Interactive sandbox
             </p>
-            <h2 className="mt-4 max-w-xl text-[28px] font-semibold leading-tight tracking-[-0.01em] md:text-[32px]">
-              Every run shows its steps.
+            <h2 className="mt-4 text-[30px] font-bold leading-tight tracking-[-0.01em] text-[#0F172A] md:text-[32px]">
+              Watch a promoted workflow execute step-by-step.
             </h2>
-            <p className="mt-3 max-w-xl text-[14px] leading-relaxed text-ink-2">
-              Choose a workflow and watch the sample run: each step completes in order, material
-              findings pause the run for a person, and nothing is finalised until someone decides.
+            <p className="mt-3 max-w-[720px] text-[14px] leading-relaxed text-[#475569]">
+              Select a workflow below to test the pipeline: watch inputs process, inspect exception
+              pauses, and approve the output.
             </p>
           </div>
           <SampleTag label="Simulated preview · Sample data" />
         </div>
 
-        <Tabs value={scenario.id} onValueChange={changeScenario} className="mt-8">
-          <TabsList className="h-auto w-full justify-start gap-1 rounded-lg border border-border bg-muted/50 p-1 sm:w-auto">
-            {SCENARIOS.map((s) => (
-              <TabsTrigger
-                key={s.id}
-                value={s.id}
-                className="rounded-md px-3.5 py-2 text-[13px] data-[state=active]:border data-[state=active]:border-line-strong data-[state=active]:bg-card data-[state=active]:shadow-sm"
-              >
-                {s.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+        {/* Workflow selector + simulation card */}
+        <div className="mx-auto w-full max-w-[1200px]">
+          <Tabs value={scenario.id} onValueChange={changeScenario}>
+            <TabsList className="flex h-auto w-full items-center gap-1 rounded-xl border border-slate-200/60 bg-slate-100/80 p-1.5">
+              {SCENARIOS.map((s) => (
+                <TabsTrigger
+                  key={s.id}
+                  value={s.id}
+                  className="flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:bg-[#FF6B00] data-[state=active]:text-white data-[state=active]:shadow-sm data-[state=inactive]:text-slate-600 hover:data-[state=inactive]:bg-slate-200/50 hover:data-[state=inactive]:text-slate-900"
+                >
+                  {s.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
 
-        <div className="mt-4 overflow-hidden rounded-lg border border-line-strong bg-card">
-          {/* Demo header */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-border bg-background px-4 py-3">
-            <div className="min-w-0">
-              <p className="text-[14px] font-semibold tracking-[-0.01em]">{scenario.title}</p>
-              <p className="mt-0.5 max-w-2xl text-[12px] leading-snug text-ink-2">{scenario.blurb}</p>
-            </div>
-            <div className="ml-auto flex items-center gap-2">
-              <SampleTag />
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-7"
-                onClick={() => start(scenario)}
-                disabled={phase === "running"}
-              >
-                <RotateCcw className="size-3.5" aria-hidden="true" />
-                Run again
-              </Button>
-            </div>
-          </div>
-
-          {phase === "idle" ? (
-            <div className="flex flex-col items-center justify-center gap-3 px-6 py-14 text-center">
-              <p className="text-[13.5px] text-ink-2">
-                This runs the selected workflow on labelled sample data.
-              </p>
-              <Button size="sm" onClick={() => start(scenario)}>
-                <Play className="size-3.5" aria-hidden="true" />
-                Run on sample data
-              </Button>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-[minmax(0,290px)_minmax(0,1fr)]">
-              {/* Step timeline */}
-              <div className="min-w-0 border-b border-border px-4 py-4 md:border-b-0 md:border-r">
-                <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
-                  Steps
+          <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+            {/* Demo header */}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-[#E2E8F0] pb-3.5">
+              <div className="min-w-0">
+                <p className="text-[14.5px] font-semibold tracking-[-0.01em] text-[#0F172A]">
+                  {scenario.title}
                 </p>
-                <ol className="mt-3 space-y-2.5">
-                  {scenario.steps.map((s, i) => {
-                    const state = states[i] ?? "queued";
-                    return (
-                      <li key={s.label} className="flex items-center gap-2.5">
-                        <span className="w-3.5 shrink-0 text-right text-[11px] tabular-nums text-ink-3">
-                          {i + 1}
-                        </span>
-                        <StepTypeIcon type={s.type} className="size-3.5 shrink-0 text-ink-3" />
-                        <span
-                          className={cn(
-                            "min-w-0 flex-1 truncate text-[12.5px]",
-                            state === "queued" ? "text-ink-3" : "font-medium text-foreground",
-                          )}
-                        >
-                          {s.label}
-                        </span>
-                        <StepStateIcon state={state} />
-                      </li>
-                    );
-                  })}
-                </ol>
+                <p className="mt-0.5 max-w-2xl text-[12px] leading-snug text-[#475569]">
+                  {scenario.blurb}
+                </p>
               </div>
+              <div className="ml-auto flex items-center gap-2">
+                <SampleTag />
+                <Button
+                  className="h-auto inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 font-mono text-xs font-medium text-slate-700 transition-colors hover:bg-slate-200/70"
+                  onClick={() => start(scenario)}
+                  disabled={phase === "running"}
+                >
+                  <RotateCcw className="size-3.5" aria-hidden="true" />
+                  Run again
+                </Button>
+              </div>
+            </div>
 
-              {/* Results + decision */}
-              <div className="min-w-0 px-4 py-4">
-                {phase === "running" && states.indexOf("running") < scenario.reviewIndex ? (
-                  <div className="flex h-full min-h-[176px] flex-col items-center justify-center gap-2 text-center">
-                    <p className="text-[12.5px] text-ink-2">
-                      Running step {Math.max(states.indexOf("running") + 1, 1)} of{" "}
-                      {scenario.steps.length}…
-                    </p>
-                    <p className="text-[11.5px] text-ink-3">
-                      Results appear here as the sample run reaches the review gate.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {Result ? <Result /> : null}
-                    {phase === "awaiting" && (
-                      <div className="rounded-md border border-warn/40 bg-warn-tint/40 px-3.5 py-3">
-                        <p className="flex items-center gap-2 text-[12.5px] font-medium text-foreground">
-                          <CircleAlert className="size-3.5 text-warn" aria-hidden="true" />
-                          Paused: {scenario.steps[scenario.reviewIndex].label} needs a person.
-                        </p>
-                        <p className="mt-1 text-[11.5px] text-ink-2">
-                          Approving completes the remaining steps; returning keeps the run paused.
-                        </p>
-                        <div className="mt-2.5 flex flex-wrap gap-2">
-                          <Button size="sm" className="h-7" onClick={approve}>
-                            {scenario.approveLabel}
-                            <ArrowRight className="size-3.5" aria-hidden="true" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-7"
-                            onClick={returnForReview}
+            {phase === "idle" ? (
+              <div className="flex flex-col items-center justify-center gap-3 px-6 py-12 text-center">
+                <p className="text-[13.5px] text-[#475569]">
+                  This runs the selected workflow on labelled sample data.
+                </p>
+                <Button
+                  size="sm"
+                  onClick={() => start(scenario)}
+                  className="bg-[#FF6B00] text-white shadow-[0_4px_16px_rgba(255,107,0,0.35)] hover:bg-[#FF7A1A]"
+                >
+                  <Play className="size-3.5" aria-hidden="true" />
+                  Run on sample data
+                </Button>
+              </div>
+            ) : (
+              <div className="grid gap-5 py-4 md:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
+                {/* Step timeline */}
+                <div className="min-w-0 md:border-r md:border-[#E2E8F0] md:pr-5">
+                  <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#64748B]">
+                    Steps
+                  </p>
+                  <ol className="mt-3 space-y-2.5">
+                    {scenario.steps.map((s, i) => {
+                      const state = states[i] ?? "queued";
+                      return (
+                        <li key={s.label} className="flex items-center gap-2.5">
+                          <span className="w-3.5 shrink-0 text-right text-[11px] tabular-nums text-[#64748B]">
+                            {i + 1}
+                          </span>
+                          <StepTypeIcon type={s.type} className="size-3.5 shrink-0 text-[#64748B]" />
+                          <span
+                            className={cn(
+                              "min-w-0 flex-1 truncate text-[12.5px]",
+                              state === "queued"
+                                ? "text-[#94A3B8]"
+                                : "font-medium text-[#0F172A]",
+                            )}
                           >
-                            {scenario.returnLabel}
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                    {phase === "returned" && (
-                      <div className="rounded-md border border-warn/40 bg-warn-tint/40 px-3.5 py-3 text-[12.5px] text-ink-2">
-                        Returned for review. The run stays paused and the final step does not run
-                        until a person approves.{" "}
-                        <button
-                          type="button"
-                          onClick={() => start(scenario)}
-                          className="font-medium text-primary-ink underline-offset-2 hover:underline"
-                        >
-                          Run again
-                        </button>
-                      </div>
-                    )}
-                    {phase === "done" && (
-                      <p className="rounded-md border border-ok/30 bg-ok-tint/50 px-3.5 py-2.5 text-[12.5px] font-medium text-ok">
-                        Run complete. Reviewed and finalised in this simulation.
+                            {s.label}
+                          </span>
+                          <StepStateIcon state={state} />
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </div>
+
+                {/* Results + decision */}
+                <div className="min-w-0">
+                  {phase === "running" && states.indexOf("running") < scenario.reviewIndex ? (
+                    <div className="flex h-full min-h-[176px] flex-col items-center justify-center gap-2 text-center">
+                      <p className="text-[12.5px] text-[#475569]">
+                        Running step {Math.max(states.indexOf("running") + 1, 1)} of{" "}
+                        {scenario.steps.length}…
                       </p>
-                    )}
-                  </div>
-                )}
+                      <p className="text-[11.5px] text-[#64748B]">
+                        Results appear here as the sample run reaches the review gate.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {Result ? <Result /> : null}
+                      {phase === "awaiting" && (
+                        <div className="my-4 rounded-xl border border-amber-200/80 bg-amber-50/70 p-4">
+                          <p className="mb-3 flex items-center gap-2 text-xs font-medium text-amber-900">
+                            <CircleAlert className="size-3.5 text-[#E14E00]" aria-hidden="true" />
+                            Paused for human review: {scenario.pauseNote}
+                          </p>
+                          <p className="mt-1 text-[11.5px] text-[#475569]">
+                            Approving completes the run; returning pauses the workflow for further
+                            inspection.
+                          </p>
+                          <div className="mt-2.5 flex flex-wrap gap-2">
+                            <Button
+                              className="h-auto inline-flex items-center gap-1 rounded-lg bg-[#FF6B00] px-4 py-2 text-xs font-semibold text-white shadow-sm transition-colors has-[>svg]:px-4 hover:bg-[#E56000]"
+                              onClick={approve}
+                            >
+                              {scenario.approveLabel}
+                              <ArrowRight className="size-3.5" aria-hidden="true" />
+                            </Button>
+                            <Button
+                              className="ml-2 h-auto inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-700 shadow-xs transition-colors hover:bg-slate-50"
+                              onClick={returnForReview}
+                            >
+                              {scenario.returnLabel}
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                      {phase === "returned" && (
+                        <div className="rounded-xl border border-[#FF6B00]/25 bg-[#FFF0E6] px-3.5 py-3 text-[12.5px] text-[#475569]">
+                          Returned for review. The run stays paused and the final step does not run
+                          until a person approves.{" "}
+                          <button
+                            type="button"
+                            onClick={() => start(scenario)}
+                            className="font-medium text-[#C24300] underline-offset-2 hover:underline"
+                          >
+                            Run again
+                          </button>
+                        </div>
+                      )}
+                      {phase === "done" && (
+                        <p className="rounded-xl border border-[#059669]/30 bg-[#059669]/[0.08] px-3.5 py-2.5 text-[12.5px] font-medium text-[#047857]">
+                          Run complete. Reviewed and finalised in this simulation.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-
-          {/* Test before publishing */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border bg-muted/30 px-4 py-3">
-            <p className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-3">
-              Test before publishing
-            </p>
-            <div className="flex items-center gap-1.5">
-              {statusChip("Draft", phase === "idle", "neutral")}
-              <span className="text-ink-3/50" aria-hidden="true">
-                →
-              </span>
-              {statusChip(phase === "running" ? "Testing" : "Tested", phase === "running" || tested, "warn")}
-              <span className="text-ink-3/50" aria-hidden="true">
-                →
-              </span>
-              {statusChip("Ready to publish", ready, "ok")}
-            </div>
-            <p className="text-[11.5px] text-ink-2">
-              {phase === "idle" && "Runs on sample data before anything is marked ready."}
-              {phase === "running" && "Running the workflow on sample data…"}
-              {tested && !ready && scenario.testedNote}
-              {ready && "Marked ready (simulated publish state)."}
-            </p>
-            {tested && !ready && (
-              <Button
-                size="sm"
-                variant="outline"
-                className="ml-auto h-7"
-                onClick={() => setReady(true)}
-              >
-                Mark ready
-              </Button>
             )}
-          </div>
 
-          <p className="sr-only" aria-live="polite">
-            {phase === "idle" && "Demo ready. Press run to start the sample workflow."}
-            {phase === "running" && "Sample run in progress."}
-            {phase === "awaiting" && "Sample run paused at review, awaiting a simulated decision."}
-            {phase === "returned" && "Sample run returned for review."}
-            {phase === "done" && "Sample run complete."}
-          </p>
+            {/* Test before publishing */}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-[#E2E8F0] pt-3.5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#64748B]">
+                Status
+              </p>
+              <div className="flex items-center gap-1.5">
+                {statusChip("Draft", phase === "idle")}
+                <span className="text-[#94A3B8]" aria-hidden="true">
+                  →
+                </span>
+                {statusChip(
+                  phase === "running" ? "Testing" : "Tested",
+                  phase === "running" || tested,
+                )}
+                <span className="text-[#94A3B8]" aria-hidden="true">
+                  →
+                </span>
+                {statusChip("Ready to publish", ready)}
+              </div>
+              <p className="text-[11.5px] text-[#475569]">
+                {phase === "idle" && "Runs on sample data before anything is marked ready."}
+                {phase === "running" && "Running the workflow on sample data…"}
+                {tested && !ready && scenario.testedNote}
+                {ready && "Deployed to production (simulated publish state)."}
+              </p>
+              {tested && !ready && (
+                <Button
+                  className="ml-auto h-auto rounded-lg bg-slate-900 px-4 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-slate-800"
+                  onClick={() => setReady(true)}
+                >
+                  Deploy to production
+                </Button>
+              )}
+            </div>
+
+            <p className="sr-only" aria-live="polite">
+              {phase === "idle" && "Demo ready. Press run to start the sample workflow."}
+              {phase === "running" && "Sample run in progress."}
+              {phase === "awaiting" && "Sample run paused at review, awaiting a simulated decision."}
+              {phase === "returned" && "Sample run returned for review."}
+              {phase === "done" && "Sample run complete."}
+            </p>
+          </div>
         </div>
 
-        <div className="mt-5 grid gap-3 text-[12.5px] leading-relaxed text-ink-2 sm:grid-cols-3">
+        {/* Footer explanation grid */}
+        <div className="grid gap-3 text-[13px] leading-[1.4] text-[#64748B] sm:grid-cols-3">
           <p>
-            <span className="font-medium text-foreground">1. Start from a template.</span> Input,
+            <span className="font-semibold text-[#0F172A]">1. Start from a template.</span> Input,
             calculation, check, review and output arrive as an ordered workflow.
           </p>
           <p>
-            <span className="font-medium text-foreground">2. Watch every step.</span> The timeline
+            <span className="font-semibold text-[#0F172A]">2. Watch every step.</span> The timeline
             moves from queued to complete, with the key setting shown beside it.
           </p>
           <p>
-            <span className="font-medium text-foreground">3. Test, then publish.</span> A sample
+            <span className="font-semibold text-[#0F172A]">3. Test, then publish.</span> A sample
             test shows the outcome before a workflow is marked ready.
           </p>
         </div>

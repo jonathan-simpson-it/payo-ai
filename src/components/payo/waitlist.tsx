@@ -11,13 +11,13 @@ import { cn } from "@/lib/utils";
 const ROLE_OPTIONS: { value: WaitlistRole; label: string }[] = [
   { value: "investment-risk", label: "Investment & risk" },
   { value: "fund-operations", label: "Fund operations" },
-  { value: "sme-finance", label: "SME finance" },
+  { value: "sme-finance", label: "Corporate finance" },
 ];
 
 const ROLE_LABEL: Record<WaitlistRole, string> = {
   "investment-risk": "Investment & risk",
   "fund-operations": "Fund operations",
-  "sme-finance": "SME finance",
+  "sme-finance": "Corporate finance",
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -141,16 +141,22 @@ export function WaitlistSection() {
   };
 
   return (
-    <section id="waitlist" className="border-t border-border/70 bg-card/50">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14">
+    <section
+      id="waitlist"
+      className="relative flex min-h-[100svh] flex-col justify-center border-t border-white/[0.08]"
+    >
+      {/* Central radiant orange glow */}
+      <div className="relative mx-auto grid w-full max-w-6xl gap-10 px-6 py-16 md:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14">
         <div>
           <Eyebrow>Early access</Eyebrow>
-          <h2 className="mt-4 max-w-xl text-[28px] font-semibold leading-tight tracking-[-0.01em] md:text-[32px]">
-            Join the waitlist.
+          <h2 className="mt-4 max-w-xl text-[28px] font-semibold leading-tight tracking-[-0.01em] text-white md:text-[32px]">
+            Stop wrestling spreadsheets.
+            <br />
+            Start describing workflows.
           </h2>
-          <p className="mt-4 max-w-md text-[14.5px] leading-relaxed text-ink-2">
-            Payo is in early development. Join the waitlist and we will share early access and
-            launch updates as the product takes shape.
+          <p className="mt-4 max-w-md text-[14.5px] leading-relaxed text-[#A7B0BA]">
+            Join the early access program to turn your team's manual financial runbooks into
+            visual, automated, and auditable pipelines.
           </p>
           <ul className="mt-6 space-y-2.5">
             {[
@@ -158,15 +164,15 @@ export function WaitlistSection() {
               "Occasional launch updates, nothing else",
               "The demo workspace stays open to explore in the meantime",
             ].map((line) => (
-              <li key={line} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-ink-2">
-                <Check className="mt-0.5 size-4 shrink-0 text-ok" aria-hidden="true" />
+              <li key={line} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-[#A7B0BA]">
+                <Check className="mt-0.5 size-4 shrink-0 text-[#4FAE7E]" aria-hidden="true" />
                 {line}
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="rounded-lg border border-border bg-card p-5 md:p-6">
+        <div className="glass edge-lit rounded-xl p-5 md:p-6">
           {done ? (
             <div className="flex flex-col items-start gap-3 py-6">
               <span className="grid size-9 place-items-center rounded-full bg-ok-tint text-ok">
@@ -208,10 +214,10 @@ export function WaitlistSection() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  placeholder="you@example.com"
+                  placeholder="Enter your enterprise email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-9 w-full rounded-md border border-input bg-background px-2.5 text-[13.5px] outline-none transition-colors focus:border-primary-strong"
+                  className="h-9 w-full rounded-md border border-slate-700 bg-slate-900/80 px-2.5 text-[13.5px] text-slate-100 outline-none transition-colors placeholder:text-slate-500 focus:border-[#FF6B00]"
                 />
               </div>
 
@@ -232,7 +238,7 @@ export function WaitlistSection() {
                           "rounded-md border px-3 py-1.5 text-[13px] font-medium transition-colors",
                           active
                             ? "border-primary-soft bg-primary-tint text-primary-ink"
-                            : "border-border bg-background text-ink-2 hover:border-line-strong",
+                            : "border-slate-700 bg-background text-slate-300 hover:border-slate-500",
                         )}
                       >
                         {o.label}
@@ -257,12 +263,12 @@ export function WaitlistSection() {
               </label>
 
               <div className="space-y-2.5">
-                <Button type="submit" className="w-full" disabled={busy}>
-                  {busy ? "Joining…" : "Join the waitlist"}
+                <Button type="submit" className="neon-cta w-full rounded-full" disabled={busy}>
+                  {busy ? "Joining…" : "Get early access"}
                   {!busy && <ArrowRight className="size-4" aria-hidden="true" />}
                 </Button>
                 <p className="text-center text-[11.5px] text-ink-3">
-                  Free during early access · No spam, launch updates only.
+                  Free during early access sandbox. Zero spam. Exportable audit trails included.
                 </p>
               </div>
 
@@ -299,7 +305,7 @@ export function WaitlistSection() {
                     autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="h-9 w-full rounded-md border border-input bg-background px-2.5 pr-9 text-[13.5px] outline-none transition-colors focus:border-primary-strong"
+                    className="h-9 w-full rounded-md border border-slate-700 bg-slate-900/80 px-2.5 pr-9 text-[13.5px] text-slate-100 outline-none transition-colors placeholder:text-slate-500 focus:border-[#FF6B00]"
                   />
                   <button
                     type="button"

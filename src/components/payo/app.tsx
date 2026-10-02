@@ -12,6 +12,7 @@ import { routeKey, useRoute } from "@/lib/payo/router";
 import { PayoProvider, UIProvider } from "@/lib/payo/store";
 import { TemplateLibrary } from "@/components/payo/templates";
 import { AboutDemoDialog } from "@/components/payo/ui";
+import { PayooChat } from "@/components/payo/payoo-chat";
 import { WorkspaceShell } from "@/components/payo/shell";
 
 function Router() {
@@ -43,7 +44,8 @@ function Router() {
     <>
       {route.name === "landing" ? view : <WorkspaceShell route={route}>{view}</WorkspaceShell>}
       <AboutDemoDialog />
-      <Toaster position="bottom-right" />
+      <PayooChat />
+      <Toaster position="bottom-left" />
     </>
   );
 }
