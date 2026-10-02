@@ -6,7 +6,6 @@ import type { ReactNode } from "react";
 import { usePayo, useUI } from "@/lib/payo/store";
 import type { Route } from "@/lib/payo/router";
 import { PayoMark } from "@/components/payo/mark";
-import { ThemeToggle } from "@/components/payo/theme-toggle";
 import { RunStatusChip } from "@/components/payo/ui";
 import { cn } from "@/lib/utils";
 
@@ -86,12 +85,19 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 href={`#/workspace/${item.area}`}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-md px-3 py-2 text-[13.5px] font-medium transition-colors",
+                  "relative flex items-center gap-2.5 rounded-md px-3 py-2 text-[13.5px] font-medium transition-colors",
                   active
-                    ? "bg-primary-tint text-primary-ink"
+                    ? "bg-muted text-foreground"
                     : "text-ink-2 hover:bg-muted hover:text-foreground",
                 )}
               >
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "absolute left-0 top-1/2 h-[18px] w-1 -translate-y-1/2 rounded-full bg-payo-orange transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                    active ? "opacity-100" : "opacity-0",
+                  )}
+                />
                 <Icon className="size-4" aria-hidden="true" />
                 {item.label}
                 {item.area === "runs" && needsReviewCount > 0 && (
@@ -140,7 +146,6 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 <RunStatusChip status={runById(engine.runId)?.status ?? "running"} />
               </a>
             )}
-            <ThemeToggle />
             <button
               type="button"
               onClick={openAbout}
@@ -174,7 +179,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "shrink-0 rounded-md px-3 py-1.5 text-[13px] font-medium",
-                  active ? "bg-primary-tint text-primary-ink" : "text-ink-2",
+                  active ? "bg-muted text-foreground" : "text-ink-2",
                 )}
               >
                 {item.label}

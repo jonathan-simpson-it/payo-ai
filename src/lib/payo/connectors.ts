@@ -1,9 +1,9 @@
 import type { StepTypeId } from "./types";
 
 /**
- * Planned connections for Payo: every entry is fictional/illustrative and is
- * labelled "Planned" in the interface. Nothing here is connected in this
- * prototype; no external service is called.
+ * Illustrative connections for Payo. Nothing here is connected in this
+ * prototype and no external service is called; the connection status is
+ * stated once per surface rather than on every card.
  */
 
 export interface ConnectorSource {
