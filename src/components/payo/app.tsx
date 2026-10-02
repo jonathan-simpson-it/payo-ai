@@ -44,7 +44,7 @@ function Router() {
     <>
       {route.name === "landing" ? view : <WorkspaceShell route={route}>{view}</WorkspaceShell>}
       <AboutDemoDialog />
-      <PayooChat />
+      <PayooChat dark={route.name === "landing"} />
       <Toaster position="bottom-left" />
     </>
   );

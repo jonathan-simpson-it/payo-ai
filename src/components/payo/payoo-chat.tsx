@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
  * Clicking Payoo opens a small chat panel preview. Typing works locally as
  * a preview; nothing is sent to a server yet.
  */
-export function PayooChat() {
+export function PayooChat({ dark = false }: { dark?: boolean }) {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const [sent, setSent] = useState<string[]>([]);
@@ -26,17 +26,35 @@ export function PayooChat() {
   return (
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
       {open && (
-        <div className="w-72 overflow-hidden rounded-2xl border border-white/10 bg-[#0F172A] shadow-[0_24px_48px_-16px_rgba(0,0,0,0.7)]">
+        <div
+          className={cn(
+            "w-72 overflow-hidden rounded-2xl border shadow-[0_24px_48px_-20px_rgba(0,0,0,0.5)]",
+            dark
+              ? "border-white/[0.10] bg-[#14171B] text-[#E9EDF2]"
+              : "border-border bg-popover text-popover-foreground",
+          )}
+        >
           {/* Header: Payoo + in-development status */}
-          <div className="flex items-center gap-2.5 border-b border-white/[0.08] px-4 py-3">
+          <div className={cn("flex items-center gap-2.5 border-b px-4 py-3", dark ? "border-white/[0.08]" : "border-border")}>
             <PayoMark className="size-7" />
             <div className="min-w-0">
-              <p className="text-[13px] font-semibold leading-tight text-white">Payoo</p>
-              <p className="text-[11px] leading-tight text-[#8B939B]">Your workflow helper</p>
+              <p className={cn("text-[13px] font-semibold leading-tight", dark ? "text-[#E9EDF2]" : "text-foreground")}>
+                Payoo
+              </p>
+              <p className={cn("text-[11px] leading-tight", dark ? "text-[#6E7681]" : "text-ink-3")}>
+                Your workflow helper
+              </p>
             </div>
-            <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[10.5px] font-medium text-amber-400">
+            <span
+              className={cn(
+                "ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10.5px] font-medium",
+                dark
+                  ? "border-warn/30 bg-warn/10 text-warn"
+                  : "border-warn-border bg-warn-tint text-warn",
+              )}
+            >
               <span
-                className="size-1.5 animate-pulse rounded-full bg-amber-400"
+                className="size-1.5 animate-pulse rounded-full bg-warn"
                 aria-hidden="true"
               />
               Coming soon
@@ -45,14 +63,22 @@ export function PayooChat() {
 
           {/* Body: greeting + locally typed preview messages */}
           <div className="flex max-h-56 flex-col gap-2 overflow-y-auto px-4 py-4">
-            <div className="max-w-[230px] self-start rounded-2xl rounded-tl-md bg-white/[0.06] px-3.5 py-2.5 text-[12.5px] leading-relaxed text-[#E9EEF3]">
+            <div
+              className={cn(
+                "max-w-[230px] self-start rounded-2xl rounded-tl-md px-3.5 py-2.5 text-[12.5px] leading-relaxed",
+                dark ? "bg-white/[0.06] text-[#E9EDF2]" : "bg-muted text-foreground",
+              )}
+            >
               Hi, I&apos;m Payoo! I&apos;ll help you run your finance workflows
               here soon. I&apos;m still in development.
             </div>
             {sent.map((m, i) => (
               <div
                 key={i}
-                className="ml-auto max-w-[230px] rounded-2xl rounded-br-md bg-[#FF6B00]/[0.15] px-3.5 py-2.5 text-[12.5px] leading-relaxed text-[#FFE1CC]"
+                className={cn(
+                  "ml-auto max-w-[230px] rounded-2xl rounded-br-md px-3.5 py-2.5 text-[12.5px] leading-relaxed",
+                  dark ? "bg-[#C9500A]/[0.15] text-[#F08A3C]" : "bg-primary/15 text-primary-ink",
+                )}
               >
                 {m}
               </div>
@@ -61,20 +87,28 @@ export function PayooChat() {
 
           {/* Footer: real input, local preview only */}
           <form
-            className="border-t border-white/[0.08] px-3 py-2.5"
+            className={cn("border-t px-3 py-2.5", dark ? "border-white/[0.08]" : "border-border")}
             onSubmit={(e) => {
               e.preventDefault();
               submit();
             }}
           >
-            <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] py-1 pl-3 pr-1.5">
+            <div
+              className={cn(
+                "flex items-center gap-2 rounded-full border py-1 pl-3 pr-1.5",
+                dark ? "border-white/10 bg-white/[0.04]" : "border-border bg-muted",
+              )}
+            >
               <input
                 type="text"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Ask me anything…"
                 aria-label="Message Payoo"
-                className="h-7 w-full bg-transparent text-[12px] text-[#E9EEF3] outline-none placeholder:text-[#6B7480]"
+                className={cn(
+                  "h-7 w-full bg-transparent text-[12px] outline-none",
+                  dark ? "text-[#E9EDF2] placeholder:text-[#6E7681]" : "text-foreground placeholder:text-ink-3",
+                )}
               />
               <button
                 type="submit"
@@ -83,8 +117,10 @@ export function PayooChat() {
                 className={cn(
                   "grid size-6 shrink-0 place-items-center rounded-full transition-colors",
                   draft.trim()
-                    ? "bg-[#FF6B00] text-white"
-                    : "bg-white/10 text-[#8B939B]",
+                    ? "bg-[#C9500A] text-white"
+                    : dark
+                      ? "bg-white/10 text-[#6E7681]"
+                      : "bg-muted text-ink-3",
                 )}
               >
                 <ArrowUp className="size-3.5" aria-hidden="true" />
@@ -94,7 +130,14 @@ export function PayooChat() {
         </div>
       )}
       {!open && (
-        <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-500 shadow-sm">
+        <span
+          className={cn(
+            "rounded-full border px-2.5 py-1 text-[11px] font-medium shadow-sm",
+            dark
+              ? "border-white/[0.12] bg-[#14171B] text-[#A9B1BA]"
+              : "border-border bg-card text-ink-2",
+          )}
+        >
           Hi, I&apos;m Payoo, your assistant
         </span>
       )}

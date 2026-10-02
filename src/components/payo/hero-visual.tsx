@@ -79,7 +79,7 @@ function TranslucentWindow({
         <span
           className={cn(
             "ml-1 truncate text-[9.5px] font-medium",
-            tone === "light" ? "text-black/55" : "text-[#8B939B]",
+            tone === "light" ? "text-black/55" : "text-ink-3",
           )}
         >
           {title}
@@ -101,12 +101,12 @@ function MiniChip({
   const tones = {
     neutral: "border-black/[0.15] bg-black/[0.05] text-black/60",
     warn: "border-[#FDE68A] bg-[#FFFBEB] text-[#D97706]",
-    brand: "border-[#FF6B00]/30 bg-[#FF6B00]/[0.08] text-[#FF8133]",
+    brand: "border-primary/30 bg-primary/10 text-primary-ink",
   };
   const dots = {
     neutral: "bg-black/40",
     warn: "bg-[#B25E00]",
-    brand: "bg-[#FF6B00]",
+    brand: "bg-primary",
   };
   return (
     <span
@@ -223,7 +223,7 @@ function DashboardWindow() {
     { h: 32, c: "rgba(148,163,184,0.45)" },
     { h: 24, c: "rgba(148,163,184,0.35)" },
     { h: 36, c: "rgba(148,163,184,0.45)" },
-    { h: 46, c: "#FF6B00" },
+    { h: 46, c: "#C9500A" },
     { h: 50, c: "#FF8133" },
   ];
   return (
@@ -237,13 +237,13 @@ function DashboardWindow() {
           <p className="font-mono text-[13px] font-semibold leading-none tabular-nums text-[#F87171]">
             2
           </p>
-          <p className="mt-1 text-[8.5px] text-[#8B939B]">Exceptions</p>
+          <p className="mt-1 text-[8.5px] text-ink-3">Exceptions</p>
         </div>
         <div>
           <p className="font-mono text-[13px] font-semibold leading-none tabular-nums text-white">
             8
           </p>
-          <p className="mt-1 text-[8.5px] text-[#8B939B]">Funds checked</p>
+          <p className="mt-1 text-[8.5px] text-ink-3">Funds checked</p>
         </div>
       </div>
       <div className="px-3 pb-3 pt-1.5">
@@ -268,8 +268,8 @@ function DashboardWindow() {
 
 function MiniChipDark({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded border border-[#94A3B8]/30 bg-[#94A3B8]/[0.1] px-1.5 py-px text-[8.5px] font-medium text-[#CBD5E1]">
-      <span className="size-1 rounded-full bg-[#94A3B8]" aria-hidden="true" />
+    <span className="inline-flex items-center gap-1 rounded border border-border bg-white/[0.05] px-1.5 py-px text-[8.5px] font-medium text-ink-2">
+      <span className="size-1 rounded-full bg-neutral" aria-hidden="true" />
       {children}
     </span>
   );
@@ -318,8 +318,8 @@ function ReconciliationWindow() {
         <WindowDots />
         <span className="ml-1.5 text-[12px] font-semibold tracking-tight text-white">Payo AI</span>
         <span className="text-white/20">/</span>
-        <span className="truncate text-[12px] text-[#8B939B]">NAV Reconciliation</span>
-        <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded border border-white/[0.12] px-1.5 py-px text-[10px] font-medium text-[#8B939B]">
+        <span className="truncate text-[12px] text-ink-3">NAV Reconciliation</span>
+        <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded border border-white/[0.12] px-1.5 py-px text-[10px] font-medium text-ink-3">
           <span className="size-1.5 rounded-full bg-white/[0.35]" aria-hidden="true" />
           Sample data
         </span>
@@ -341,7 +341,7 @@ function ReconciliationWindow() {
       <div className="mx-3.5 mb-3 overflow-x-auto rounded-lg border border-white/[0.08]">
         <table className="w-full min-w-[430px] border-collapse text-[11px]">
           <thead>
-            <tr className="border-b border-white/[0.08] bg-white/[0.04] text-left text-[9.5px] text-[#6B7480]">
+            <tr className="border-b border-white/[0.08] bg-white/[0.04] text-left text-[9.5px] text-ink-3">
               <th className="whitespace-nowrap px-1.5 py-1.5 font-medium">Fund</th>
               <th className="px-1.5 py-1.5 text-right font-medium">
                 Administrator NAV
@@ -426,12 +426,12 @@ function ReconciliationWindow() {
 
       {/* Review footer */}
       <div className="flex items-center justify-between gap-3 border-t border-white/[0.08] bg-white/[0.02] px-3.5 py-2.5">
-        <p className="flex items-center gap-1.5 text-[10.5px] text-[#8B939B]">
+        <p className="flex items-center gap-1.5 text-[10.5px] text-ink-3">
           <CircleAlert className="size-3 shrink-0 text-[#D97706]" aria-hidden="true" />
           {exceptions} exceptions routed for human review
         </p>
         <div className="flex shrink-0 items-center gap-1.5">
-          <span className="rounded-md border border-white/[0.12] bg-white/[0.04] px-2 py-1 text-[10px] font-medium text-[#A7B0BA]">
+          <span className="rounded-md border border-white/[0.12] bg-white/[0.04] px-2 py-1 text-[10px] font-medium text-ink-2">
             Return for review
           </span>
           <span className="rounded-md bg-white px-2 py-1 text-[10px] font-medium text-black">

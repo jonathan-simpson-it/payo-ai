@@ -43,17 +43,17 @@ import { cn } from "@/lib/utils";
 const EASE = "ease-[cubic-bezier(0.22,1,0.36,1)]";
 
 const CARD_LIFT = cn(
-  "relative z-0 rounded-2xl border border-border bg-card shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)]",
-  "transition-[transform,box-shadow,border-color,background-color] duration-300",
+  "relative z-0 rounded-2xl border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.03)]",
+  "transition-[border-color,background-color] duration-300",
   EASE,
-  "hover:z-10 hover:-translate-y-1 hover:border-line-strong hover:shadow-[0_18px_36px_-14px_rgba(0,0,0,0.16)]",
+  "hover:border-line-strong",
 );
 
 const CTA_GLOW = cn(
-  "bg-payo-orange text-white shadow-[0_6px_18px_-6px_rgba(255,107,0,0.55)]",
-  "transition-[background-color,box-shadow,transform] duration-200",
+  "bg-primary text-primary-foreground",
+  "transition-colors duration-200",
   EASE,
-  "hover:-translate-y-px hover:bg-payo-orange-strong hover:shadow-[0_10px_24px_-6px_rgba(255,107,0,0.65)]",
+  "hover:bg-primary-strong",
 );
 
 // ─── Library catalogue helpers ───────────────────────────────────────────────
@@ -154,8 +154,8 @@ function StepNode({
           "grid place-items-center rounded-full border border-line-strong/80 bg-background text-ink-2 shadow-xs outline-none",
           "transition-[border-color,background-color,color,box-shadow] duration-200",
           EASE,
-          "hover:border-payo-orange/60 hover:bg-payo-orange-tint hover:text-payo-orange",
-          "focus-visible:border-payo-orange focus-visible:ring-[3px] focus-visible:ring-payo-orange/25",
+          "hover:border-line-strong hover:bg-muted hover:text-foreground",
+          "focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-primary/25",
           size === "sm" ? "size-8" : "size-9",
         )}
       >
@@ -200,7 +200,7 @@ function StepConnector({ className }: { className?: string }) {
     <span
       aria-hidden="true"
       className={cn(
-        "h-px bg-line-strong/70 transition-colors duration-300 group-hover:bg-payo-orange/30",
+        "h-px bg-line-strong/70 transition-colors duration-300 group-hover:bg-line-strong",
         className,
       )}
     />
@@ -241,7 +241,7 @@ function PipelineTrack({ steps }: { steps: StepDef[] }) {
 
 function RunTimeBadge({ template }: { template: TemplateDef }) {
   return (
-    <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-payo-orange-tint px-1.5 py-0.5 text-[11px] font-medium text-payo-orange">
+    <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-medium text-ink-2">
       <Zap className="size-3" fill="currentColor" aria-hidden="true" />
       {runTimeLabel(template)}
     </span>
@@ -259,7 +259,7 @@ function HumanInTheLoopBadge() {
 
 function InDevelopmentBadge() {
   return (
-    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-warn-border bg-warn-tint px-2 py-0.5 text-[11px] font-medium text-warn shadow-[0_0_10px_-2px_rgba(217,119,6,0.35)]">
+    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-warn-border bg-warn-tint px-2 py-0.5 text-[11px] font-medium text-warn">
       <Clock className="size-3" aria-hidden="true" />
       In development
     </span>
@@ -394,14 +394,14 @@ function NotifyButton({ templateId, name }: { templateId: string; name: string }
         "transition-[border-color,background-color,color,box-shadow] duration-200",
         EASE,
         on
-          ? "border-payo-orange/45 bg-payo-orange-tint text-payo-orange"
-          : "border-line-strong bg-transparent text-ink-2 hover:border-payo-orange/50 hover:text-payo-orange hover:shadow-[0_4px_12px_-4px_rgba(255,107,0,0.35)]",
+          ? "border-line-strong bg-muted text-foreground"
+          : "border-line-strong bg-transparent text-ink-2 hover:border-foreground/30 hover:text-foreground",
       )}
     >
       {on ? (
         <Check className="size-3.5" aria-hidden="true" />
       ) : (
-        <BellPlus className="size-3.5 text-payo-orange" aria-hidden="true" />
+        <BellPlus className="size-3.5 text-ink-3" aria-hidden="true" />
       )}
       {on ? "On the list" : "Notify when ready"}
     </button>
@@ -523,7 +523,7 @@ function LibraryControls({
       <div className="flex flex-wrap items-center gap-2.5">
         <div className="group relative min-w-[210px] flex-1 sm:max-w-sm">
           <Search
-            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-3 transition-colors duration-200 group-focus-within:text-payo-orange"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-3 transition-colors duration-200 group-focus-within:text-foreground"
             aria-hidden="true"
           />
           <input
@@ -546,7 +546,7 @@ function LibraryControls({
               "transition-[border-color,box-shadow] duration-200",
               EASE,
               "hover:border-line-strong",
-              "focus:border-payo-orange/60 focus:shadow-[0_0_0_3px_rgba(255,107,0,0.13)]",
+              "focus:border-primary/60 focus:shadow-[0_0_0_3px_rgba(201,80,10,0.13)]",
             )}
           />
           {query ? (
@@ -596,7 +596,7 @@ function LibraryControls({
                 "grid size-8 place-items-center rounded-lg transition-[background-color,color] duration-200",
                 EASE,
                 view === "grid"
-                  ? "bg-payo-orange-tint text-payo-orange"
+                  ? "bg-muted text-foreground"
                   : "text-ink-3 hover:text-foreground",
               )}
             >
@@ -611,7 +611,7 @@ function LibraryControls({
                 "grid size-8 place-items-center rounded-lg transition-[background-color,color] duration-200",
                 EASE,
                 view === "pipeline"
-                  ? "bg-payo-orange-tint text-payo-orange"
+                  ? "bg-muted text-foreground"
                   : "text-ink-3 hover:text-foreground",
               )}
             >
@@ -634,12 +634,12 @@ function LibraryControls({
                 "transition-[border-color,background-color,color,box-shadow] duration-200",
                 EASE,
                 active
-                  ? "border-payo-orange bg-payo-orange text-white shadow-[0_4px_14px_-4px_rgba(255,107,0,0.55)]"
+                  ? "border-foreground bg-foreground text-background"
                   : "border-border bg-card text-ink-2 hover:border-line-strong hover:text-foreground",
               )}
             >
               {f.label}
-              <span className={cn("text-[11px] tabular-nums", active ? "text-white/70" : "text-ink-3")}>
+              <span className={cn("text-[11px] tabular-nums", active ? "text-background/70" : "text-ink-3")}>
                 {counts[f.id]}
               </span>
             </button>

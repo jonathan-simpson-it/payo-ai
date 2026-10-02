@@ -161,7 +161,7 @@ function TimelineRow({
             aria-valuemax={100}
           >
             <div
-              className="h-full rounded-full bg-primary transition-[width] duration-150 ease-linear"
+              className="h-full rounded-full bg-ink-2 transition-[width] duration-150 ease-linear"
               style={{ width: `${Math.min(100, (progress ?? 0) * 100)}%` }}
             />
           </div>

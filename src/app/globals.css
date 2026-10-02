@@ -54,10 +54,11 @@
 }
 
 /*
- * Payo light theme: quiet warm paper, ink text, Payo orange for action.
- * Colour is semantic: orange = action/selection/brand, green = complete,
- * amber = needs review, red = exception. Status pills use muted tints with
- * 1px borders (enterprise standard), never saturated or neon fills.
+ * Payo light theme: quiet warm paper, ink text, deep Payo orange for action.
+ * Colour is semantic: orange = primary action/brand only, green = complete,
+ * amber = needs review, red = exception. Selection states are neutral ink and
+ * grey, never orange. Status pills use muted tints with 1px borders
+ * (enterprise standard), never saturated or neon fills.
  */
 :root {
   --radius: 0.5rem;
@@ -68,13 +69,13 @@
   --card-foreground: #1c2024;
   --popover: #ffffff;
   --popover-foreground: #1c2024;
-  --primary: #ff6b00;
+  --primary: #c9500a;
   --primary-foreground: #ffffff;
-  --primary-strong: #ea5f00;
-  --primary-deep: #c24300;
-  --primary-ink: #c24300;
+  --primary-strong: #b24508;
+  --primary-deep: #9c3b00;
+  --primary-ink: #b33a00;
   --primary-tint: #fff0e6;
-  --primary-soft: rgba(255, 107, 0, 0.28);
+  --primary-soft: rgba(201, 80, 10, 0.28);
   --secondary: #efeee9;
   --secondary-foreground: #1c2024;
   --muted: #efeee9;
@@ -84,7 +85,7 @@
   --destructive: #dc2626;
   --border: #e5e3dd;
   --input: #d2cfc7;
-  --ring: #ff6b00;
+  --ring: #c9500a;
 
   --ink-2: #5b636b;
   --ink-3: #8a9199;
@@ -103,12 +104,16 @@
   --neutral-tint: #f1f5f9;
   --neutral-border: #e2e8f0;
 
-  /* Aliases kept for components that reference the brand accent directly. */
-  --payo-orange: #ff6b00;
-  --payo-orange-strong: #ea5f00;
+  /*
+   * Action aliases. The bright #FF6B00 is reserved for the Payoo mascot and
+   * favicon (both use the literal hex in mark.tsx); UI actions use the deeper
+   * orange so filled buttons keep white-text contrast.
+   */
+  --payo-orange: #c9500a;
+  --payo-orange-strong: #b24508;
   --payo-orange-tint: #fff0e6;
 
-  --select-bg: #ffe8d9;
+  --select-bg: #e8e4dd;
   --scroll-thumb: #d6d3cb;
   --scroll-thumb-hover: #c4c0b6;
   --scroll-edge: #f6f5f1;
@@ -121,13 +126,13 @@
   --card-foreground: #e2e8f0;
   --popover: #182234;
   --popover-foreground: #e2e8f0;
-  --primary: #ff6b00;
+  --primary: #c9500a;
   --primary-foreground: #ffffff;
-  --primary-strong: #ff8133;
-  --primary-deep: #d95400;
-  --primary-ink: #ffa45c;
-  --primary-tint: rgba(255, 107, 0, 0.14);
-  --primary-soft: rgba(255, 107, 0, 0.35);
+  --primary-strong: #b24508;
+  --primary-deep: #9c3b00;
+  --primary-ink: #f08a3c;
+  --primary-tint: rgba(201, 80, 10, 0.14);
+  --primary-soft: rgba(201, 80, 10, 0.35);
   --secondary: rgba(148, 163, 184, 0.1);
   --secondary-foreground: #e2e8f0;
   --muted: rgba(148, 163, 184, 0.1);
@@ -137,7 +142,7 @@
   --destructive: #f87171;
   --border: rgba(255, 255, 255, 0.08);
   --input: rgba(255, 255, 255, 0.14);
-  --ring: #ff8133;
+  --ring: #c9500a;
 
   --ink-2: #94a3b8;
   --ink-3: #64748b;
@@ -156,11 +161,11 @@
   --neutral-tint: rgba(148, 163, 184, 0.12);
   --neutral-border: rgba(148, 163, 184, 0.25);
 
-  --payo-orange: #ff6b00;
-  --payo-orange-strong: #ff7d1f;
-  --payo-orange-tint: rgba(255, 107, 0, 0.14);
+  --payo-orange: #c9500a;
+  --payo-orange-strong: #b24508;
+  --payo-orange-tint: rgba(201, 80, 10, 0.14);
 
-  --select-bg: rgba(255, 107, 0, 0.18);
+  --select-bg: rgba(255, 255, 255, 0.14);
   --scroll-thumb: rgba(255, 255, 255, 0.14);
   --scroll-thumb-hover: rgba(255, 255, 255, 0.24);
   --scroll-edge: #0b0f17;
@@ -168,86 +173,87 @@
 
 /*
  * Landing-only dark scope ("ui-only-dark-mode").
- * Enterprise financial-terminal surfaces: deep slate, clean translucent
- * borders, a single orange brand accent and muted green success states.
- * Scoped to .payo-neon so the workspace keeps its own theme.
+ * One continuous neutral-charcoal canvas. Bands may only shift between
+ * #0D0F12 and #101318, separated by hairlines; panels sit at #14171B and
+ * raised overlays at #1A1E24. Orange is a single restrained action accent,
+ * never a surface wash, glow or selection fill. Scoped to .payo-neon so the
+ * light workspace keeps its own theme.
  */
 .payo-neon {
   --radius: 0.625rem;
 
-  --background: #0b0f17;
-  --foreground: #edf1f5;
-  --card: rgba(30, 41, 59, 0.65);
-  --card-foreground: #edf1f5;
-  --popover: rgba(15, 23, 42, 0.92);
-  --popover-foreground: #edf1f5;
-  --primary: #ff6b00;
+  --background: #0d0f12;
+  --band: #101318;
+  --foreground: #e9edf2;
+  --card: #14171b;
+  --card-foreground: #e9edf2;
+  --popover: #1a1e24;
+  --popover-foreground: #e9edf2;
+  --primary: #c9500a;
   --primary-foreground: #ffffff;
-  --primary-strong: #ff8133;
-  --primary-deep: #d95400;
-  --primary-ink: #ffa45c;
-  --primary-tint: rgba(255, 107, 0, 0.14);
-  --primary-soft: rgba(255, 107, 0, 0.35);
-  --secondary: rgba(148, 163, 184, 0.08);
-  --secondary-foreground: #edf1f5;
-  --muted: rgba(148, 163, 184, 0.08);
-  --muted-foreground: #a7b0ba;
-  --accent: rgba(148, 163, 184, 0.1);
-  --accent-foreground: #edf1f5;
-  --destructive: #f87171;
+  --primary-strong: #b24508;
+  --primary-deep: #9c3b00;
+  --primary-ink: #f08a3c;
+  --primary-tint: rgba(201, 80, 10, 0.14);
+  --primary-soft: rgba(201, 80, 10, 0.35);
+  --secondary: rgba(255, 255, 255, 0.05);
+  --secondary-foreground: #e9edf2;
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: #a9b1ba;
+  --accent: rgba(255, 255, 255, 0.06);
+  --accent-foreground: #e9edf2;
+  --destructive: #e06a5f;
   --border: rgba(255, 255, 255, 0.08);
   --input: rgba(255, 255, 255, 0.14);
-  --ring: #ff8133;
+  --ring: #c9500a;
 
-  --ink-2: #a7b0ba;
-  --ink-3: #6b7480;
-  --line-strong: rgba(255, 255, 255, 0.16);
+  --ink-2: #a9b1ba;
+  --ink-3: #6e7681;
+  --line-strong: rgba(255, 255, 255, 0.14);
 
   --ok: #4fae7e;
   --ok-tint: rgba(79, 174, 126, 0.12);
-  --warn: #fbbf24;
-  --warn-tint: rgba(245, 158, 11, 0.12);
-  --danger: #f87171;
-  --danger-tint: rgba(239, 68, 68, 0.12);
-  --neutral: #94a3b8;
-  --neutral-tint: rgba(148, 163, 184, 0.12);
+  --ok-border: rgba(79, 174, 126, 0.25);
+  --warn: #c99a3f;
+  --warn-tint: rgba(201, 154, 63, 0.12);
+  --warn-border: rgba(201, 154, 63, 0.25);
+  --danger: #e06a5f;
+  --danger-tint: rgba(224, 106, 95, 0.12);
+  --danger-border: rgba(224, 106, 95, 0.25);
+  --neutral: #8b939b;
+  --neutral-tint: rgba(139, 147, 155, 0.12);
+  --neutral-border: rgba(139, 147, 155, 0.25);
 
-  --select-bg: rgba(255, 107, 0, 0.16);
+  --select-bg: rgba(255, 255, 255, 0.14);
   --scroll-thumb: rgba(255, 255, 255, 0.14);
   --scroll-thumb-hover: rgba(255, 255, 255, 0.24);
   --scroll-edge: transparent;
-
-  /* Ambient palette: brand orange only; no cyan, purple or green light. */
-  --glow-cyan: transparent;
-  --glow-orange: rgba(255, 107, 0, 0.3);
-  --glow-purple: transparent;
-  --glow-green: transparent;
 }
 
-/* Panel surface: slate fill, 1px translucent border, quiet depth. */
+/* Panel surface: charcoal fill, 1px translucent border, quiet depth. */
 .payo-neon .glass {
-  background: #0f172a;
+  background: #14171b;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 24px 60px -30px rgba(0, 0, 0, 0.7);
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 20px 50px -34px rgba(0, 0, 0, 0.8);
 }
 
 /* Heavier panel for floating windows (hero stack, widgets). */
 .payo-neon .glass-deep {
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1a1e24;
+  border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 30px 70px -28px rgba(0, 0, 0, 0.8);
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 26px 60px -30px rgba(0, 0, 0, 0.85);
 }
 
 /* Panel hover: brighter rim only, no bloom. */
 .payo-neon .glass-hover:hover {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.14);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 30px 70px -28px rgba(0, 0, 0, 0.8);
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 26px 60px -30px rgba(0, 0, 0, 0.85);
 }
 
 /* Rim: a single quiet slate hairline, no gradient. */
@@ -260,7 +266,7 @@
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -272,19 +278,11 @@
   pointer-events: none;
 }
 
-/* CTAs: brand orange with the standard ambient depth. */
-.payo-neon .neon-cta {
-  box-shadow: 0 2px 12px rgba(255, 107, 0, 0.25);
-}
-.payo-neon .neon-cta:hover {
-  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
-}
-
-/* Showcase window: slate frame with a restrained ambient drop. */
+/* Showcase window: charcoal frame with a restrained ambient drop. */
 .payo-neon .showcase-aura {
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+  background: #171b20;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 16px 36px -22px rgba(0, 0, 0, 0.8);
 }
 
 /* Dotted connector: keyphrase → showcase links, drawn as static dashes. */
@@ -461,95 +459,22 @@
 }
 
 /*
- * Alternating sections: every other band flips to a light surface while
- * keeping the enterprise accents (orange brand, muted green success).
- * Re-scoping the tokens here lets all token-driven styles adapt, and the
- * panel overrides restyle the translucent surfaces for a white ground.
- * Zebra spec: off-white stage, light 24px gridlines, clean gray borders.
+ * Band rhythm without zebra flipping: sections may only shift between the
+ * canvas #0D0F12 and the faintly lighter #101318, always separated by a
+ * hairline. No light surfaces on the landing.
  */
-.payo-neon .section-light {
-  --background: #fafafa;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #ff6b00;
-  --primary-strong: #e14e00;
-  --primary-deep: #c24300;
-  --primary-ink: #c24300;
-  --primary-tint: #fff0e6;
-  --primary-soft: rgba(255, 107, 0, 0.28);
-  --secondary: rgba(10, 20, 30, 0.04);
-  --muted: rgba(10, 20, 30, 0.05);
-  --muted-foreground: #475569;
-  --accent: rgba(10, 20, 30, 0.05);
-  --border: #e2e8f0;
-  --input: #cbd5e1;
-  --ring: #ff6b00;
-  --ink-2: #475569;
-  --ink-3: #64748b;
-  --line-strong: #cbd5e1;
-  --ok: #1F7350;
-  --ok-tint: #E9F3EE;
-  --ok-border: #CEE0D9;
-  --warn: #d97706;
-  --warn-tint: #fffbeb;
-  --danger: #dc2626;
-  --danger-tint: #fef2f2;
-  --neutral: #475569;
-  --neutral-tint: #f1f5f9;
-
-  color: #0f172a;
-  background-color: #fafafa;
-  background-image:
-    linear-gradient(rgba(10, 20, 30, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(10, 20, 30, 0.03) 1px, transparent 1px),
-    radial-gradient(640px 320px at 88% 100%, rgba(255, 107, 0, 0.03), transparent 70%);
-  background-size:
-    24px 24px,
-    24px 24px,
-    auto;
+.payo-neon .band-alt {
+  background-color: var(--band);
 }
-
-/* Per-section light tints from the master spec. */
-.payo-neon .section-light-f8 {
-  background-color: #f8fafc;
-}
-.payo-neon .section-light-white {
-  background-color: #ffffff;
-}
-
-/* Panels on white: white fill, soft slate shadows, no colored bloom. */
-.payo-neon .section-light .glass {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid #e2e8f0;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 24px 50px -30px rgba(15, 30, 50, 0.25);
-}
-.payo-neon .section-light .glass-deep {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #e2e8f0;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    0 30px 60px -30px rgba(15, 30, 50, 0.28);
-}
-.payo-neon .section-light .glass-hover:hover {
-  border-color: #cbd5e1;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    0 30px 60px -28px rgba(15, 30, 50, 0.3);
-}
-.payo-neon .section-light .edge-lit::before {
-  background: rgba(10, 20, 30, 0.12);
+.payo-neon .band-rule {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 /* Fine vector grid, barely visible on the dark surface. */
 .payo-neon .neon-grid {
   background-image:
-    linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
   background-size: 44px 44px;
 }
 
@@ -636,20 +561,6 @@
   transform-box: fill-box;
   transform-origin: center;
   animation: payo-blink 7.2s ease-in-out infinite;
-}
-
-/* Hero showcase: a slow ambient pulse on the orange aura */
-@keyframes hero-aura-pulse {
-  0%,
-  100% {
-    opacity: 0.55;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-.hero-aura {
-  animation: hero-aura-pulse 7s ease-in-out infinite;
 }
 
 /* Respect reduced motion */

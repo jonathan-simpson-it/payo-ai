@@ -349,9 +349,9 @@ export function FeatureDemo() {
   const statusChip = (label: string, active: boolean) => (
     <span
       className={cn(
-        "inline-flex items-center rounded-sm px-1.5 py-0.5 font-mono text-xs text-slate-500",
+        "inline-flex items-center rounded-sm px-1.5 py-0.5 font-mono text-xs text-ink-3",
         active &&
-          "rounded border border-slate-200 bg-slate-100 px-2 py-0.5 font-semibold text-slate-900",
+          "rounded border border-white/[0.18] bg-white/[0.10] px-2 py-0.5 font-semibold text-white",
       )}
     >
       {label}
@@ -361,18 +361,16 @@ export function FeatureDemo() {
   return (
     <section
       id="product"
-      className="section-light relative overflow-hidden"
-      style={{ backgroundColor: "#FFFFFF" }}
+      className="band-alt band-rule relative overflow-hidden"
     >
-      {/* 24px grid overlay, clamped to 1.5% opacity to sit behind the card frame */}
+      {/* 24px grid overlay, barely visible on the charcoal canvas */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.02) 1px, transparent 1px)",
+            "linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px)",
           backgroundSize: "24px 24px",
-          opacity: 0.015,
         }}
       />
 
@@ -385,17 +383,17 @@ export function FeatureDemo() {
         {/* Section header */}
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#0F172A]">
+            <p className="flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-ink-3">
               <span
                 aria-hidden="true"
-                className="h-[3px] w-7 rounded-full bg-[#FF6B00] shadow-[0_0_8px_rgba(255,107,0,0.5)]"
+                className="h-px w-6 bg-line-strong"
               />
               Interactive sandbox
             </p>
-            <h2 className="mt-4 text-[30px] font-bold leading-tight tracking-[-0.01em] text-[#0F172A] md:text-[32px]">
+            <h2 className="mt-4 text-[30px] font-bold leading-tight tracking-[-0.01em] text-foreground md:text-[32px]">
               Watch a promoted workflow execute step-by-step.
             </h2>
-            <p className="mt-3 max-w-[720px] text-[14px] leading-relaxed text-[#475569]">
+            <p className="mt-3 max-w-[720px] text-[14px] leading-relaxed text-ink-2">
               Select a workflow below to test the pipeline: watch inputs process, inspect exception
               pauses, and approve the output.
             </p>
@@ -406,12 +404,12 @@ export function FeatureDemo() {
         {/* Workflow selector + simulation card */}
         <div className="mx-auto w-full max-w-[1200px]">
           <Tabs value={scenario.id} onValueChange={changeScenario}>
-            <TabsList className="flex h-auto w-full items-center gap-1 rounded-xl border border-slate-200/60 bg-slate-100/80 p-1.5">
+            <TabsList className="flex h-auto w-full items-center gap-1 rounded-xl border border-border bg-white/[0.04] p-1.5">
               {SCENARIOS.map((s) => (
                 <TabsTrigger
                   key={s.id}
                   value={s.id}
-                  className="flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:bg-[#FF6B00] data-[state=active]:text-white data-[state=active]:shadow-sm data-[state=inactive]:text-slate-600 hover:data-[state=inactive]:bg-slate-200/50 hover:data-[state=inactive]:text-slate-900"
+                  className="flex-1 rounded-lg border border-transparent px-4 py-2 text-sm font-medium transition-colors data-[state=active]:border-white/[0.18] data-[state=active]:bg-white/[0.10] data-[state=active]:text-white data-[state=inactive]:text-ink-2 hover:data-[state=inactive]:bg-white/[0.06] hover:data-[state=inactive]:text-white"
                 >
                   {s.label}
                 </TabsTrigger>
@@ -419,21 +417,21 @@ export function FeatureDemo() {
             </TabsList>
           </Tabs>
 
-          <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="glass mt-5 rounded-xl p-6">
             {/* Demo header */}
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-[#E2E8F0] pb-3.5">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-border pb-3.5">
               <div className="min-w-0">
-                <p className="text-[14.5px] font-semibold tracking-[-0.01em] text-[#0F172A]">
+                <p className="text-[14.5px] font-semibold tracking-[-0.01em] text-foreground">
                   {scenario.title}
                 </p>
-                <p className="mt-0.5 max-w-2xl text-[12px] leading-snug text-[#475569]">
+                <p className="mt-0.5 max-w-2xl text-[12px] leading-snug text-ink-2">
                   {scenario.blurb}
                 </p>
               </div>
               <div className="ml-auto flex items-center gap-2">
                 <SampleTag />
                 <Button
-                  className="h-auto inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 font-mono text-xs font-medium text-slate-700 transition-colors hover:bg-slate-200/70"
+                  className="h-auto inline-flex items-center gap-1.5 rounded-lg border border-border bg-white/[0.04] px-3 py-1.5 font-mono text-xs font-medium text-ink-2 transition-colors hover:bg-white/[0.08] hover:text-white"
                   onClick={() => start(scenario)}
                   disabled={phase === "running"}
                 >
@@ -445,13 +443,13 @@ export function FeatureDemo() {
 
             {phase === "idle" ? (
               <div className="flex flex-col items-center justify-center gap-3 px-6 py-12 text-center">
-                <p className="text-[13.5px] text-[#475569]">
+                <p className="text-[13.5px] text-ink-2">
                   This runs the selected workflow on labelled sample data.
                 </p>
                 <Button
                   size="sm"
                   onClick={() => start(scenario)}
-                  className="bg-[#FF6B00] text-white shadow-[0_4px_16px_rgba(255,107,0,0.35)] hover:bg-[#FF7A1A]"
+                  className="bg-primary text-primary-foreground hover:bg-primary-strong"
                 >
                   <Play className="size-3.5" aria-hidden="true" />
                   Run on sample data
@@ -460,8 +458,8 @@ export function FeatureDemo() {
             ) : (
               <div className="grid gap-5 py-4 md:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
                 {/* Step timeline */}
-                <div className="min-w-0 md:border-r md:border-[#E2E8F0] md:pr-5">
-                  <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#64748B]">
+                <div className="min-w-0 md:border-r md:border-border md:pr-5">
+                  <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
                     Steps
                   </p>
                   <ol className="mt-3 space-y-2.5">
@@ -469,16 +467,16 @@ export function FeatureDemo() {
                       const state = states[i] ?? "queued";
                       return (
                         <li key={s.label} className="flex items-center gap-2.5">
-                          <span className="w-3.5 shrink-0 text-right text-[11px] tabular-nums text-[#64748B]">
+                          <span className="w-3.5 shrink-0 text-right text-[11px] tabular-nums text-ink-3">
                             {i + 1}
                           </span>
-                          <StepTypeIcon type={s.type} className="size-3.5 shrink-0 text-[#64748B]" />
+                          <StepTypeIcon type={s.type} className="size-3.5 shrink-0 text-ink-3" />
                           <span
                             className={cn(
                               "min-w-0 flex-1 truncate text-[12.5px]",
                               state === "queued"
-                                ? "text-[#94A3B8]"
-                                : "font-medium text-[#0F172A]",
+                                ? "text-ink-3"
+                                : "font-medium text-foreground",
                             )}
                           >
                             {s.label}
@@ -494,11 +492,11 @@ export function FeatureDemo() {
                 <div className="min-w-0">
                   {phase === "running" && states.indexOf("running") < scenario.reviewIndex ? (
                     <div className="flex h-full min-h-[176px] flex-col items-center justify-center gap-2 text-center">
-                      <p className="text-[12.5px] text-[#475569]">
+                      <p className="text-[12.5px] text-ink-2">
                         Running step {Math.max(states.indexOf("running") + 1, 1)} of{" "}
                         {scenario.steps.length}…
                       </p>
-                      <p className="text-[11.5px] text-[#64748B]">
+                      <p className="text-[11.5px] text-ink-3">
                         Results appear here as the sample run reaches the review gate.
                       </p>
                     </div>
@@ -506,25 +504,25 @@ export function FeatureDemo() {
                     <div className="space-y-4">
                       {Result ? <Result /> : null}
                       {phase === "awaiting" && (
-                        <div className="my-4 rounded-xl border border-amber-200/80 bg-amber-50/70 p-4">
-                          <p className="mb-3 flex items-center gap-2 text-xs font-medium text-amber-900">
-                            <CircleAlert className="size-3.5 text-[#E14E00]" aria-hidden="true" />
+                        <div className="my-4 rounded-xl border border-warn-border bg-warn-tint p-4">
+                          <p className="mb-3 flex items-center gap-2 text-xs font-medium text-warn">
+                            <CircleAlert className="size-3.5 text-warn" aria-hidden="true" />
                             Paused for human review: {scenario.pauseNote}
                           </p>
-                          <p className="mt-1 text-[11.5px] text-[#475569]">
+                          <p className="mt-1 text-[11.5px] text-ink-2">
                             Approving completes the run; returning pauses the workflow for further
                             inspection.
                           </p>
                           <div className="mt-2.5 flex flex-wrap gap-2">
                             <Button
-                              className="h-auto inline-flex items-center gap-1 rounded-lg bg-[#FF6B00] px-4 py-2 text-xs font-semibold text-white shadow-sm transition-colors has-[>svg]:px-4 hover:bg-[#E56000]"
+                              className="h-auto inline-flex items-center gap-1 rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-colors has-[>svg]:px-4 hover:bg-primary-strong"
                               onClick={approve}
                             >
                               {scenario.approveLabel}
                               <ArrowRight className="size-3.5" aria-hidden="true" />
                             </Button>
                             <Button
-                              className="ml-2 h-auto inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-700 shadow-xs transition-colors hover:bg-slate-50"
+                              className="ml-2 h-auto inline-flex items-center gap-1 rounded-lg border border-border bg-white/[0.04] px-4 py-2 text-xs font-medium text-ink-2 transition-colors hover:bg-white/[0.08] hover:text-white"
                               onClick={returnForReview}
                             >
                               {scenario.returnLabel}
@@ -533,13 +531,13 @@ export function FeatureDemo() {
                         </div>
                       )}
                       {phase === "returned" && (
-                        <div className="rounded-xl border border-[#FF6B00]/25 bg-[#FFF0E6] px-3.5 py-3 text-[12.5px] text-[#475569]">
+                        <div className="rounded-xl border border-primary/25 bg-primary/10 px-3.5 py-3 text-[12.5px] text-ink-2">
                           Returned for review. The run stays paused and the final step does not run
                           until a person approves.{" "}
                           <button
                             type="button"
                             onClick={() => start(scenario)}
-                            className="font-medium text-[#C24300] underline-offset-2 hover:underline"
+                            className="font-medium text-primary-ink underline-offset-2 hover:underline"
                           >
                             Run again
                           </button>
@@ -557,25 +555,25 @@ export function FeatureDemo() {
             )}
 
             {/* Test before publishing */}
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-[#E2E8F0] pt-3.5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#64748B]">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border pt-3.5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
                 Status
               </p>
               <div className="flex items-center gap-1.5">
                 {statusChip("Draft", phase === "idle")}
-                <span className="text-[#94A3B8]" aria-hidden="true">
+                <span className="text-ink-3" aria-hidden="true">
                   →
                 </span>
                 {statusChip(
                   phase === "running" ? "Testing" : "Tested",
                   phase === "running" || tested,
                 )}
-                <span className="text-[#94A3B8]" aria-hidden="true">
+                <span className="text-ink-3" aria-hidden="true">
                   →
                 </span>
                 {statusChip("Ready to publish", ready)}
               </div>
-              <p className="text-[11.5px] text-[#475569]">
+              <p className="text-[11.5px] text-ink-2">
                 {phase === "idle" && "Runs on sample data before anything is marked ready."}
                 {phase === "running" && "Running the workflow on sample data…"}
                 {tested && !ready && scenario.testedNote}
@@ -583,7 +581,7 @@ export function FeatureDemo() {
               </p>
               {tested && !ready && (
                 <Button
-                  className="ml-auto h-auto rounded-lg bg-slate-900 px-4 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-slate-800"
+                  className="ml-auto h-auto rounded-lg border border-border bg-white/[0.06] px-4 py-2 text-xs font-medium text-foreground transition-colors hover:bg-white/[0.10]"
                   onClick={() => setReady(true)}
                 >
                   Deploy to production
@@ -602,17 +600,17 @@ export function FeatureDemo() {
         </div>
 
         {/* Footer explanation grid */}
-        <div className="grid gap-3 text-[13px] leading-[1.4] text-[#64748B] sm:grid-cols-3">
+        <div className="grid gap-3 text-[13px] leading-[1.4] text-ink-3 sm:grid-cols-3">
           <p>
-            <span className="font-semibold text-[#0F172A]">1. Start from a template.</span> Input,
+            <span className="font-semibold text-foreground">1. Start from a template.</span> Input,
             calculation, check, review and output arrive as an ordered workflow.
           </p>
           <p>
-            <span className="font-semibold text-[#0F172A]">2. Watch every step.</span> The timeline
+            <span className="font-semibold text-foreground">2. Watch every step.</span> The timeline
             moves from queued to complete, with the key setting shown beside it.
           </p>
           <p>
-            <span className="font-semibold text-[#0F172A]">3. Test, then publish.</span> A sample
+            <span className="font-semibold text-foreground">3. Test, then publish.</span> A sample
             test shows the outcome before a workflow is marked ready.
           </p>
         </div>

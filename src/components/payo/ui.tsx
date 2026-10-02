@@ -226,7 +226,7 @@ export function Eyebrow({ children, className }: { children: React.ReactNode; cl
         className,
       )}
     >
-      <span className="h-px w-6 bg-primary/40" aria-hidden="true" />
+      <span className="h-px w-6 bg-line-strong" aria-hidden="true" />
       {children}
     </p>
   );

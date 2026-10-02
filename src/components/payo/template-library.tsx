@@ -48,18 +48,18 @@ const CATEGORY_STYLE: Record<
 > = {
   "nav-reconciliation": {
     label: "Operations",
-    badge: "text-[#A7B0BA]",
-    glow: "hover:shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)]",
+    badge: "text-ink-3",
+    glow: "hover:border-white/[0.14]",
   },
   "position-risk": {
     label: "Risk & Compliance",
-    badge: "text-[#A7B0BA]",
-    glow: "hover:shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)]",
+    badge: "text-ink-3",
+    glow: "hover:border-white/[0.14]",
   },
   "market-movements": {
     label: "Research & Reporting",
-    badge: "text-[#A7B0BA]",
-    glow: "hover:shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)]",
+    badge: "text-ink-3",
+    glow: "hover:border-white/[0.14]",
   },
 };
 
@@ -71,8 +71,8 @@ function SourceChip({
   name: string;
 }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.04] px-2.5 py-1 text-[11px] text-[#C7CFD8]">
-      <Icon className="size-3 text-[#8B939B]" aria-hidden="true" />
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.04] px-2.5 py-1 text-[11px] text-ink-2">
+      <Icon className="size-3 text-ink-3" aria-hidden="true" />
       <span className="font-mono">{name}</span>
     </span>
   );
@@ -81,16 +81,16 @@ function SourceChip({
 /* Card 1 canvas: fund reconciliation spreadsheet with status badges. */
 function NavCanvas() {
   return (
-    <div className="flex h-[216px] flex-col justify-between rounded-xl border border-white/10 bg-[#111827] p-3.5">
+    <div className="flex h-[216px] flex-col justify-between rounded-xl border border-white/10 bg-[#14171B] p-3.5">
       <div className="overflow-hidden rounded-lg border border-white/[0.07]">
-        <div className="grid grid-cols-[1fr_auto_auto] gap-2 border-b border-white/[0.07] bg-white/[0.04] px-2.5 py-1.5 text-[9px] uppercase tracking-[0.08em] text-[#7C8894]">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-2 border-b border-white/[0.07] bg-white/[0.04] px-2.5 py-1.5 text-[9px] uppercase tracking-[0.08em] text-ink-3">
           <span>Fund</span>
           <span className="text-right">Diff</span>
           <span className="text-right">Status</span>
         </div>
         <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2 border-b border-white/[0.05] px-2.5 py-2 text-[11px]">
           <span className="font-medium text-[#E9EEF3]">Ashbourne Equity</span>
-          <span className="text-right font-mono tabular-nums text-[#A7B0BA]">0.00%</span>
+          <span className="text-right font-mono tabular-nums text-ink-2">0.00%</span>
           <span className="inline-flex justify-end">
             <span className="inline-flex items-center gap-1 rounded-full border border-[rgba(79,174,126,0.25)] bg-[rgba(79,174,126,0.12)] px-2 py-0.5 text-[9.5px] font-medium text-[#4FAE7E]">
               <Check className="size-2.5" strokeWidth={3} aria-hidden="true" />
@@ -124,7 +124,7 @@ function RiskCanvas() {
   const R = 30;
   const C = 2 * Math.PI * R;
   return (
-    <div className="flex h-[216px] flex-col justify-between rounded-xl border border-white/10 bg-[#111827] p-3.5">
+    <div className="flex h-[216px] flex-col justify-between rounded-xl border border-white/10 bg-[#14171B] p-3.5">
       <div className="flex items-center gap-4">
         <div className="relative grid size-[76px] shrink-0 place-items-center" aria-hidden="true">
           <svg viewBox="0 0 76 76" className="size-[76px] -rotate-90" fill="none">
@@ -146,7 +146,7 @@ function RiskCanvas() {
 
         <div className="min-w-0 flex-1 space-y-2">
           <div>
-            <p className="text-[9px] uppercase tracking-[0.08em] text-[#7C8894]">
+            <p className="text-[9px] uppercase tracking-[0.08em] text-ink-3">
               Concentration threshold
             </p>
             <div className="relative mt-1 h-1.5 rounded-full bg-white/[0.08]">
@@ -158,7 +158,7 @@ function RiskCanvas() {
               />
             </div>
           </div>
-          <p className="truncate font-mono text-[10.5px] tabular-nums text-[#94A3B8]">
+          <p className="truncate font-mono text-[10.5px] tabular-nums text-ink-3">
             Max Position: <span className="text-[#F87171]">$12.4M</span> / $10.0M Limit
           </p>
         </div>
@@ -177,16 +177,16 @@ function RiskCanvas() {
 /* Card 3 canvas: market sparkline feeding an approved briefing draft. */
 function ResearchCanvas() {
   return (
-    <div className="flex h-[216px] flex-col justify-between rounded-xl border border-white/10 bg-[#111827] p-3.5">
+    <div className="flex h-[216px] flex-col justify-between rounded-xl border border-white/10 bg-[#14171B] p-3.5">
       <svg viewBox="0 0 300 60" className="h-[60px] w-full" fill="none" aria-hidden="true">
         <defs>
           <linearGradient id="tpl-spark" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FF6B00" />
-            <stop offset="100%" stopColor="#FF6B00" />
+            <stop offset="0%" stopColor="#C9500A" />
+            <stop offset="100%" stopColor="#C9500A" />
           </linearGradient>
           <linearGradient id="blue-gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#FF6B00" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#FF6B00" stopOpacity="0" />
+            <stop offset="0%" stopColor="#C9500A" stopOpacity="0.10" />
+            <stop offset="100%" stopColor="#C9500A" stopOpacity="0" />
           </linearGradient>
         </defs>
         {[15, 30, 45].map((y) => (
@@ -198,11 +198,11 @@ function ResearchCanvas() {
         />
         <path
           d="M4 48 L 40 42 L 76 45 L 112 34 L 148 37 L 184 24 L 220 28 L 256 12 L 296 8"
-          stroke="#FF6B00"
+          stroke="#C9500A"
           strokeWidth="1.6"
           strokeLinecap="round"
         />
-        <circle cx="296" cy="8" r="2.5" fill="#FF6B00" />
+        <circle cx="296" cy="8" r="2.5" fill="#C9500A" />
       </svg>
 
       <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2.5">
@@ -255,21 +255,15 @@ export function TemplateLibrarySection() {
   return (
     <section
       id="templates"
-      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden bg-[#030712]"
+      className="band-alt band-rule relative flex min-h-[100svh] flex-col justify-center overflow-hidden"
     >
-      {/* Radial slate base + subtle gridlines */}
+      {/* Subtle gridlines over the charcoal canvas */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(ellipse at center, #0B0F17 0%, #030712 100%)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+              "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
             backgroundSize: "24px 24px",
             maskImage: "radial-gradient(ellipse 75% 70% at 50% 45%, black 30%, transparent 78%)",
             WebkitMaskImage:
@@ -282,8 +276,8 @@ export function TemplateLibrarySection() {
         {/* Header */}
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.15em] text-[#FF8A4C]">
-              <span className="h-px w-6 bg-[#FF6B00]" aria-hidden="true" />
+            <p className="flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.15em] text-ink-3">
+              <span className="h-px w-6 bg-line-strong" aria-hidden="true" />
               Pre-built flows
             </p>
             <h2 className="mt-4 max-w-2xl text-[28px] font-bold leading-[1.2] tracking-[-0.01em] text-white sm:text-[34px] xl:text-[40px]">
@@ -292,7 +286,7 @@ export function TemplateLibrarySection() {
           </div>
           <a
             href={WORKSPACE_URL}
-            className="group inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#FF6B00] transition-colors hover:text-[#FF8A4C]"
+            className="group inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-primary-ink transition-colors hover:text-white"
           >
             View all templates
             <ArrowRight
@@ -312,11 +306,11 @@ export function TemplateLibrarySection() {
             return (
               <div
                 key={t.id}
-                className={`group/tpl relative flex flex-col rounded-2xl border border-white/[0.07] bg-white/[0.025] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 xl:p-7 ${style?.glow ?? ""}`}
+                className={`group/tpl relative flex flex-col rounded-2xl border border-border bg-card p-6 transition-colors duration-300 xl:p-7 ${style?.glow ?? ""}`}
               >
                 <div>
                   <p
-                    className={`text-[11px] font-semibold uppercase tracking-[0.14em] ${style?.badge ?? "text-[#A7B0BA]"}`}
+                    className={`text-[11px] font-semibold uppercase tracking-[0.14em] ${style?.badge ?? "text-ink-3"}`}
                   >
                     {style?.label ?? t.category}
                   </p>
@@ -326,12 +320,12 @@ export function TemplateLibrarySection() {
                   <h3 className="mt-5 text-[17px] font-semibold leading-snug text-white">
                     {card?.name ?? t.name}
                   </h3>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-[#CBD5E1]">
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-ink-2">
                     {card?.outcome ?? t.outcome}
                   </p>
 
                   <div className="mt-4">
-                    <p className="text-[11px] font-medium text-[#94A3B8]">Key sources:</p>
+                    <p className="text-[11px] font-medium text-ink-3">Key sources:</p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {chips
                         ? chips.map((c) => <SourceChip key={c.name} icon={c.icon} name={c.name} />)
@@ -341,11 +335,11 @@ export function TemplateLibrarySection() {
                     </div>
                   </div>
 
-                  <div className="mt-5 flex items-center justify-between border-t border-white/[0.07] pt-4">
+                  <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
                     <SampleTag />
                     <a
                       href={`#/workspace/workflows/${t.id}`}
-                      className="group/cta inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[#FF6B00] transition-colors hover:text-[#FF8A4C]"
+                      className="group/cta inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-primary-ink transition-colors hover:text-white"
                     >
                       Customize template
                       <ArrowRight

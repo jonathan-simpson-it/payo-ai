@@ -143,9 +143,8 @@ export function WaitlistSection() {
   return (
     <section
       id="waitlist"
-      className="relative flex min-h-[100svh] flex-col justify-center border-t border-white/[0.08]"
+      className="band-rule relative flex min-h-[100svh] flex-col justify-center"
     >
-      {/* Central radiant orange glow */}
       <div className="relative mx-auto grid w-full max-w-6xl gap-10 px-6 py-16 md:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14">
         <div>
           <Eyebrow>Early access</Eyebrow>
@@ -154,7 +153,7 @@ export function WaitlistSection() {
             <br />
             Start describing workflows.
           </h2>
-          <p className="mt-4 max-w-md text-[14.5px] leading-relaxed text-[#A7B0BA]">
+          <p className="mt-4 max-w-md text-[14.5px] leading-relaxed text-ink-2">
             Join the early access program to turn your team's manual financial runbooks into
             visual, automated, and auditable pipelines.
           </p>
@@ -164,8 +163,8 @@ export function WaitlistSection() {
               "Occasional launch updates, nothing else",
               "The demo workspace stays open to explore in the meantime",
             ].map((line) => (
-              <li key={line} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-[#A7B0BA]">
-                <Check className="mt-0.5 size-4 shrink-0 text-[#4FAE7E]" aria-hidden="true" />
+              <li key={line} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-ink-2">
+                <Check className="mt-0.5 size-4 shrink-0 text-ok" aria-hidden="true" />
                 {line}
               </li>
             ))}
@@ -217,7 +216,7 @@ export function WaitlistSection() {
                   placeholder="Enter your enterprise email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-9 w-full rounded-md border border-slate-700 bg-slate-900/80 px-2.5 text-[13.5px] text-slate-100 outline-none transition-colors placeholder:text-slate-500 focus:border-[#FF6B00]"
+                  className="h-9 w-full rounded-md border border-border bg-white/[0.04] px-2.5 text-[13.5px] text-foreground outline-none transition-colors placeholder:text-ink-3 focus:border-primary"
                 />
               </div>
 
@@ -237,8 +236,8 @@ export function WaitlistSection() {
                         className={cn(
                           "rounded-md border px-3 py-1.5 text-[13px] font-medium transition-colors",
                           active
-                            ? "border-primary-soft bg-primary-tint text-primary-ink"
-                            : "border-slate-700 bg-background text-slate-300 hover:border-slate-500",
+                            ? "border-white/[0.18] bg-white/[0.10] text-white"
+                            : "border-border bg-transparent text-ink-2 hover:border-white/25 hover:text-white",
                         )}
                       >
                         {o.label}
@@ -263,7 +262,7 @@ export function WaitlistSection() {
               </label>
 
               <div className="space-y-2.5">
-                <Button type="submit" className="neon-cta w-full rounded-full" disabled={busy}>
+                <Button type="submit" className="w-full rounded-full" disabled={busy}>
                   {busy ? "Joining…" : "Get early access"}
                   {!busy && <ArrowRight className="size-4" aria-hidden="true" />}
                 </Button>
@@ -305,7 +304,7 @@ export function WaitlistSection() {
                     autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="h-9 w-full rounded-md border border-slate-700 bg-slate-900/80 px-2.5 pr-9 text-[13.5px] text-slate-100 outline-none transition-colors placeholder:text-slate-500 focus:border-[#FF6B00]"
+                    className="h-9 w-full rounded-md border border-border bg-white/[0.04] px-2.5 pr-9 text-[13.5px] text-foreground outline-none transition-colors placeholder:text-ink-3 focus:border-primary"
                   />
                   <button
                     type="button"

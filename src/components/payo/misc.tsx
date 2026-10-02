@@ -244,7 +244,7 @@ export function OverviewScreen() {
             </div>
             <div>
               <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
-                Planned, not connected
+                Not connected in this demo
               </p>
               <ul className="mt-2 flex flex-wrap gap-1.5">
                 {PLANNED_CONNECTORS.map((c) => (

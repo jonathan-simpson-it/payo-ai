@@ -148,7 +148,7 @@ function StepCard({
         "relative flex w-[224px] shrink-0 cursor-pointer select-none flex-col rounded-md border bg-card p-3.5 text-left transition-[border-color,background-color,opacity] duration-150",
         "hover:border-line-strong",
         !dragDisabled && "cursor-grab active:cursor-grabbing",
-        selected && "border-primary bg-primary-tint/50",
+        selected && "border-primary bg-muted/60",
         !selected && state === "needs-review" && "border-warn/60",
         !selected && state === "running" && "border-primary/70",
         dragging && "opacity-40",
@@ -180,7 +180,7 @@ function StepCard({
           aria-valuemax={100}
         >
           <div
-            className="h-full rounded-full bg-primary transition-[width] duration-150 ease-linear"
+            className="h-full rounded-full bg-ink-2 transition-[width] duration-150 ease-linear"
             style={{ width: `${Math.min(100, (progress ?? 0) * 100)}%` }}
           />
         </div>
@@ -440,7 +440,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
 
       {/* Run strip */}
       {engineHere && mode === "build" && (
-        <div className="shrink-0 border-b border-border bg-primary-tint/50">
+        <div className="shrink-0 border-b border-border bg-muted">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2.5 md:px-6">
             <p className="flex items-center gap-2 text-[12.5px] text-ink-2">
               <span className="size-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
@@ -456,9 +456,9 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
                   </span>
                 </p>
                 <div className="ml-auto flex w-44 items-center gap-2">
-                  <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-primary/15">
+                  <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-muted">
                     <div
-                      className="h-full rounded-full bg-primary transition-[width] duration-200 ease-linear"
+                      className="h-full rounded-full bg-ink-2 transition-[width] duration-200 ease-linear"
                       style={{
                         width: `${Math.min(100, ((completedCount + engineHere.progress) / engineHere.steps.length) * 100)}%`,
                       }}

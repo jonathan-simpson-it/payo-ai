@@ -87,7 +87,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 className={cn(
                   "relative flex items-center gap-2.5 rounded-md px-3 py-2 text-[13.5px] font-medium transition-colors",
                   active
-                    ? "bg-primary-tint text-primary-ink"
+                    ? "bg-muted text-foreground"
                     : "text-ink-2 hover:bg-muted hover:text-foreground",
                 )}
               >
@@ -127,7 +127,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
       {/* Main column */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Utility header */}
-        <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-background/85 px-4 backdrop-blur-md md:px-6">
+        <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-background px-4 md:px-6">
           <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-[13.5px]">
             <span className="hidden text-ink-3 sm:inline">{crumbParent}</span>
             <span className="hidden text-ink-3 sm:inline" aria-hidden="true">
@@ -149,7 +149,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
             <button
               type="button"
               onClick={openAbout}
-              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/80 px-2.5 py-1.5 text-[12px] font-medium text-ink-2 shadow-xs backdrop-blur-sm transition-colors hover:border-line-strong hover:text-foreground"
+              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-[12px] font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-foreground"
               aria-label="About this demo: sample data is simulated"
             >
               <span className="size-1.5 rounded-full bg-ink-3/80" aria-hidden="true" />
@@ -179,7 +179,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "shrink-0 rounded-md px-3 py-1.5 text-[13px] font-medium",
-                  active ? "bg-primary-tint text-primary-ink" : "text-ink-2",
+                  active ? "bg-muted text-foreground" : "text-ink-2",
                 )}
               >
                 {item.label}
