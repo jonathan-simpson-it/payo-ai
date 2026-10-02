@@ -259,7 +259,7 @@ function HumanInTheLoopBadge() {
 
 function InDevelopmentBadge() {
   return (
-    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-warn/25 bg-warn-tint px-2 py-0.5 text-[11px] font-medium text-warn">
+    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-400 shadow-[0_0_10px_-2px_rgba(245,158,11,0.45)]">
       <Clock className="size-3" aria-hidden="true" />
       In development
     </span>
@@ -367,16 +367,12 @@ function FrostedCard({ children }: { children: React.ReactNode }) {
   return (
     <article
       className={cn(
-        "relative z-0 rounded-2xl border border-border/70 bg-card/70 backdrop-blur-[4px]",
-        "transition-[transform,opacity,background-color,border-color] duration-300",
+        "relative z-0 rounded-2xl border border-slate-800 bg-[#0E1626]",
+        "transition-[transform,border-color] duration-300",
         EASE,
-        "opacity-70 hover:z-10 hover:-translate-y-0.5 hover:bg-card hover:opacity-100 hover:border-line-strong",
+        "hover:z-10 hover:-translate-y-0.5 hover:border-slate-700",
       )}
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-2xl bg-warn-tint"
-      />
       <div className="relative flex flex-col p-5">{children}</div>
     </article>
   );
@@ -405,14 +401,14 @@ function NotifyButton({ templateId, name }: { templateId: string; name: string }
         "transition-[border-color,background-color,color,box-shadow] duration-200",
         EASE,
         on
-          ? "border-payo-orange/45 bg-payo-orange-tint text-payo-orange"
-          : "border-line-strong bg-transparent text-ink-2 hover:border-payo-orange/50 hover:text-payo-orange hover:shadow-[0_4px_12px_-4px_rgba(255,107,0,0.35)]",
+          ? "border-[#FF6B00]/45 bg-[#FF6B00]/10 text-[#FFA45C]"
+          : "border-slate-700 bg-slate-900/90 text-slate-300 hover:border-slate-500 hover:text-white",
       )}
     >
       {on ? (
         <Check className="size-3.5" aria-hidden="true" />
       ) : (
-        <BellPlus className="size-3.5" aria-hidden="true" />
+        <BellPlus className="size-3.5 text-[#FF6B00]" aria-hidden="true" />
       )}
       {on ? "On the list" : "Notify when ready"}
     </button>
@@ -424,31 +420,32 @@ function ComingSoonCardGrid({ template }: { template: TemplateDef }) {
   return (
     <FrostedCard>
       <div className="flex items-start justify-between gap-3">
-        <p className="pt-0.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-3">
+        <p className="pt-0.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-[#FF6B00]">
           {template.category}
         </p>
         <InDevelopmentBadge />
       </div>
-      <h3 className="mt-2 text-[15.5px] font-semibold leading-snug tracking-[-0.01em] text-foreground">
+      <h3 className="mt-2 text-lg font-bold leading-snug tracking-[-0.01em] text-white">
         {template.name}
       </h3>
-      <p className="mt-1.5 line-clamp-2 text-[13px] leading-[1.65] text-ink-2">
+      <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-slate-300">
         {template.outcome}
       </p>
       <ol className="mt-4 flex flex-wrap items-center gap-1.5" aria-label="Planned steps">
         {labels.map((l, i) => (
           <li key={l} className="flex items-center gap-1.5">
-            <span className="rounded-md bg-neutral-tint px-1.5 py-1 text-[11px] font-medium text-ink-2">
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-slate-800/80 bg-slate-900/90 px-2.5 py-1 font-mono text-xs text-slate-300">
+              <span className="font-semibold text-[#FF6B00]">{i + 1}.</span>
               {l}
             </span>
             {i < labels.length - 1 && (
-              <ChevronRight className="size-3 shrink-0 text-ink-3/60" aria-hidden="true" />
+              <ChevronRight className="size-3 shrink-0 text-slate-600" aria-hidden="true" />
             )}
           </li>
         ))}
       </ol>
-      <div className="mt-5 flex items-center justify-between gap-3 border-t border-border/80 pt-4">
-        <span className="text-[12px] text-ink-3">{labels.length} steps · Planned workflow</span>
+      <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-800 pt-4">
+        <span className="text-[12px] text-slate-500">{labels.length} steps · Planned workflow</span>
         <NotifyButton templateId={template.id} name={template.name} />
       </div>
     </FrostedCard>
@@ -462,34 +459,35 @@ function ComingSoonCardPipeline({ template }: { template: TemplateDef }) {
       <div className="grid gap-0 lg:grid-cols-[300px_minmax(0,1fr)]">
         <div className="flex flex-col gap-3 p-5 lg:p-0">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-3">
+            <p className="text-[11px] font-mono font-semibold uppercase tracking-wider text-[#FF6B00]">
               {template.category}
             </p>
             <InDevelopmentBadge />
           </div>
-          <h3 className="text-[15.5px] font-semibold leading-snug tracking-[-0.01em] text-foreground">
+          <h3 className="text-lg font-bold leading-snug tracking-[-0.01em] text-white">
             {template.name}
           </h3>
-          <p className="line-clamp-2 text-[13px] leading-[1.65] text-ink-2">
+          <p className="line-clamp-2 text-sm leading-relaxed text-slate-300">
             {template.outcome}
           </p>
-          <div className="mt-auto flex items-center justify-between gap-3 border-t border-border/80 pt-4">
-            <span className="text-[12px] text-ink-3">{labels.length} steps · Planned</span>
+          <div className="mt-auto flex items-center justify-between gap-3 border-t border-slate-800 pt-4">
+            <span className="text-[12px] text-slate-500">{labels.length} steps · Planned</span>
             <NotifyButton templateId={template.id} name={template.name} />
           </div>
         </div>
-        <div className="mt-4 lg:mt-0 lg:border-l lg:border-border/70 lg:p-5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
+        <div className="mt-4 lg:mt-0 lg:border-l lg:border-slate-800 lg:p-5">
+          <p className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400">
             Planned pipeline
           </p>
           <ol className="mt-4 flex min-w-max items-center overflow-x-auto pb-1" aria-label="Planned steps">
             {labels.map((l, i) => (
               <li key={l} className="flex items-center gap-2">
-                <span className="whitespace-nowrap rounded-full border border-border/80 bg-background/60 px-2.5 py-1 text-[11.5px] font-medium text-ink-2">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md border border-slate-800/80 bg-slate-900/90 px-2.5 py-1 font-mono text-xs text-slate-300">
+                  <span className="font-semibold text-[#FF6B00]">{i + 1}.</span>
                   {l}
                 </span>
                 {i < labels.length - 1 && (
-                  <ChevronRight className="size-3.5 shrink-0 text-ink-3/50" aria-hidden="true" />
+                  <ChevronRight className="size-3.5 shrink-0 text-slate-600" aria-hidden="true" />
                 )}
               </li>
             ))}
@@ -661,13 +659,31 @@ function LibraryControls({
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 
-function SectionHeader({ id, title, shown, total }: { id: string; title: string; shown: number; total: number }) {
+function SectionHeader({
+  id,
+  title,
+  shown,
+  total,
+  dark,
+}: {
+  id: string;
+  title: string;
+  shown: number;
+  total: number;
+  dark?: boolean;
+}) {
   return (
     <div className="flex items-end justify-between gap-4">
-      <h2 id={id} className="text-[11.5px] font-semibold uppercase tracking-[0.14em] text-ink-3">
+      <h2
+        id={id}
+        className={cn(
+          "text-[11.5px] font-semibold uppercase tracking-[0.14em]",
+          dark ? "text-slate-400" : "text-ink-3",
+        )}
+      >
         {title}
       </h2>
-      <span className="text-[11.5px] tabular-nums text-ink-3">
+      <span className={cn("text-[11.5px] tabular-nums", dark ? "text-slate-500" : "text-ink-3")}>
         {shown === total ? `${total} template${total === 1 ? "" : "s"}` : `${shown} of ${total}`}
       </span>
     </div>
@@ -829,12 +845,16 @@ export function TemplateLibrary() {
           )}
 
           {comingSoon.length > 0 && (
-            <section aria-labelledby="upcoming-templates" className="mt-10">
+            <section
+              aria-labelledby="upcoming-templates"
+              className="mt-10 rounded-2xl bg-[#0B132B] p-5 sm:p-6"
+            >
               <SectionHeader
                 id="upcoming-templates"
                 title="In development"
                 shown={comingSoon.length}
                 total={totalComingSoon}
+                dark
               />
               {view === "grid" ? (
                 <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(min(340px,100%),1fr))] gap-6">
@@ -849,7 +869,7 @@ export function TemplateLibrary() {
                   ))}
                 </div>
               )}
-              <p className="mt-4 text-[12.5px] leading-relaxed text-ink-3">
+              <p className="mt-4 text-[12.5px] leading-relaxed text-slate-400">
                 These templates are shown as a preview of the planned library. They are not
                 runnable in this demo, and every figure in the workspace is simulated.
               </p>
