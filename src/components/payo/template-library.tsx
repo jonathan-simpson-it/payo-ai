@@ -48,17 +48,17 @@ const CATEGORY_STYLE: Record<
 > = {
   "nav-reconciliation": {
     label: "Operations",
-    badge: "text-ink-3",
+    badge: "text-ink-2",
     glow: "hover:border-white/[0.14]",
   },
   "position-risk": {
     label: "Risk & Compliance",
-    badge: "text-ink-3",
+    badge: "text-ink-2",
     glow: "hover:border-white/[0.14]",
   },
   "market-movements": {
     label: "Research & Reporting",
-    badge: "text-ink-3",
+    badge: "text-ink-2",
     glow: "hover:border-white/[0.14]",
   },
 };
@@ -71,7 +71,7 @@ function SourceChip({
   name: string;
 }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.04] px-2.5 py-1 text-[11px] text-ink-2">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.04] px-2.5 py-1 text-[12px] text-ink-2">
       <Icon className="size-3 text-ink-3" aria-hidden="true" />
       <span className="font-mono">{name}</span>
     </span>
@@ -83,26 +83,26 @@ function NavCanvas() {
   return (
     <div className="flex h-[216px] flex-col justify-between rounded-xl border border-white/10 bg-[#14171B] p-3.5">
       <div className="overflow-hidden rounded-lg border border-white/[0.07]">
-        <div className="grid grid-cols-[1fr_auto_auto] gap-2 border-b border-white/[0.07] bg-white/[0.04] px-2.5 py-1.5 text-[9px] uppercase tracking-[0.08em] text-ink-3">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-2 border-b border-white/[0.07] bg-white/[0.04] px-2.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.06em] text-ink-3">
           <span>Fund</span>
           <span className="text-right">Diff</span>
           <span className="text-right">Status</span>
         </div>
-        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2 border-b border-white/[0.05] px-2.5 py-2 text-[11px]">
+        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2 border-b border-white/[0.05] px-2.5 py-2 text-[12px]">
           <span className="font-medium text-[#E9EEF3]">Ashbourne Equity</span>
           <span className="text-right font-mono tabular-nums text-ink-2">0.00%</span>
           <span className="inline-flex justify-end">
-            <span className="inline-flex items-center gap-1 rounded-full bg-ok-solid px-2 py-0.5 text-[9.5px] font-medium text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-ok-solid px-2 py-0.5 text-[11px] font-medium text-white">
               <Check className="size-2.5" strokeWidth={3} aria-hidden="true" />
               Matched
             </span>
           </span>
         </div>
-        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2 px-2.5 py-2 text-[11px]">
+        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2 px-2.5 py-2 text-[12px]">
           <span className="font-medium text-[#E9EEF3]">Harborpoint</span>
           <span className="text-right font-mono tabular-nums text-ink-2">−1.77%</span>
           <span className="inline-flex justify-end">
-            <span className="inline-flex items-center gap-1 rounded-full bg-danger-solid px-2 py-0.5 text-[9.5px] font-medium text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-danger-solid px-2 py-0.5 text-[11px] font-medium text-white">
               Exception
             </span>
           </span>
@@ -110,7 +110,7 @@ function NavCanvas() {
       </div>
 
       <div className="flex justify-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-danger-solid px-3 py-1 text-xs font-medium text-white">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-danger-solid px-3 py-1 text-[12.5px] font-medium text-white">
           2 exceptions routed to human review
         </span>
       </div>
@@ -145,7 +145,7 @@ function RiskCanvas() {
 
         <div className="min-w-0 flex-1 space-y-2">
           <div>
-            <p className="text-[9px] uppercase tracking-[0.08em] text-ink-3">
+            <p className="text-[10.5px] font-medium uppercase tracking-[0.06em] text-ink-3">
               Concentration threshold
             </p>
             <div className="relative mt-1 h-1.5 rounded-full bg-white/[0.08]">
@@ -157,14 +157,14 @@ function RiskCanvas() {
               />
             </div>
           </div>
-          <p className="truncate font-mono text-[10.5px] tabular-nums text-ink-3">
-            Max Position: <span className="text-foreground">$12.4M</span> / $10.0M Limit
+          <p className="truncate font-mono text-[11.5px] font-medium tabular-nums text-ink-3">
+            Max Position: <span className="font-medium text-foreground">$12.4M</span> / $10.0M Limit
           </p>
         </div>
       </div>
 
       <div className="flex justify-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-danger-solid px-3 py-1 text-xs font-medium text-white">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-danger-solid px-3 py-1 text-[12.5px] font-medium text-white">
           <TriangleAlert className="size-3" aria-hidden="true" />
           Concentration limit breach
         </span>
@@ -206,8 +206,8 @@ function ResearchCanvas() {
 
       <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2.5">
         <div className="flex items-center justify-between">
-          <p className="text-[10.5px] font-medium text-[#F8FAFC]">Morning briefing (ready)</p>
-          <span className="text-[9px] text-[#7C8894]">06:45</span>
+          <p className="text-[11.5px] font-medium text-[#F8FAFC]">Morning briefing (ready)</p>
+          <span className="text-[10.5px] font-medium text-ink-3">06:45</span>
         </div>
         <div className="mt-1.5 space-y-1" aria-hidden="true">
           <span className="block h-1.5 w-[88%] rounded-full bg-white/[0.09]" />
@@ -217,7 +217,7 @@ function ResearchCanvas() {
       </div>
 
       <div className="flex justify-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-ok-solid px-3 py-1 text-[10.5px] font-medium text-white">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-ok-solid px-3 py-1 text-[11.5px] font-medium text-white">
           <Check className="size-3" strokeWidth={3} aria-hidden="true" />
           Briefing approved by editor
         </span>
@@ -275,7 +275,7 @@ export function TemplateLibrarySection() {
         {/* Header */}
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.15em] text-ink-3">
+            <p className="flex items-center gap-2.5 text-[12.5px] font-semibold uppercase tracking-[0.12em] text-ink-2">
               <span className="h-px w-6 bg-line-strong" aria-hidden="true" />
               Pre-built flows
             </p>
@@ -305,11 +305,11 @@ export function TemplateLibrarySection() {
             return (
               <div
                 key={t.id}
-                className={`group/tpl relative flex flex-col rounded-2xl border border-border bg-card p-6 transition-colors duration-300 xl:p-7 ${style?.glow ?? ""}`}
+                className={`group/tpl relative flex min-w-0 flex-col rounded-2xl border border-border bg-card p-6 transition-colors duration-300 xl:p-7 ${style?.glow ?? ""}`}
               >
                 <div>
                   <p
-                    className={`text-[11px] font-semibold uppercase tracking-[0.14em] ${style?.badge ?? "text-ink-3"}`}
+                    className={`text-[12px] font-semibold uppercase tracking-[0.12em] ${style?.badge ?? "text-ink-2"}`}
                   >
                     {style?.label ?? t.category}
                   </p>
@@ -324,7 +324,7 @@ export function TemplateLibrarySection() {
                   </p>
 
                   <div className="mt-4">
-                    <p className="text-[11px] font-medium text-ink-3">Key sources:</p>
+                    <p className="text-[12px] font-medium text-ink-2">Key sources:</p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {chips
                         ? chips.map((c) => <SourceChip key={c.name} icon={c.icon} name={c.name} />)

@@ -15,12 +15,6 @@ import { WaitlistSection } from "@/components/payo/waitlist";
 import { HeroVisual } from "@/components/payo/hero-visual";
 import { HelpsPipeline } from "@/components/payo/helps-pipeline";
 import { TemplateLibrarySection } from "@/components/payo/template-library";
-import {
-  BlackRockLogo,
-  BlackstoneLogo,
-  HsbcLogo,
-  MorganStanleyLogo,
-} from "@/components/payo/logos";
 
 const WORKSPACE_URL = "#/workspace/templates";
 
@@ -31,28 +25,26 @@ const NAV_LINKS = [
   { href: "#connections", label: "Integrations" },
 ];
 
-/* Social-proof bar: real vector marks, uniform 32px frame, quiet until hover. */
-function LogoBar() {
-  const logos = [
-    { C: BlackRockLogo, name: "BlackRock" },
-    { C: BlackstoneLogo, name: "Blackstone" },
-    { C: MorganStanleyLogo, name: "Morgan Stanley" },
-    { C: HsbcLogo, name: "HSBC" },
-  ];
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-x-12 gap-y-6">
-      {logos.map(({ C, name }) => (
-        <span
-          key={name}
-          className="text-white opacity-50 transition-opacity hover:opacity-80"
-          title={name}
-        >
-          <C />
-        </span>
-      ))}
-    </div>
-  );
-}
+const REGULATORY_FRAMEWORK = [
+  {
+    src: "/icons/SFC_Logo_Abbreviation_A3_RGB.png",
+    alt: "Securities and Futures Commission",
+    code: "SFC",
+    scope: "Licensed activities & AI governance",
+  },
+  {
+    src: "/icons/444-4444572_hong-kong-monetary-authority-logo.png",
+    alt: "Hong Kong Monetary Authority",
+    code: "HKMA",
+    scope: "Operational & cyber risk",
+  },
+  {
+    src: "/icons/PCPD_Short_OrgName_only.png",
+    alt: "Office of the Privacy Commissioner for Personal Data",
+    code: "PCPD",
+    scope: "Personal data & privacy",
+  },
+];
 
 /* Decorative bezier threads: keyphrases on the left wired to the showcase
  * card on the right, drawn as quiet dotted lines. Hidden on small screens
@@ -100,7 +92,7 @@ export function LandingPage() {
             <a href="#/" className="flex shrink-0 items-center gap-2.5" aria-label="Payo AI home">
               <PayoMark className="size-[26px]" />
               <span className="text-[15px] font-semibold tracking-tight text-white">Payo AI</span>
-              <span className="ml-1 hidden rounded border border-border px-1.5 py-px font-mono text-[10px] uppercase tracking-[0.08em] text-ink-3 lg:inline">
+              <span className="ml-1 hidden rounded border border-border px-1.5 py-px font-mono text-[12px] font-semibold uppercase tracking-[0.04em] text-ink-2 lg:inline">
                 V0
               </span>
             </a>
@@ -121,7 +113,7 @@ export function LandingPage() {
             <div className="ml-auto flex items-center gap-3">
               {/* Hand-drawn note pointing at the waitlist CTA (decorative). */}
               <div className="mr-1 hidden items-center gap-2 xl:flex" aria-hidden="true">
-                <span className="-translate-y-2 -rotate-3 whitespace-nowrap text-[11.5px] italic leading-none text-ink-2">
+                <span className="-translate-y-2 -rotate-3 whitespace-nowrap text-[12.5px] font-medium italic leading-none text-ink-2">
                   join for early access
                 </span>
                 <svg
@@ -200,21 +192,63 @@ export function LandingPage() {
                     Explore Template Library
                   </a>
                 </div>
-                <p className="mt-4 text-[12px] text-ink-3">
+                <p className="mt-4 text-[13px] text-ink-2">
                   No code required · Zero execution without human approval · Sample data sandbox
                 </p>
               </div>
               <HeroVisual />
             </div>
 
-            {/* Social proof logo bar */}
-            <div className="relative mt-14 border-t border-white/[0.08] pt-8">
-              <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-ink-3">
-                Trusted concept for modern finance ops
+            {/* SECTION 1B — Regulatory framework */}
+            <div className="relative mt-14 border-t border-white/[0.08] pt-10">
+              <p className="text-center font-mono text-[11.5px] font-medium uppercase tracking-[0.14em] text-ink-3">
+                Workflow <span className="text-primary" aria-hidden="true">→</span> Governance{" "}
+                <span className="text-primary" aria-hidden="true">→</span> Regulatory alignment
               </p>
-              <div className="mt-6">
-                <LogoBar />
+              <h2 className="mt-4 text-center text-[16px] font-semibold uppercase tracking-[0.12em] text-white sm:text-[18px]">
+                Built around Hong Kong regulatory requirements
+              </h2>
+              <p className="mx-auto mt-3 max-w-2xl text-center text-[13px] leading-relaxed text-ink-2">
+                A workflow architecture designed with governance, operational risk and data
+                protection in mind.
+              </p>
+
+              <div className="relative mt-9">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 top-12 hidden sm:block"
+                >
+                  <span className="absolute left-[16.666%] right-[16.666%] h-px bg-white/[0.12]" />
+                  <span className="absolute left-1/3 top-0 size-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border border-primary/60 bg-primary/25" />
+                  <span className="absolute left-2/3 top-0 size-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border border-primary/60 bg-primary/25" />
+                </div>
+
+                <ol className="relative grid gap-4 sm:grid-cols-3 sm:gap-6">
+                  {REGULATORY_FRAMEWORK.map((a) => (
+                    <li
+                      key={a.code}
+                      className="relative z-10 rounded-xl border border-white/[0.12] bg-[#101417] p-5 text-center transition-colors duration-200 hover:border-primary/35"
+                    >
+                      <span className="mx-auto grid h-14 w-24 place-items-center overflow-hidden rounded-lg bg-white px-3">
+                        <img
+                          src={a.src}
+                          alt={a.alt}
+                          className="max-h-9 w-auto max-w-full object-contain"
+                          loading="lazy"
+                        />
+                      </span>
+                      <p className="mt-4 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-white">
+                        {a.code}
+                      </p>
+                      <p className="mt-1.5 text-[12.5px] leading-snug text-ink-2">{a.scope}</p>
+                    </li>
+                  ))}
+                </ol>
               </div>
+
+              <p className="mt-6 text-center font-mono text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink-3">
+                Regulatory alignment by design · Human review · Data protection
+              </p>
             </div>
           </div>
         </section>
@@ -249,13 +283,13 @@ export function LandingPage() {
             aria-hidden="true"
             className="absolute inset-x-0 top-0 h-px bg-white/[0.08]"
           />
-          <div className="mx-auto flex max-w-[1720px] flex-col gap-6 px-6 py-10 md:flex-row md:items-start md:justify-between lg:px-20">
+          <div className="mx-auto flex max-w-[1720px] flex-col gap-6 py-10 pl-6 pr-28 md:flex-row md:items-start md:justify-between lg:pl-20 lg:pr-40">
             <div>
               <div className="flex items-center gap-2.5">
                 <PayoMark className="size-6" />
                 <span className="text-[14px] font-semibold tracking-tight text-white">Payo AI</span>
               </div>
-              <p className="mt-3 max-w-xs text-[12px] leading-relaxed text-ink-3">
+              <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-ink-3">
                 V0 product prototype. Workflows, data, connections, approvals and outputs are
                 simulated. Not investment advice or an official report.
               </p>

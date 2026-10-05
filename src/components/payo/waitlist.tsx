@@ -253,7 +253,7 @@ export function WaitlistSection() {
                   name="consent"
                   checked={consent}
                   onChange={(e) => setConsent(e.target.checked)}
-                  className="mt-0.5 size-4 shrink-0 rounded border-input accent-[var(--primary)]"
+                  className="mt-0.5 size-4 shrink-0 rounded border-input accent-[var(--primary)] [color-scheme:dark]"
                 />
                 <span>
                   I agree to the <a href="/privacy" className="font-medium text-primary-ink underline-offset-2 hover:underline">Privacy Policy</a> and to
@@ -266,7 +266,7 @@ export function WaitlistSection() {
                   {busy ? "Joining…" : "Get early access"}
                   {!busy && <ArrowRight className="size-4" aria-hidden="true" />}
                 </Button>
-                <p className="text-center text-[11.5px] text-ink-3">
+                <p className="text-center text-[12.5px] text-ink-3">
                   Free during early access sandbox. Zero spam. Exportable audit trails included.
                 </p>
               </div>
@@ -284,7 +284,7 @@ export function WaitlistSection() {
               }}
             >
               <div>
-                <p className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-3">
+                <p className="flex items-center gap-2 text-[12.5px] font-semibold uppercase tracking-[0.08em] text-ink-2">
                   <Lock className="size-3.5" aria-hidden="true" />
                   Admin access
                 </p>
@@ -337,7 +337,7 @@ export function WaitlistSection() {
           ) : (
             <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <p className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-3">
+                <p className="flex items-center gap-2 text-[12.5px] font-semibold uppercase tracking-[0.08em] text-ink-2">
                   <Lock className="size-3.5" aria-hidden="true" />
                   Waitlist admin
                 </p>
@@ -370,12 +370,12 @@ export function WaitlistSection() {
               </div>
 
               <div className="max-h-[320px] overflow-auto rounded-md border border-border">
-                <table className="w-full border-collapse text-[12px]">
+                <table className="w-full border-collapse text-[12.5px]">
                   <thead className="sticky top-0 bg-muted">
                     <tr className="border-b border-border text-left">
-                      <th className="px-2.5 py-2 text-[11px] font-medium text-ink-3">Joined</th>
-                      <th className="px-2.5 py-2 text-[11px] font-medium text-ink-3">Email</th>
-                      <th className="px-2.5 py-2 text-[11px] font-medium text-ink-3">Role</th>
+                      <th className="px-2.5 py-2 text-[12px] font-medium text-ink-3">Joined</th>
+                      <th className="px-2.5 py-2 text-[12px] font-medium text-ink-3">Email</th>
+                      <th className="px-2.5 py-2 text-[12px] font-medium text-ink-3">Role</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -404,7 +404,7 @@ export function WaitlistSection() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-[11.5px] leading-relaxed text-ink-3">
+              <p className="text-[12.5px] leading-relaxed text-ink-3">
                 Internal view. The password is checked against the server configuration and is not
                 stored in the browser.
               </p>

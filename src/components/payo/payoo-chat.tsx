@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 
 import { PayoMark } from "@/components/payo/mark";
@@ -15,6 +15,14 @@ export function PayooChat({ dark = false }: { dark?: boolean }) {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const [sent, setSent] = useState<string[]>([]);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 120);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const submit = () => {
     const text = draft.trim();
@@ -38,16 +46,16 @@ export function PayooChat({ dark = false }: { dark?: boolean }) {
           <div className={cn("flex items-center gap-2.5 border-b px-4 py-3", dark ? "border-white/[0.08]" : "border-border")}>
             <PayoMark className="size-7" />
             <div className="min-w-0">
-              <p className={cn("text-[13px] font-semibold leading-tight", dark ? "text-[#E9EDF2]" : "text-foreground")}>
+              <p className={cn("text-[13.5px] font-semibold leading-tight", dark ? "text-[#E9EDF2]" : "text-foreground")}>
                 Payoo
               </p>
-              <p className={cn("text-[11px] leading-tight", dark ? "text-[#6E7681]" : "text-ink-3")}>
+              <p className={cn("text-[12px] leading-tight", dark ? "text-ink-3" : "text-ink-3")}>
                 Your workflow helper
               </p>
             </div>
             <span
               className={cn(
-                "ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10.5px] font-medium",
+                "ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11.5px] font-medium",
                 dark
                   ? "border-warn/30 bg-warn/10 text-warn"
                   : "border-warn-border bg-warn-tint text-warn",
@@ -65,7 +73,7 @@ export function PayooChat({ dark = false }: { dark?: boolean }) {
           <div className="flex max-h-56 flex-col gap-2 overflow-y-auto px-4 py-4">
             <div
               className={cn(
-                "max-w-[230px] self-start rounded-2xl rounded-tl-md px-3.5 py-2.5 text-[12.5px] leading-relaxed",
+                "max-w-[230px] self-start rounded-2xl rounded-tl-md px-3.5 py-2.5 text-[13px] leading-relaxed",
                 dark ? "bg-white/[0.06] text-[#E9EDF2]" : "bg-muted text-foreground",
               )}
             >
@@ -76,7 +84,7 @@ export function PayooChat({ dark = false }: { dark?: boolean }) {
               <div
                 key={i}
                 className={cn(
-                  "ml-auto max-w-[230px] rounded-2xl rounded-br-md px-3.5 py-2.5 text-[12.5px] leading-relaxed",
+                  "ml-auto max-w-[230px] rounded-2xl rounded-br-md px-3.5 py-2.5 text-[13px] leading-relaxed",
                   dark ? "bg-[#C9500A]/[0.15] text-[#F08A3C]" : "bg-primary/15 text-primary-ink",
                 )}
               >
@@ -106,8 +114,8 @@ export function PayooChat({ dark = false }: { dark?: boolean }) {
                 placeholder="Ask me anything…"
                 aria-label="Message Payoo"
                 className={cn(
-                  "h-7 w-full bg-transparent text-[12px] outline-none",
-                  dark ? "text-[#E9EDF2] placeholder:text-[#6E7681]" : "text-foreground placeholder:text-ink-3",
+                  "h-7 w-full bg-transparent text-[12.5px] outline-none",
+                  dark ? "text-[#E9EDF2] placeholder:text-ink-3" : "text-foreground placeholder:text-ink-3",
                 )}
               />
               <button
@@ -129,10 +137,10 @@ export function PayooChat({ dark = false }: { dark?: boolean }) {
           </form>
         </div>
       )}
-      {!open && (
+      {!open && !scrolled && (
         <span
           className={cn(
-            "rounded-full border px-2.5 py-1 text-[11px] font-medium shadow-sm",
+            "pointer-events-none hidden rounded-full border px-2.5 py-1 text-[12px] font-medium shadow-sm sm:inline-block",
             dark
               ? "border-white/[0.12] bg-[#14171B] text-[#A9B1BA]"
               : "border-border bg-card text-ink-2",

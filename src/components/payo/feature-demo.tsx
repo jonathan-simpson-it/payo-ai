@@ -112,7 +112,7 @@ function prefersReducedMotion(): boolean {
 
 // ─── Result previews (sample fixtures) ───────────────────────────────────────
 
-const TH = "px-2.5 py-1.5 text-left text-[10.5px] font-medium text-ink-3";
+const TH = "px-2.5 py-1.5 text-left text-[11.5px] font-medium text-ink-3";
 const TH_R = cn(TH, "text-right");
 const TD = "px-2.5 py-1.5 align-top text-ink-2";
 
@@ -127,7 +127,7 @@ function ReconcileResult() {
         ±0.50%
       </p>
       <div className="overflow-x-auto rounded-md border border-border">
-        <table className="w-full border-collapse text-[11.5px]">
+        <table className="w-full border-collapse text-[12.5px]">
           <thead>
             <tr className="border-b border-border bg-muted/40">
               <th className={TH}>Fund</th>
@@ -152,7 +152,7 @@ function ReconcileResult() {
           </tbody>
         </table>
       </div>
-      <p className="text-[11px] text-ink-3">
+      <p className="text-[12px] text-ink-3">
         Source: sample administrator NAV and internal valuation, 29 Sep 2026.
       </p>
     </div>
@@ -168,7 +168,7 @@ function RiskResult() {
         {flagged.length} positions flagged at the 90% review threshold
       </p>
       <div className="overflow-x-auto rounded-md border border-border">
-        <table className="w-full border-collapse text-[11.5px]">
+        <table className="w-full border-collapse text-[12.5px]">
           <thead>
             <tr className="border-b border-border bg-muted/40">
               <th className={TH}>Position</th>
@@ -191,7 +191,7 @@ function RiskResult() {
           </tbody>
         </table>
       </div>
-      <p className="text-[11px] text-ink-3">Source: sample positions file and limit policy.</p>
+      <p className="text-[12px] text-ink-3">Source: sample positions file and limit policy.</p>
     </div>
   );
 }
@@ -201,16 +201,16 @@ function BriefingResult() {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
-        <span className="inline-flex items-center rounded-sm bg-primary-tint px-1.5 py-0.5 text-[11px] font-semibold text-primary-ink">
+        <span className="inline-flex items-center rounded-sm bg-primary-tint px-1.5 py-0.5 text-[11.5px] font-semibold text-primary-ink">
           AI-assisted draft
         </span>
-        <span className="text-[11.5px] text-ink-3">Checked by an editor before export</span>
+        <span className="text-[12.5px] text-ink-3">Checked by an editor before export</span>
       </div>
       <ul className="space-y-1.5">
         {moves.map((m) => (
           <li
             key={m.instrument}
-            className="flex items-baseline justify-between gap-3 border-b border-border/70 pb-1.5 text-[12px] last:border-0"
+            className="flex items-baseline justify-between gap-3 border-b border-border/70 pb-1.5 text-[12.5px] last:border-0"
           >
             <span className="font-medium text-foreground">{m.instrument}</span>
             <span className="tabular-nums text-ink-2">{m.level}</span>
@@ -227,13 +227,13 @@ function BriefingResult() {
       </ul>
       <div className="space-y-1.5 border-t border-border pt-2.5">
         {HOLDING_LINKS.slice(0, 2).map((h) => (
-          <p key={h.holding} className="text-[11.5px] leading-snug text-ink-2">
+          <p key={h.holding} className="text-[12px] leading-snug text-ink-2">
             <span className="font-medium text-foreground">{h.holding}</span>: {h.move},{" "}
             <span className="tabular-nums">{fmtSignedHKD(h.estImpact)}</span> estimated effect
           </p>
         ))}
       </div>
-      <p className="text-[11px] text-ink-3">
+      <p className="text-[12px] text-ink-3">
         Source: sample market snapshot, 30 Sep 2026, 07:45.
       </p>
     </div>
@@ -349,7 +349,7 @@ export function FeatureDemo() {
   const statusChip = (label: string, active: boolean) => (
     <span
       className={cn(
-        "inline-flex items-center rounded-sm px-1.5 py-0.5 font-mono text-xs text-ink-3",
+        "inline-flex items-center rounded-sm px-1.5 py-0.5 font-mono text-[12.5px] text-ink-3",
         active &&
           "rounded border border-white/[0.18] bg-white/[0.10] px-2 py-0.5 font-semibold text-white",
       )}
@@ -383,7 +383,7 @@ export function FeatureDemo() {
         {/* Section header */}
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-ink-3">
+            <p className="flex items-center gap-2.5 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-ink-2">
               <span
                 aria-hidden="true"
                 className="h-px w-6 bg-line-strong"
@@ -409,7 +409,7 @@ export function FeatureDemo() {
                 <TabsTrigger
                   key={s.id}
                   value={s.id}
-                  className="flex-1 rounded-lg border border-transparent px-4 py-2 text-sm font-medium transition-colors data-[state=active]:border-white/[0.18] data-[state=active]:bg-white/[0.10] data-[state=active]:text-white data-[state=inactive]:text-ink-2 hover:data-[state=inactive]:bg-white/[0.06] hover:data-[state=inactive]:text-white"
+                  className="flex-1 rounded-lg border border-transparent px-4 py-2 text-sm font-medium transition-colors data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-ink-2 hover:data-[state=inactive]:bg-white/[0.06] hover:data-[state=inactive]:text-white"
                 >
                   {s.label}
                 </TabsTrigger>
@@ -424,14 +424,14 @@ export function FeatureDemo() {
                 <p className="text-[14.5px] font-semibold tracking-[-0.01em] text-foreground">
                   {scenario.title}
                 </p>
-                <p className="mt-0.5 max-w-2xl text-[12px] leading-snug text-ink-2">
+                <p className="mt-0.5 max-w-2xl text-[13px] leading-snug text-ink-2">
                   {scenario.blurb}
                 </p>
               </div>
               <div className="ml-auto flex items-center gap-2">
                 <SampleTag />
                 <Button
-                  className="h-auto inline-flex items-center gap-1.5 rounded-lg border border-border bg-white/[0.04] px-3 py-1.5 font-mono text-xs font-medium text-ink-2 transition-colors hover:bg-white/[0.08] hover:text-white"
+                  className="h-auto inline-flex items-center gap-1.5 rounded-lg border border-border bg-white/[0.04] px-3 py-1.5 font-mono text-[12.5px] font-medium text-ink-2 transition-colors hover:bg-white/[0.08] hover:text-white"
                   onClick={() => start(scenario)}
                   disabled={phase === "running"}
                 >
@@ -459,7 +459,7 @@ export function FeatureDemo() {
               <div className="grid gap-5 py-4 md:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
                 {/* Step timeline */}
                 <div className="min-w-0 md:border-r md:border-border md:pr-5">
-                  <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
+                  <p className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-2">
                     Steps
                   </p>
                   <ol className="mt-3 space-y-2.5">
@@ -467,7 +467,7 @@ export function FeatureDemo() {
                       const state = states[i] ?? "queued";
                       return (
                         <li key={s.label} className="flex items-center gap-2.5">
-                          <span className="w-3.5 shrink-0 text-right text-[11px] tabular-nums text-ink-3">
+                          <span className="w-3.5 shrink-0 text-right text-[12px] tabular-nums text-ink-3">
                             {i + 1}
                           </span>
                           <StepTypeIcon type={s.type} className="size-3.5 shrink-0 text-ink-3" />
@@ -496,7 +496,7 @@ export function FeatureDemo() {
                         Running step {Math.max(states.indexOf("running") + 1, 1)} of{" "}
                         {scenario.steps.length}…
                       </p>
-                      <p className="text-[11.5px] text-ink-3">
+                      <p className="text-[12.5px] text-ink-3">
                         Results appear here as the sample run reaches the review gate.
                       </p>
                     </div>
@@ -505,24 +505,24 @@ export function FeatureDemo() {
                       {Result ? <Result /> : null}
                       {phase === "awaiting" && (
                         <div className="my-4 rounded-xl border border-warn-border bg-warn-tint p-4">
-                          <p className="mb-3 flex items-center gap-2 text-xs font-medium text-warn">
+                          <p className="mb-3 flex items-center gap-2 text-[12.5px] font-medium text-warn">
                             <CircleAlert className="size-3.5 text-warn" aria-hidden="true" />
                             Paused for human review: {scenario.pauseNote}
                           </p>
-                          <p className="mt-1 text-[11.5px] text-ink-2">
+                          <p className="mt-1 text-[12.5px] text-ink-2">
                             Approving completes the run; returning pauses the workflow for further
                             inspection.
                           </p>
                           <div className="mt-2.5 flex flex-wrap gap-2">
                             <Button
-                              className="h-auto inline-flex items-center gap-1 rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-colors has-[>svg]:px-4 hover:bg-primary-strong"
+                              className="h-auto inline-flex items-center gap-1 rounded-lg bg-primary px-4 py-2 text-[12.5px] font-semibold text-primary-foreground transition-colors has-[>svg]:px-4 hover:bg-primary-strong"
                               onClick={approve}
                             >
                               {scenario.approveLabel}
                               <ArrowRight className="size-3.5" aria-hidden="true" />
                             </Button>
                             <Button
-                              className="ml-2 h-auto inline-flex items-center gap-1 rounded-lg border border-border bg-white/[0.04] px-4 py-2 text-xs font-medium text-ink-2 transition-colors hover:bg-white/[0.08] hover:text-white"
+                              className="ml-2 h-auto inline-flex items-center gap-1 rounded-lg border border-border bg-white/[0.04] px-4 py-2 text-[12.5px] font-medium text-ink-2 transition-colors hover:bg-white/[0.08] hover:text-white"
                               onClick={returnForReview}
                             >
                               {scenario.returnLabel}
@@ -545,7 +545,7 @@ export function FeatureDemo() {
                       )}
                       {phase === "done" && (
                         <p className="flex items-center gap-2 rounded-xl border border-border bg-white/[0.03] px-3.5 py-2.5 text-[12.5px] text-ink-2">
-                          <span className="inline-flex items-center rounded bg-ok-solid px-1.5 py-0.5 text-[10.5px] font-medium text-white">
+                          <span className="inline-flex items-center rounded bg-ok-solid px-1.5 py-0.5 text-[11.5px] font-medium text-white">
                             Complete
                           </span>
                           Run complete. Reviewed and finalised in this simulation.
@@ -559,7 +559,7 @@ export function FeatureDemo() {
 
             {/* Test before publishing */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border pt-3.5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
+              <p className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-2">
                 Status
               </p>
               <div className="flex items-center gap-1.5">
@@ -576,7 +576,7 @@ export function FeatureDemo() {
                 </span>
                 {statusChip("Ready to publish", ready)}
               </div>
-              <p className="text-[11.5px] text-ink-2">
+              <p className="text-[12.5px] text-ink-2">
                 {phase === "idle" && "Runs on sample data before anything is marked ready."}
                 {phase === "running" && "Running the workflow on sample data…"}
                 {tested && !ready && scenario.testedNote}
@@ -584,7 +584,7 @@ export function FeatureDemo() {
               </p>
               {tested && !ready && (
                 <Button
-                  className="ml-auto h-auto rounded-lg border border-border bg-white/[0.06] px-4 py-2 text-xs font-medium text-foreground transition-colors hover:bg-white/[0.10]"
+                  className="ml-auto h-auto rounded-lg border border-border bg-white/[0.06] px-4 py-2 text-[12.5px] font-medium text-foreground transition-colors hover:bg-white/[0.10]"
                   onClick={() => setReady(true)}
                 >
                   Deploy to production
@@ -603,7 +603,7 @@ export function FeatureDemo() {
         </div>
 
         {/* Footer explanation grid */}
-        <div className="grid gap-3 text-[13px] leading-[1.4] text-ink-3 sm:grid-cols-3">
+        <div className="grid gap-3 text-[13.5px] leading-[1.45] text-ink-2 sm:grid-cols-3">
           <p>
             <span className="font-semibold text-foreground">1. Start from a template.</span> Input,
             calculation, check, review and output arrive as an ordered workflow.

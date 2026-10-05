@@ -99,7 +99,7 @@ export function SampleTag({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center gap-1.5 rounded border border-border bg-card px-1.5 py-px text-[11px] font-medium tracking-wide text-ink-3",
+        "inline-flex shrink-0 items-center gap-1.5 rounded border border-border bg-card px-1.5 py-px text-[12px] font-medium tracking-wide text-ink-3",
         className,
       )}
     >
@@ -131,7 +131,7 @@ export function RunStatusChip({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center gap-1.5 rounded-sm px-1.5 py-0.5 text-[11.5px] font-medium",
+        "inline-flex shrink-0 items-center gap-1.5 rounded-sm px-1.5 py-0.5 text-[12px] font-medium",
         s.cls,
         className,
       )}
@@ -159,7 +159,7 @@ export function WorkflowStatusChip({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center whitespace-nowrap rounded-sm px-1.5 py-0.5 text-[11.5px] font-medium",
+        "inline-flex shrink-0 items-center whitespace-nowrap rounded-sm px-1.5 py-0.5 text-[12px] font-medium",
         s.cls,
         className,
       )}
@@ -193,7 +193,7 @@ export function ToneChip({
     ok: "bg-ok-solid text-white",
   };
   return (
-    <span className={cn("inline-flex items-center whitespace-nowrap rounded-full px-2 py-0.5 text-[11.5px] font-medium", variant === "solid" ? solids[tone] : tones[tone])}>
+    <span className={cn("inline-flex items-center whitespace-nowrap rounded-full px-2 py-0.5 text-[12px] font-medium", variant === "solid" ? solids[tone] : tones[tone])}>
       {children}
     </span>
   );

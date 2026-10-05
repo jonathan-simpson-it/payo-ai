@@ -34,7 +34,7 @@ function GrowthTrend() {
       aria-label="Area chart: AI-related investment by global financial institutions, USD 78bn in 2025 rising to a forecast USD 132bn by 2030."
     >
       <div className="flex justify-end">
-        <span className="rounded border border-border bg-white/[0.04] px-2 py-0.5 font-mono text-[11px] text-primary-ink">
+        <span className="rounded border border-border bg-white/[0.04] px-2 py-0.5 font-mono text-[12px] font-medium text-primary-ink">
           +$54B Growth
         </span>
       </div>
@@ -78,14 +78,14 @@ function GrowthTrend() {
           className="absolute left-[7.5%] top-[70%] size-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#6E7681]"
           aria-hidden="true"
         />
-        <span className="absolute left-[7.5%] top-[calc(70%+10px)] -translate-x-1/2 whitespace-nowrap font-mono text-[11px] tabular-nums text-ink-3">
+        <span className="absolute left-[7.5%] top-[calc(70%+10px)] -translate-x-1/2 whitespace-nowrap font-mono text-[12px] font-medium tabular-nums text-ink-3">
           2025 · $78B
         </span>
         <span
           className="absolute left-[92.5%] top-[23.33%] size-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#C9500A]"
           aria-hidden="true"
         />
-        <span className="absolute right-0 top-[calc(23.33%-20px)] whitespace-nowrap text-right font-mono text-[11px] font-bold tabular-nums text-foreground">
+        <span className="absolute right-0 top-[calc(23.33%-20px)] whitespace-nowrap text-right font-mono text-[12px] font-bold tabular-nums text-foreground">
           2030 · $132B
         </span>
       </div>
@@ -155,12 +155,12 @@ export function EvidenceStrip() {
 
             <div className="mt-7 border-t border-border pt-6">
               <GrowthTrend />
-              <p className="mt-3 text-[12px] text-ink-3">
+              <p className="mt-3 text-[12.5px] leading-relaxed text-ink-3">
                 AI-related investment by global financial institutions (2025 → 2030).
               </p>
             </div>
 
-            <p className="mt-6 border-t border-border pt-4 text-xs text-ink-3">
+            <p className="mt-6 border-t border-border pt-4 text-[13px] text-ink-3">
               Source:{" "}
               <a
                 href="https://www.quinlanandassociates.com/wp-content/uploads/2026/07/Quinlan-Associates-From-Pie-in-the-Sky-to-ROI.pdf"
@@ -182,13 +182,13 @@ export function EvidenceStrip() {
                 className="glass glass-hover rounded-xl p-5 xl:p-6"
               >
                 <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2">
-                  <span className="grid size-8 shrink-0 place-items-center rounded-md bg-white/[0.06] font-mono text-[12px] font-semibold tabular-nums text-foreground">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-md bg-white/[0.06] font-mono text-[12.5px] font-semibold tabular-nums text-foreground">
                     {s.n}
                   </span>
                   <h3 className="text-[18px] font-bold tracking-[-0.01em] text-foreground">
                     {s.title}
                   </h3>
-                  <span className="ml-auto inline-flex items-center rounded border border-border bg-white/[0.05] px-2 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.04em] text-ink-2">
+                  <span className="ml-auto inline-flex items-center rounded border border-border bg-white/[0.05] px-2 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.04em] text-ink-2">
                     {s.tag}
                   </span>
                 </div>
@@ -283,7 +283,7 @@ function MiniFrame({ title, children }: { title: string; children: React.ReactNo
   return (
     <div className="glass-deep edge-lit overflow-hidden rounded-xl">
       <div className="flex items-center justify-between gap-3 border-b border-border bg-muted/50 px-3.5 py-2">
-        <span className="truncate text-[12.5px] font-medium text-foreground">{title}</span>
+        <span className="truncate text-[13px] font-medium text-foreground">{title}</span>
         <SampleTag />
       </div>
       <div className="p-3.5">{children}</div>
@@ -291,8 +291,8 @@ function MiniFrame({ title, children }: { title: string; children: React.ReactNo
   );
 }
 
-const MINI_TH = "px-2 pb-2 text-left text-[11px] font-mono uppercase tracking-wider text-ink-3";
-const MINI_TD = "px-2 py-1.5 align-top text-[11.5px] text-ink-2";
+const MINI_TH = "px-2 pb-2 text-left text-[12px] font-mono font-medium uppercase tracking-wider text-ink-3";
+const MINI_TD = "px-2 py-1.5 align-top text-[12.5px] text-ink-2";
 
 /* Solid status tags for the position-risk table. */
 const RISK_PILL: Record<string, string> = {
@@ -305,7 +305,7 @@ function RiskStatusPill({ status }: { status: string }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center whitespace-nowrap rounded px-2 py-0.5 text-[11px] font-medium",
+        "inline-flex items-center whitespace-nowrap rounded px-2 py-0.5 text-[12px] font-medium",
         RISK_PILL[status],
       )}
     >
@@ -324,7 +324,7 @@ function AnalystPreview() {
           const hot = used >= 90;
           return (
             <div key={r.position} className="flex items-center gap-2.5">
-              <span className="w-[104px] truncate text-[10.5px] text-ink-2">{r.position}</span>
+              <span className="w-[120px] truncate text-[12px] text-ink-2">{r.position}</span>
               <span className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.08]">
                 <span
                   className={cn(
@@ -335,7 +335,7 @@ function AnalystPreview() {
                 />
                 <span className="absolute inset-y-[-2px] w-px bg-white/30" style={{ left: "100%" }} />
               </span>
-              <span className="w-8 text-right font-mono text-xs text-ink-3">
+              <span className="w-8 text-right font-mono text-[12.5px] font-medium text-ink-2">
                 {fmtPct(used, 0)}
               </span>
             </div>
@@ -355,10 +355,10 @@ function AnalystPreview() {
           {rows.map((r) => (
             <tr key={r.position} className="border-b border-border/60 last:border-0">
               <td className={cn(MINI_TD, "font-medium text-foreground")}>{r.position}</td>
-              <td className={cn(MINI_TD, "text-right font-mono text-ink-2 text-xs")}>
+              <td className={cn(MINI_TD, "text-right font-mono text-ink-2 text-[12.5px]")}>
                 {fmtPct(r.weight, 1)}
               </td>
-              <td className={cn(MINI_TD, "text-right font-mono text-ink-2 text-xs")}>
+              <td className={cn(MINI_TD, "text-right font-mono text-ink-2 text-[12.5px]")}>
                 {fmtPct(r.limitPct, 0)}
               </td>
               <td className={cn(MINI_TD, "whitespace-nowrap")}>
@@ -368,7 +368,7 @@ function AnalystPreview() {
           ))}
         </tbody>
       </table>
-      <p className="mt-2.5 text-[11px] text-ink-3">
+      <p className="mt-2.5 text-[12px] text-ink-3">
         Review threshold 90% of limit · source: sample positions file
       </p>
     </MiniFrame>
@@ -407,7 +407,7 @@ function OperationsPreview() {
           ))}
         </tbody>
       </table>
-      <p className="mt-2.5 flex items-center gap-1.5 text-[11px] text-ink-3">
+      <p className="mt-2.5 flex items-center gap-1.5 text-[12px] text-ink-3">
         <span
           className="inline-flex size-1.5 rounded-full bg-warn"
           aria-hidden="true"
@@ -427,15 +427,15 @@ function SmePreview() {
   return (
     <MiniFrame title="Cashflow update (week of 28 Sep)">
       <dl className="space-y-1.5">
-        <div className="flex items-baseline justify-between gap-3 text-[12px]">
+        <div className="flex items-baseline justify-between gap-3 text-[13px]">
           <dt className="text-ink-2">Opening balance</dt>
           <dd className="font-mono tabular-nums text-foreground">HK${fmtInt(SME_CASHFLOW.opening)}</dd>
         </div>
         {SME_CASHFLOW.lines.map((l) => (
-          <div key={l.label} className="flex items-baseline justify-between gap-3 text-[12px]">
+          <div key={l.label} className="flex items-baseline justify-between gap-3 text-[13px]">
             <dt className="text-ink-2">
               {l.label}
-              <span className="ml-1.5 text-[10.5px] text-ink-3">{l.note}</span>
+              <span className="ml-1.5 text-[12px] text-ink-3">{l.note}</span>
             </dt>
             <dd
               className={cn(
@@ -447,7 +447,7 @@ function SmePreview() {
             </dd>
           </div>
         ))}
-        <div className="flex items-baseline justify-between gap-3 border-t border-border pt-1.5 text-[12.5px]">
+        <div className="flex items-baseline justify-between gap-3 border-t border-border pt-1.5 text-[13.5px]">
           <dt className="font-medium text-foreground">Closing balance</dt>
           <dd className="font-mono font-medium tabular-nums text-foreground">
             HK${fmtInt(SME_CASHFLOW.closing)}
@@ -456,13 +456,13 @@ function SmePreview() {
       </dl>
       <ul className="mt-3 space-y-1.5 border-t border-border pt-2.5">
         {SME_CASHFLOW.tasks.map((t) => (
-          <li key={t.label} className="flex items-center justify-between gap-3 text-[11.5px]">
+          <li key={t.label} className="flex items-center justify-between gap-3 text-[12.5px]">
             <span className="text-ink-2">{t.label}</span>
             <ToneChip tone={t.status === "Needs review" ? "warn" : "ok"} variant="solid">{t.status}</ToneChip>
           </li>
         ))}
       </ul>
-      <p className="mt-2.5 text-[11px] text-ink-3">
+      <p className="mt-2.5 text-[12px] text-ink-3">
         Simulated cashflow · sample bank and invoice data
       </p>
     </MiniFrame>
@@ -484,13 +484,13 @@ function PersonaBadge({
     <div className="flex items-center gap-3.5">
       <span
         aria-hidden="true"
-        className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-white/[0.06] font-mono font-semibold text-ink-2 text-xs"
+        className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-mono font-semibold text-primary-foreground text-[13px]"
       >
         {persona.initials}
       </span>
       <div className="min-w-0">
         <p className="text-[14.5px] font-semibold text-foreground">{persona.name}</p>
-        <p className="truncate text-[12px] text-ink-3">
+        <p className="truncate text-[13px] text-ink-2">
           {persona.role} · {persona.org}
         </p>
       </div>
@@ -510,21 +510,21 @@ function RolePanel({ role }: { role: RoleDef }) {
         </blockquote>
 
         <div className="mt-5 grid gap-3">
-          <div className="rounded-r-lg border-l-2 border-border bg-white/[0.03] p-3 text-xs">
-            <p className="mb-1.5 inline-flex rounded bg-danger-solid px-1.5 py-0.5 font-mono font-semibold uppercase tracking-wider text-white text-[10px]">
+          <div className="rounded-r-lg border-l-2 border-border bg-white/[0.03] p-3 text-[13px]">
+            <p className="mb-1.5 inline-flex rounded bg-danger-solid px-1.5 py-0.5 font-mono font-semibold uppercase tracking-wider text-white text-[12px]">
               Friction
             </p>
             <p className="text-ink-2">{role.slow}</p>
           </div>
-          <div className="rounded-r-lg border-l-2 border-border bg-white/[0.03] p-3 text-xs">
-            <p className="mb-1.5 inline-flex rounded bg-ok-solid px-1.5 py-0.5 font-mono font-semibold uppercase tracking-wider text-white text-[10px]">
+          <div className="rounded-r-lg border-l-2 border-border bg-white/[0.03] p-3 text-[13px]">
+            <p className="mb-1.5 inline-flex rounded bg-ok-solid px-1.5 py-0.5 font-mono font-semibold uppercase tracking-wider text-white text-[12px]">
               What Payo delivers
             </p>
             <p className="text-ink-2">{role.prepare}</p>
           </div>
         </div>
 
-        <p className="mt-4 inline-flex items-center gap-1.5 rounded-md border border-primary/30 bg-primary/10 px-2.5 py-1 font-mono text-xs font-medium text-primary-ink">
+        <p className="mt-4 inline-flex items-center gap-1.5 rounded-md border border-primary/30 bg-primary/10 px-2.5 py-1 font-mono text-[12.5px] font-medium text-primary-ink">
           <Zap className="size-3.5" aria-hidden="true" />
           Efficiency gain: {role.impact}
         </p>
@@ -536,7 +536,7 @@ function RolePanel({ role }: { role: RoleDef }) {
           {role.templateLabel}
           <ArrowRight className="size-3.5" aria-hidden="true" />
         </a>
-        <p className="mt-3 text-[10.5px] text-ink-3">Simulated persona, for illustration.</p>
+        <p className="mt-3 text-[12px] text-ink-3">Simulated persona, for illustration.</p>
       </div>
 
       {/* Live UI canvas */}
@@ -561,7 +561,7 @@ export function RolesSection() {
               <TabsTrigger
                 key={r.id}
                 value={r.id}
-                className="flex-none rounded-lg border border-transparent bg-white/[0.04] px-4 py-2 text-[13px] font-medium text-ink-2 transition-colors hover:bg-white/[0.07] hover:text-white data-[state=active]:border-white/[0.18] data-[state=active]:bg-white/[0.10] data-[state=active]:font-medium data-[state=active]:text-white data-[state=active]:hover:bg-white/[0.10] data-[state=active]:hover:text-white"
+                className="flex-none rounded-lg border border-transparent bg-white/[0.04] px-4 py-2 text-[13px] font-medium text-ink-2 transition-colors hover:bg-white/[0.07] hover:text-white data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:hover:bg-primary data-[state=active]:hover:text-primary-foreground"
               >
                 {r.label}
               </TabsTrigger>
@@ -589,7 +589,13 @@ const RAIL: { type: StepTypeId; label: string }[] = [
   { type: "report", label: "Report" },
 ];
 
-function SourceIcon({ source }: { source: ConnectorGroup["sources"][number] }) {
+function SourceIcon({
+  source,
+  tone = "dark",
+}: {
+  source: ConnectorGroup["sources"][number];
+  tone?: "dark" | "light";
+}) {
   if (source.icon) {
     return (
       <img
@@ -605,7 +611,7 @@ function SourceIcon({ source }: { source: ConnectorGroup["sources"][number] }) {
     .slice(0, 2)
     .map((w) => w[0])
     .join("");
-  return <span className="text-[9px] font-semibold text-ink-2">{initials}</span>;
+  return <span aria-hidden="true" className={cn("text-[10px] font-semibold", tone === "light" ? "text-[#1e293b]" : "text-ink-2")}>{initials}</span>;
 }
 
 export function ConnectorsSection() {
@@ -632,7 +638,7 @@ export function ConnectorsSection() {
                 {i > 0 && <ChevronRight className="size-3.5 text-ink-3" />}
                 <span
                   className={cn(
-                    "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11.5px] font-medium transition-colors",
+                    "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[12.5px] font-medium transition-colors",
                     active
                       ? "border-primary/40 bg-primary/10 text-primary-ink"
                       : "border-border bg-white/[0.04] text-ink-3",
@@ -674,12 +680,12 @@ export function ConnectorsSection() {
                       }
                       className="absolute left-0 top-0 grid size-7 place-items-center overflow-hidden rounded-md border border-white/[0.14] bg-[#F4F6F8] shadow-sm transition-transform duration-300 ease-out group-hover:translate-x-[calc(var(--i)*21px)] group-focus-visible:translate-x-[calc(var(--i)*21px)]"
                     >
-                      <SourceIcon source={s} />
+                      <SourceIcon source={s} tone="light" />
                     </span>
                   ))}
                 </div>
                 <p className="mt-3 text-[13px] font-medium leading-snug text-white">{c.name}</p>
-                <p className="mt-1 text-[11.5px] leading-snug text-ink-3">{c.functionLabel}</p>
+                <p className="mt-1 text-[12.5px] leading-snug text-ink-2">{c.functionLabel}</p>
               </button>
             );
           })}
@@ -693,28 +699,28 @@ export function ConnectorsSection() {
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="text-[14.5px] font-semibold text-white">{selected.name}</h3>
-              <span className="inline-flex items-center rounded-full border border-white/[0.12] bg-white/[0.05] px-1.5 py-0.5 text-[10.5px] font-medium text-ink-3">
+              <span className="inline-flex items-center rounded-full border border-white/[0.12] bg-white/[0.05] px-1.5 py-0.5 text-[12px] font-medium text-ink-2">
                 Demo only · not connected
               </span>
             </div>
             <p className="mt-2 max-w-xl text-[13px] leading-relaxed text-ink-2">
               {selected.description}
             </p>
-            <p className="mt-3 text-[11.5px] text-ink-3">
+            <p className="mt-3 text-[12.5px] text-ink-3">
               Illustrative method: {selected.method}. No external service is called in this
               prototype.
             </p>
           </div>
           <div className="space-y-4">
             <div>
-              <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-2">
                 Sources
               </p>
               <ul className="mt-2 flex flex-wrap gap-1.5">
                 {selected.sources.map((s) => (
                   <li
                     key={s.name}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white/[0.05] px-2 py-1 text-[11.5px] text-ink-2"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white/[0.05] px-2 py-1 text-[12.5px] text-ink-2"
                   >
                     <span className="grid size-4 place-items-center overflow-hidden">
                       <SourceIcon source={s} />
@@ -725,14 +731,14 @@ export function ConnectorsSection() {
               </ul>
             </div>
             <div>
-              <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-2">
                 Would feed
               </p>
               <ul className="mt-2 flex flex-wrap gap-1.5">
                 {selected.feeds.map((f) => (
                   <li
                     key={f}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2 py-1 text-[11.5px] font-medium text-primary-ink"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2 py-1 text-[12.5px] font-medium text-primary-ink"
                   >
                     <StepTypeIcon type={f} className="size-3.5" />
                     {RAIL.find((r) => r.type === f)?.label}
@@ -746,13 +752,13 @@ export function ConnectorsSection() {
         {/* Available now */}
         <div className="mt-4 rounded-xl border border-dashed border-white/[0.16] bg-white/[0.02] px-4 py-3.5">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <span className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink-3">
+            <span className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-ink-2">
               Available now
             </span>
             {SAMPLE_INPUTS.map((s) => (
               <span
                 key={s.name}
-                className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.04] px-2 py-1 text-[11.5px] text-ink-2"
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.04] px-2 py-1 text-[12.5px] text-ink-2"
               >
                 <FileText className="size-3.5 text-ink-3" aria-hidden="true" />
                 {s.name}
@@ -760,7 +766,7 @@ export function ConnectorsSection() {
               </span>
             ))}
           </div>
-          <p className="mt-2 text-[11.5px] text-ink-3">
+          <p className="mt-2 text-[12.5px] text-ink-3">
             No live connections are configured. This prototype uses sample inputs.
           </p>
         </div>
@@ -827,7 +833,7 @@ export function TrustSection() {
             How SFC licensing works
             <ExternalLink className="size-3.5" aria-hidden="true" />
           </a>
-          <p className="mt-4 border-t border-border pt-3 text-[11.5px] leading-relaxed text-ink-3">
+          <p className="mt-4 border-t border-border pt-3 text-[12.5px] leading-relaxed text-ink-3">
             General information only. This prototype is a design demonstration and does not provide
             legal or regulatory advice.
           </p>

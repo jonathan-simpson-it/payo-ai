@@ -68,10 +68,10 @@ function DescribeGraphic() {
   return (
     <div className="pipe-graphic relative flex h-[210px] flex-col justify-between rounded-xl border border-white/10 bg-[#14171B] p-4">
       <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-2.5 py-2">
-        <p className="text-[9px] uppercase tracking-[0.08em] text-ink-3">
+        <p className="text-[10.5px] font-medium uppercase tracking-[0.08em] text-ink-3">
           Describe the workflow
         </p>
-        <p className="mt-1.5 text-[10.5px] leading-relaxed text-ink-2">
+        <p className="mt-1.5 text-[10.5px] font-medium leading-relaxed text-ink-2">
           Compare custodian NAV against internal valuations and flag variances over 0.5%
           <span
             className="ml-0.5 inline-block h-3 w-[1.5px] translate-y-0.5 bg-[#C9500A]"
@@ -81,14 +81,14 @@ function DescribeGraphic() {
       </div>
 
       <div>
-        <p className="text-[9px] uppercase tracking-[0.08em] text-ink-3">
+        <p className="text-[10.5px] font-medium uppercase tracking-[0.08em] text-ink-3">
           Or choose a template
         </p>
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           {["Reconcile NAV", "Check limits", "Draft briefing"].map((t) => (
             <span
               key={t}
-              className="inline-flex items-center rounded-full border border-white/[0.1] bg-white/[0.04] px-2 py-0.5 text-[10px] text-ink-2"
+              className="inline-flex items-center rounded-full border border-white/[0.1] bg-white/[0.04] px-2 py-0.5 text-[11px] font-medium text-ink-2"
             >
               {t}
             </span>
@@ -96,7 +96,7 @@ function DescribeGraphic() {
         </div>
       </div>
 
-      <div className="flex items-center justify-center gap-1.5 rounded-lg border border-[#C9500A]/30 bg-[#C9500A]/[0.1] py-1.5 text-[10.5px] font-medium text-[#F08A3C]">
+      <div className="flex items-center justify-center gap-1.5 rounded-lg border border-[#C9500A]/30 bg-[#C9500A]/[0.1] py-1.5 text-[11.5px] font-medium text-[#F08A3C]">
         <Workflow className="size-3" aria-hidden="true" />
         Generate the graph
       </div>
@@ -115,7 +115,7 @@ function GraphGraphic() {
   ];
   return (
     <div className="pipe-graphic relative flex h-[210px] flex-col rounded-xl border border-white/10 bg-[#14171B] p-4">
-      <p className="text-[9px] uppercase tracking-[0.08em] text-ink-3">Generated pipeline</p>
+      <p className="text-[10.5px] font-medium uppercase tracking-[0.08em] text-ink-3">Generated pipeline</p>
       <div className="relative mt-2 flex-1">
         <span
           className="absolute bottom-2 left-[12px] top-2 w-px bg-[#C9500A]/40"
@@ -129,13 +129,13 @@ function GraphGraphic() {
                 <span
                   className={
                     last
-                      ? "z-10 grid size-[25px] shrink-0 place-items-center rounded-md border border-[#C9500A]/50 bg-[#C9500A]/[0.12] font-mono text-[9px] font-semibold text-[#F08A3C]"
-                      : "z-10 grid size-[25px] shrink-0 place-items-center rounded-md border border-white/[0.12] bg-[#14171B] font-mono text-[9px] font-semibold text-ink-2"
+                      ? "z-10 grid size-[25px] shrink-0 place-items-center rounded-md border border-[#C9500A]/50 bg-[#C9500A]/[0.12] font-mono text-[10px] font-semibold text-[#F08A3C]"
+                      : "z-10 grid size-[25px] shrink-0 place-items-center rounded-md border border-white/[0.12] bg-[#14171B] font-mono text-[10px] font-semibold text-ink-2"
                   }
                 >
                   {i + 1}
                 </span>
-                <span className="truncate rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-1 text-[10px] text-ink-2">
+                <span className="truncate rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-1 text-[11.5px] font-medium text-ink-2">
                   {label}
                 </span>
               </div>
@@ -182,7 +182,7 @@ function RiskGraphic() {
         </div>
 
         <div className="min-w-0 flex-1 space-y-2.5">
-          <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">
+          <p className="text-[11px] font-mono font-medium uppercase tracking-normal text-ink-3">
             Exposure vs limit · 80% cap
           </p>
           <div className="relative h-1.5 rounded-full bg-white/[0.06]">
@@ -194,13 +194,13 @@ function RiskGraphic() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-16 shrink-0 text-[10px] font-mono tracking-wider text-ink-3">Single name</span>
+            <span className="w-[74px] shrink-0 text-[11px] font-mono font-medium tracking-normal text-ink-3">Single name</span>
             <span className="h-1.5 flex-1 rounded-full bg-white/[0.06]">
               <span className="block h-full w-[62%] rounded-full bg-white/25" />
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-16 shrink-0 text-[10px] font-mono tracking-wider text-ink-3">Sector</span>
+            <span className="w-[74px] shrink-0 text-[11px] font-mono font-medium tracking-normal text-ink-3">Sector</span>
             <span className="h-1.5 flex-1 rounded-full bg-white/[0.06]">
               <span className="block h-full w-[48%] rounded-full bg-white/15" />
             </span>
@@ -209,7 +209,7 @@ function RiskGraphic() {
       </div>
 
       <div className="grid h-8 place-items-center">
-        <span className="warn-pill absolute inline-flex items-center gap-1.5 rounded-full bg-warn-solid px-3 py-1 text-[11px] font-medium text-white">
+        <span className="warn-pill absolute inline-flex items-center gap-1.5 rounded-full bg-warn-solid px-3 py-1 text-[11.5px] font-medium text-white">
           <TriangleAlert className="size-3" aria-hidden="true" />
           Limit exceeded
         </span>
@@ -244,8 +244,8 @@ function BriefingGraphic() {
 
       <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-2.5 py-2">
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-medium text-[#F8FAFC]">Morning briefing (draft)</p>
-          <span className="text-[9px] text-ink-3">auto-filed</span>
+          <p className="text-[11.5px] font-medium text-[#F8FAFC]">Morning briefing (draft)</p>
+          <span className="text-[10.5px] font-medium text-ink-3">auto-filed</span>
         </div>
         <div className="mt-1.5 space-y-1" aria-hidden="true">
           <span className="block h-1.5 w-[86%] rounded-full bg-white/[0.09]" />
@@ -254,11 +254,11 @@ function BriefingGraphic() {
       </div>
 
       <div className="relative grid h-8 place-items-center">
-        <span className="approve-pill absolute inline-flex items-center gap-1.5 rounded-full bg-ok-solid px-3 py-1 text-[11px] font-medium text-white">
+        <span className="approve-pill absolute inline-flex items-center gap-1.5 rounded-full bg-ok-solid px-3 py-1 text-[11.5px] font-medium text-white">
           <Check className="size-3" strokeWidth={3} aria-hidden="true" />
           Approved by editor
         </span>
-        <span className="export-pill absolute inline-flex items-center gap-1.5 rounded-full border border-white/[0.14] bg-white/[0.05] px-3 py-1 text-[11px] font-medium text-ink-2">
+        <span className="export-pill absolute inline-flex items-center gap-1.5 rounded-full border border-white/[0.14] bg-white/[0.05] px-3 py-1 text-[11.5px] font-medium text-ink-2">
           <FileOutput className="size-3" aria-hidden="true" />
           Export briefing
         </span>
@@ -386,7 +386,7 @@ export function HelpsPipeline() {
           </div>
         </div>
 
-        <p className="mt-8 flex items-center justify-between gap-4 text-[11.5px] text-ink-3">
+        <p className="mt-8 flex items-center justify-between gap-4 text-[12.5px] text-ink-3">
           <span>Simulated graphics · sample data. Nothing here is live.</span>
           <a
             href="#/workspace/templates"

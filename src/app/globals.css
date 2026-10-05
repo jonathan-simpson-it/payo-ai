@@ -148,7 +148,7 @@
   --ring: #c9500a;
 
   --ink-2: #94a3b8;
-  --ink-3: #64748b;
+  --ink-3: #7d8794;
   --line-strong: rgba(255, 255, 255, 0.16);
 
   --ok: #4fae7e;
@@ -211,7 +211,7 @@
   --ring: #c9500a;
 
   --ink-2: #a9b1ba;
-  --ink-3: #6e7681;
+  --ink-3: #7d8794;
   --line-strong: rgba(255, 255, 255, 0.14);
 
   --ok: #4fae7e;
@@ -235,6 +235,9 @@
   --scroll-thumb: rgba(255, 255, 255, 0.14);
   --scroll-thumb-hover: rgba(255, 255, 255, 0.24);
   --scroll-edge: transparent;
+
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
 /* Panel surface: charcoal fill, 1px translucent border, quiet depth. */

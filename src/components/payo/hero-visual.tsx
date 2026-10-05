@@ -78,7 +78,7 @@ function TranslucentWindow({
         <WindowDots tone={tone} />
         <span
           className={cn(
-            "ml-1 truncate text-[9.5px] font-medium",
+            "ml-1 truncate text-[10.5px] font-medium",
             tone === "light" ? "text-black/55" : "text-ink-3",
           )}
         >
@@ -100,7 +100,7 @@ function MiniChip({
 }) {
   const tones = {
     neutral: "border-black/[0.15] bg-black/[0.05] text-black/60",
-    warn: "border-[#FDE68A] bg-[#FFFBEB] text-[#D97706]",
+    warn: "border-[#FDE68A] bg-[#FFFBEB] text-[#B45309]",
     brand: "border-primary/30 bg-primary/10 text-primary-ink",
   };
   const dots = {
@@ -111,7 +111,7 @@ function MiniChip({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded border px-1.5 py-px text-[8.5px] font-medium",
+        "inline-flex items-center gap-1 rounded border px-1.5 py-px text-[10px] font-medium",
         tones[tone],
       )}
     >
@@ -135,7 +135,7 @@ function FlowNode({
   return (
     <span
       className={cn(
-        "absolute flex items-center gap-1 rounded-md border border-black/[0.12] bg-white px-1.5 py-[3px] text-[8.5px] font-medium text-black/75",
+        "absolute flex items-center gap-1 rounded-md border border-black/[0.12] bg-white px-1.5 py-[3px] text-[10px] font-medium text-black/75",
         className,
       )}
     >
@@ -208,7 +208,7 @@ function WorkflowWindow() {
           className="size-1.5 rounded-full bg-ok-solid"
           aria-hidden="true"
         />
-        <span className="text-[9px] text-black/55">4 complete · 1 needs review</span>
+        <span className="text-[10px] font-medium text-black/60">4 complete · 1 needs review</span>
       </div>
     </TranslucentWindow>
   );
@@ -237,13 +237,13 @@ function DashboardWindow() {
           <p className="font-mono text-[13px] font-semibold leading-none tabular-nums text-[#E9EEF3]">
             2
           </p>
-          <p className="mt-1 text-[8.5px] text-ink-3">Exceptions</p>
+          <p className="mt-1 text-[10px] font-medium text-ink-3">Exceptions</p>
         </div>
         <div>
           <p className="font-mono text-[13px] font-semibold leading-none tabular-nums text-white">
             8
           </p>
-          <p className="mt-1 text-[8.5px] text-ink-3">Funds checked</p>
+          <p className="mt-1 text-[10px] font-medium text-ink-3">Funds checked</p>
         </div>
       </div>
       <div className="px-3 pb-3 pt-1.5">
@@ -268,7 +268,7 @@ function DashboardWindow() {
 
 function MiniChipDark({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded border border-border bg-white/[0.05] px-1.5 py-px text-[8.5px] font-medium text-ink-2">
+    <span className="inline-flex items-center gap-1 rounded border border-border bg-white/[0.05] px-1.5 py-px text-[10px] font-medium text-ink-2">
       <span className="size-1 rounded-full bg-neutral" aria-hidden="true" />
       {children}
     </span>
@@ -289,7 +289,7 @@ function RunHistoryWindow() {
     >
       <ul className="px-3 py-2">
         {runs.map((r) => (
-          <li key={r.time} className="flex items-center gap-1.5 py-[3px] text-[8.5px] text-black/60">
+          <li key={r.time} className="flex items-center gap-1.5 py-[3px] text-[10px] font-medium text-black/65">
             <span
               className={cn(
                 "size-1.5 shrink-0 rounded-full",
@@ -316,14 +316,14 @@ function ReconciliationWindow() {
       {/* Window bar */}
       <div className="flex items-center gap-2 border-b border-white/[0.08] px-3.5 py-2.5">
         <WindowDots />
-        <span className="ml-1.5 text-[12px] font-semibold tracking-tight text-white">Payo AI</span>
-        <span className="text-white/20">/</span>
-        <span className="truncate text-[12px] text-ink-3">NAV Reconciliation</span>
-        <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded border border-white/[0.12] px-1.5 py-px text-[10px] font-medium text-ink-3">
+        <span className="ml-1.5 text-[12.5px] font-semibold tracking-tight text-white">Payo AI</span>
+        <span className="text-white/35" aria-hidden="true">/</span>
+        <span className="truncate text-[12.5px] text-ink-3">NAV Reconciliation</span>
+        <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded border border-white/[0.12] px-1.5 py-px text-[11px] font-medium text-ink-3">
           <span className="size-1.5 rounded-full bg-white/[0.35]" aria-hidden="true" />
           Sample data
         </span>
-        <span className="hidden shrink-0 items-center rounded bg-warn-solid px-1.5 py-px text-[10px] font-medium text-white sm:inline-flex">
+        <span className="hidden shrink-0 items-center rounded bg-warn-solid px-1.5 py-px text-[11px] font-medium text-white sm:inline-flex">
           Needs review
         </span>
       </div>
@@ -331,24 +331,24 @@ function ReconciliationWindow() {
       {/* Screen header */}
       <div className="flex items-center justify-between gap-3 px-3.5 pb-2 pt-3">
         <p className="text-[13px] font-semibold tracking-tight text-white">NAV Reconciliation</p>
-        <p className="truncate font-mono text-[10.5px] tabular-nums text-[#6B7480]">
+        <p className="truncate font-mono text-[11.5px] font-medium tabular-nums text-ink-3">
           Valuation {NAV_VALUATION_DATE} · Tolerance ±0.50%
         </p>
       </div>
 
       {/* Reconciliation table */}
       <div className="mx-3.5 mb-3 overflow-x-auto rounded-lg border border-white/[0.08]">
-        <table className="w-full min-w-[430px] border-collapse text-[11px]">
+        <table className="w-full min-w-[460px] border-collapse text-[12px]">
           <thead>
-            <tr className="border-b border-white/[0.08] bg-white/[0.04] text-left text-[9.5px] text-ink-3">
+            <tr className="border-b border-white/[0.08] bg-white/[0.04] text-left text-[10.5px] text-ink-3">
               <th className="whitespace-nowrap px-1.5 py-1.5 font-medium">Fund</th>
               <th className="px-1.5 py-1.5 text-right font-medium">
                 Administrator NAV
-                <span className="block font-normal text-[#525A64]">(HK$)</span>
+                <span className="block font-medium text-ink-3">(HK$)</span>
               </th>
               <th className="px-1.5 py-1.5 text-right font-medium">
                 Internal NAV
-                <span className="block font-normal text-[#525A64]">(HK$)</span>
+                <span className="block font-medium text-ink-3">(HK$)</span>
               </th>
               <th className="whitespace-nowrap px-1.5 py-1.5 text-right font-medium">
                 Difference %
@@ -399,7 +399,7 @@ function ReconciliationWindow() {
 
       {/* Summary chart: variance per fund, coloured by status */}
       <div className="px-3.5 pb-3">
-        <p className="text-[9.5px] font-medium text-[#6B7480]">Difference by fund</p>
+        <p className="text-[10.5px] font-medium text-ink-3">Difference by fund</p>
         <div className="mt-1.5 flex h-[34px] w-full max-w-[300px] items-end justify-between gap-1.5 border-b border-white/[0.1] pb-px">
           {rows.map((r) => (
             <span
@@ -420,15 +420,15 @@ function ReconciliationWindow() {
 
       {/* Review footer */}
       <div className="flex items-center justify-between gap-3 border-t border-white/[0.08] bg-white/[0.02] px-3.5 py-2.5">
-        <p className="flex items-center gap-1.5 text-[10.5px] text-ink-3">
+        <p className="flex items-center gap-1.5 text-[11.5px] font-medium text-ink-3">
           <CircleAlert className="size-3 shrink-0 text-[#D97706]" aria-hidden="true" />
           {exceptions} exceptions routed for human review
         </p>
         <div className="flex shrink-0 items-center gap-1.5">
-          <span className="rounded-md border border-white/[0.12] bg-white/[0.04] px-2 py-1 text-[10px] font-medium text-ink-2">
+          <span className="rounded-md border border-white/[0.12] bg-white/[0.04] px-2 py-1 text-[11px] font-medium text-ink-2">
             Return for review
           </span>
-          <span className="rounded-md bg-white px-2 py-1 text-[10px] font-medium text-black">
+          <span className="rounded-md bg-white px-2 py-1 text-[11px] font-medium text-black">
             Approve summary
           </span>
         </div>
@@ -443,7 +443,7 @@ export function HeroVisual() {
       <div
         role="img"
         aria-label="Simulated preview of the Payo AI workspace: a NAV reconciliation table in front of layered workflow and briefing windows, using sample data."
-        className="relative mx-auto h-[440px] w-full max-w-[640px] select-none sm:h-[470px] lg:h-[500px] lg:max-w-none xl:h-[540px]"
+        className="relative mx-auto h-[620px] w-full max-w-[640px] select-none min-[480px]:h-[540px] min-[560px]:h-[500px] sm:h-[470px] lg:h-[500px] lg:max-w-none xl:h-[540px]"
       >
         {/* Studio backdrop: faint dot grid and quiet volumetric light blooms */}
         <div
@@ -463,7 +463,7 @@ export function HeroVisual() {
         <RunHistoryWindow />
         <ReconciliationWindow />
       </div>
-      <p className="mt-3 text-center text-[12px] text-[#6B7480]">Simulated preview. Sample data.</p>
+      <p className="mt-3 text-center text-[12.5px] text-ink-2">Simulated preview. Sample data.</p>
     </div>
   );
 }
