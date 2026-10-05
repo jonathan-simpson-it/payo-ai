@@ -35,12 +35,15 @@
   --color-ok: var(--ok);
   --color-ok-tint: var(--ok-tint);
   --color-ok-border: var(--ok-border);
+  --color-ok-solid: var(--ok-solid);
   --color-warn: var(--warn);
   --color-warn-tint: var(--warn-tint);
   --color-warn-border: var(--warn-border);
+  --color-warn-solid: var(--warn-solid);
   --color-danger: var(--danger);
   --color-danger-tint: var(--danger-tint);
   --color-danger-border: var(--danger-border);
+  --color-danger-solid: var(--danger-solid);
   --color-neutral: var(--neutral);
   --color-neutral-tint: var(--neutral-tint);
   --color-neutral-border: var(--neutral-border);
@@ -214,12 +217,16 @@
   --ok: #4fae7e;
   --ok-tint: rgba(79, 174, 126, 0.12);
   --ok-border: rgba(79, 174, 126, 0.25);
+  /* Solid status tags: light-theme semantic values, white text. */
+  --ok-solid: #1f7350;
   --warn: #c99a3f;
   --warn-tint: rgba(201, 154, 63, 0.12);
   --warn-border: rgba(201, 154, 63, 0.25);
+  --warn-solid: #96650a;
   --danger: #e06a5f;
   --danger-tint: rgba(224, 106, 95, 0.12);
   --danger-border: rgba(224, 106, 95, 0.25);
+  --danger-solid: #b3261e;
   --neutral: #8b939b;
   --neutral-tint: rgba(139, 147, 155, 0.12);
   --neutral-border: rgba(139, 147, 155, 0.25);

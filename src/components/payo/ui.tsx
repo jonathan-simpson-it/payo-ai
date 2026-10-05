@@ -171,15 +171,29 @@ export function WorkflowStatusChip({
 
 export type Tone = "danger" | "warn" | "ok" | "neutral";
 
-export function ToneChip({ tone, children }: { tone: Tone; children: React.ReactNode }) {
+export function ToneChip({
+  tone,
+  variant = "soft",
+  children,
+}: {
+  tone: Tone;
+  variant?: "soft" | "solid";
+  children: React.ReactNode;
+}) {
   const tones: Record<Tone, string> = {
     danger: "bg-danger-tint text-danger border border-danger-border",
     warn: "bg-warn-tint text-warn border border-warn-border",
     ok: "bg-ok-tint text-ok border border-ok-border",
     neutral: "bg-neutral-tint text-ink-2 border border-neutral-border",
   };
+  const solids: Record<Tone, string> = {
+    ...tones,
+    danger: "bg-danger-solid text-white",
+    warn: "bg-warn-solid text-white",
+    ok: "bg-ok-solid text-white",
+  };
   return (
-    <span className={cn("inline-flex items-center whitespace-nowrap rounded-full px-2 py-0.5 text-[11.5px] font-medium", tones[tone])}>
+    <span className={cn("inline-flex items-center whitespace-nowrap rounded-full px-2 py-0.5 text-[11.5px] font-medium", variant === "solid" ? solids[tone] : tones[tone])}>
       {children}
     </span>
   );

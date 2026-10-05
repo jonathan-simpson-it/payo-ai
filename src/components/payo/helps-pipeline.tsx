@@ -209,8 +209,8 @@ function RiskGraphic() {
       </div>
 
       <div className="grid h-8 place-items-center">
-        <span className="warn-pill absolute inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[11px] font-medium text-amber-400">
-          <TriangleAlert className="size-3 text-[#C9500A]" aria-hidden="true" />
+        <span className="warn-pill absolute inline-flex items-center gap-1.5 rounded-full bg-warn-solid px-3 py-1 text-[11px] font-medium text-white">
+          <TriangleAlert className="size-3" aria-hidden="true" />
           Limit exceeded
         </span>
       </div>
@@ -254,7 +254,7 @@ function BriefingGraphic() {
       </div>
 
       <div className="relative grid h-8 place-items-center">
-        <span className="approve-pill absolute inline-flex items-center gap-1.5 rounded-full bg-[#4FAE7E]/[0.14] px-3 py-1 text-[11px] font-medium text-[#4FAE7E]">
+        <span className="approve-pill absolute inline-flex items-center gap-1.5 rounded-full bg-ok-solid px-3 py-1 text-[11px] font-medium text-white">
           <Check className="size-3" strokeWidth={3} aria-hidden="true" />
           Approved by editor
         </span>

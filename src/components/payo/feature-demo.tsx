@@ -123,7 +123,7 @@ function ReconcileResult() {
     <div className="space-y-3">
       <p className="text-[12.5px] text-ink-2">
         {totals.fundCount} funds checked ·{" "}
-        <span className="font-medium text-danger">{totals.exceptions} exceptions</span> · tolerance
+        <span className="font-medium text-foreground">{totals.exceptions} exceptions</span> · tolerance
         ±0.50%
       </p>
       <div className="overflow-x-auto rounded-md border border-border">
@@ -138,14 +138,14 @@ function ReconcileResult() {
           </thead>
           <tbody>
             {exceptions.map((r) => (
-              <tr key={r.fund} className="border-b border-border/70 bg-danger-tint/30 last:border-0">
+              <tr key={r.fund} className="border-b border-border/70 last:border-0">
                 <td className={cn(TD, "font-medium text-foreground")}>{r.fund}</td>
                 <td className={cn(TD, "text-right tabular-nums")}>{fmtInt(r.internalNav)}</td>
-                <td className={cn(TD, "text-right font-medium tabular-nums text-danger")}>
+                <td className={cn(TD, "text-right font-medium tabular-nums text-foreground")}>
                   {fmtSignedPct(r.diffPct)}
                 </td>
                 <td className={cn(TD, "whitespace-nowrap")}>
-                  <ToneChip tone="danger">Exception</ToneChip>
+                  <ToneChip tone="danger" variant="solid">Exception</ToneChip>
                 </td>
               </tr>
             ))}
@@ -217,7 +217,7 @@ function BriefingResult() {
             <span
               className={cn(
                 "tabular-nums",
-                m.changePct < 0 ? "font-medium text-danger" : "text-ok",
+                m.changePct < 0 ? "font-medium text-danger" : "text-foreground",
               )}
             >
               {fmtSignedPct(m.changePct, 1)}
@@ -544,7 +544,10 @@ export function FeatureDemo() {
                         </div>
                       )}
                       {phase === "done" && (
-                        <p className="rounded-xl border border-ok/30 bg-ok-tint px-3.5 py-2.5 text-[12.5px] font-medium text-ok">
+                        <p className="flex items-center gap-2 rounded-xl border border-border bg-white/[0.03] px-3.5 py-2.5 text-[12.5px] text-ink-2">
+                          <span className="inline-flex items-center rounded bg-ok-solid px-1.5 py-0.5 text-[10.5px] font-medium text-white">
+                            Complete
+                          </span>
                           Run complete. Reviewed and finalised in this simulation.
                         </p>
                       )}

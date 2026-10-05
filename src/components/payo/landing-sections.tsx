@@ -294,11 +294,11 @@ function MiniFrame({ title, children }: { title: string; children: React.ReactNo
 const MINI_TH = "px-2 pb-2 text-left text-[11px] font-mono uppercase tracking-wider text-ink-3";
 const MINI_TD = "px-2 py-1.5 align-top text-[11.5px] text-ink-2";
 
-/* Status pills for the position-risk table (tokens: green/red, amber for near-limit). */
+/* Solid status tags for the position-risk table. */
 const RISK_PILL: Record<string, string> = {
-  "Over limit": "bg-danger-tint text-danger border border-danger-border",
-  "Near limit": "bg-warn-tint text-warn border border-warn-border",
-  "Within limit": "bg-ok-tint text-ok border border-ok-border",
+  "Over limit": "bg-danger-solid text-white",
+  "Near limit": "bg-warn-solid text-white",
+  "Within limit": "bg-ok-solid text-white",
 };
 
 function RiskStatusPill({ status }: { status: string }) {
@@ -395,13 +395,13 @@ function OperationsPreview() {
                 className={cn(
                   MINI_TD,
                   "text-right font-mono tabular-nums",
-                  r.status === "Exception" && "font-medium text-danger",
+                  r.status === "Exception" && "font-medium text-foreground",
                 )}
               >
                 {fmtSignedPct(r.diffPct)}
               </td>
               <td className={cn(MINI_TD, "whitespace-nowrap")}>
-                <ToneChip tone={rowStatusTone(r.status)}>{r.status}</ToneChip>
+                <ToneChip tone={rowStatusTone(r.status)} variant="solid">{r.status}</ToneChip>
               </td>
             </tr>
           ))}
@@ -409,7 +409,7 @@ function OperationsPreview() {
       </table>
       <p className="mt-2.5 flex items-center gap-1.5 text-[11px] text-ink-3">
         <span
-          className="inline-flex size-1.5 rounded-full bg-[#F59E0B]"
+          className="inline-flex size-1.5 rounded-full bg-warn"
           aria-hidden="true"
         />
         2 exceptions paused for the Operations reviewer
@@ -440,7 +440,7 @@ function SmePreview() {
             <dd
               className={cn(
                 "font-mono tabular-nums",
-                l.amount < 0 ? "text-ink-3" : "text-ok",
+                l.amount < 0 ? "text-ink-3" : "text-foreground",
               )}
             >
               {hkd(l.amount)}
@@ -458,7 +458,7 @@ function SmePreview() {
         {SME_CASHFLOW.tasks.map((t) => (
           <li key={t.label} className="flex items-center justify-between gap-3 text-[11.5px]">
             <span className="text-ink-2">{t.label}</span>
-            <ToneChip tone={t.status === "Needs review" ? "warn" : "ok"}>{t.status}</ToneChip>
+            <ToneChip tone={t.status === "Needs review" ? "warn" : "ok"} variant="solid">{t.status}</ToneChip>
           </li>
         ))}
       </ul>
@@ -510,14 +510,14 @@ function RolePanel({ role }: { role: RoleDef }) {
         </blockquote>
 
         <div className="mt-5 grid gap-3">
-          <div className="rounded-r-lg border-l-2 border-danger/70 bg-white/[0.03] p-3 text-xs">
-            <p className="mb-1 font-mono font-semibold uppercase tracking-wider text-danger text-[11px]">
+          <div className="rounded-r-lg border-l-2 border-border bg-white/[0.03] p-3 text-xs">
+            <p className="mb-1.5 inline-flex rounded bg-danger-solid px-1.5 py-0.5 font-mono font-semibold uppercase tracking-wider text-white text-[10px]">
               Friction
             </p>
             <p className="text-ink-2">{role.slow}</p>
           </div>
-          <div className="rounded-r-lg border-l-2 border-ok/70 bg-white/[0.03] p-3 text-xs">
-            <p className="mb-1 font-mono font-semibold uppercase tracking-wider text-ok text-[11px]">
+          <div className="rounded-r-lg border-l-2 border-border bg-white/[0.03] p-3 text-xs">
+            <p className="mb-1.5 inline-flex rounded bg-ok-solid px-1.5 py-0.5 font-mono font-semibold uppercase tracking-wider text-white text-[10px]">
               What Payo delivers
             </p>
             <p className="text-ink-2">{role.prepare}</p>
@@ -796,7 +796,7 @@ export function TrustSection() {
           {CONTROL_POINTS.map((c) => (
             <div key={c.title} className="glass glass-hover rounded-xl p-5">
               <span
-                className=                "grid size-8 place-items-center rounded-lg border border-ok-border bg-ok-tint text-ok"
+                className="grid size-8 place-items-center rounded-lg bg-ok-solid text-white"
                 aria-hidden="true"
               >
                 <Check className="size-4" strokeWidth={2.5} />

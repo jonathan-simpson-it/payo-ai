@@ -164,7 +164,7 @@ export function WaitlistSection() {
               "The demo workspace stays open to explore in the meantime",
             ].map((line) => (
               <li key={line} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-ink-2">
-                <Check className="mt-0.5 size-4 shrink-0 text-ok" aria-hidden="true" />
+                <Check className="mt-0.5 size-4 shrink-0 text-ink-3" aria-hidden="true" />
                 {line}
               </li>
             ))}
@@ -174,7 +174,7 @@ export function WaitlistSection() {
         <div className="glass edge-lit rounded-xl p-5 md:p-6">
           {done ? (
             <div className="flex flex-col items-start gap-3 py-6">
-              <span className="grid size-9 place-items-center rounded-full bg-ok-tint text-ok">
+              <span className="grid size-9 place-items-center rounded-full bg-ok-solid text-white">
                 <Check className="size-5" aria-hidden="true" />
               </span>
               <p className="text-[16px] font-semibold">You are on the list.</p>

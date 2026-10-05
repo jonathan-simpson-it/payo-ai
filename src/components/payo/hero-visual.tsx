@@ -20,11 +20,11 @@ const SHOWN_FUNDS = [
   "Harborpoint Property",
 ];
 
-/* Rounded status badges: red = exception, muted green = matched, amber = tolerance. */
+/* Solid status tags: red = exception, amber = tolerance, green = matched. */
 const STATUS_CHIP: Record<string, string> = {
-  Matched: "border border-[#4FAE7E]/25 bg-[#4FAE7E]/10 text-[#4FAE7E]",
-  "Within tolerance": "border border-[#4FAE7E]/25 bg-[#4FAE7E]/10 text-[#4FAE7E]",
-  Exception: "border border-[rgba(252,165,165,0.25)] bg-[rgba(220,38,38,0.12)] text-[#F87171]",
+  Matched: "bg-ok-solid text-white",
+  "Within tolerance": "bg-warn-solid text-white",
+  Exception: "bg-danger-solid text-white",
 };
 
 /** Sub-0.005% variances read as an exact match rather than "-0.00%". */
@@ -205,7 +205,7 @@ function WorkflowWindow() {
       </div>
       <div className="flex items-center gap-1.5 border-t border-black/[0.08] px-3 py-1.5">
         <span
-          className="size-1.5 rounded-full bg-[#4FAE7E]"
+          className="size-1.5 rounded-full bg-ok-solid"
           aria-hidden="true"
         />
         <span className="text-[9px] text-black/55">4 complete · 1 needs review</span>
@@ -234,7 +234,7 @@ function DashboardWindow() {
     >
       <div className="grid grid-cols-2 gap-2 px-3 pt-2.5">
         <div>
-          <p className="font-mono text-[13px] font-semibold leading-none tabular-nums text-[#F87171]">
+          <p className="font-mono text-[13px] font-semibold leading-none tabular-nums text-[#E9EEF3]">
             2
           </p>
           <p className="mt-1 text-[8.5px] text-ink-3">Exceptions</p>
@@ -277,9 +277,9 @@ function MiniChipDark({ children }: { children: React.ReactNode }) {
 
 function RunHistoryWindow() {
   const runs = [
-    { time: "09:12", name: "NAV reconciliation", dot: "bg-[#4FAE7E]" },
-    { time: "08:47", name: "Risk limit checks", dot: "bg-[#4FAE7E]" },
-    { time: "08:15", name: "Daily briefing", dot: "bg-[#B25E00]" },
+    { time: "09:12", name: "NAV reconciliation", dot: "bg-ok-solid" },
+    { time: "08:47", name: "Risk limit checks", dot: "bg-ok-solid" },
+    { time: "08:15", name: "Daily briefing", dot: "bg-warn-solid" },
   ];
   return (
     <TranslucentWindow
@@ -323,8 +323,7 @@ function ReconciliationWindow() {
           <span className="size-1.5 rounded-full bg-white/[0.35]" aria-hidden="true" />
           Sample data
         </span>
-        <span className="hidden shrink-0 items-center gap-1.5 rounded border border-amber-500/20 bg-amber-500/10 px-1.5 py-px text-[10px] font-medium text-amber-400 sm:inline-flex">
-          <span className="size-1.5 rounded-full bg-amber-400" aria-hidden="true" />
+        <span className="hidden shrink-0 items-center rounded bg-warn-solid px-1.5 py-px text-[10px] font-medium text-white sm:inline-flex">
           Needs review
         </span>
       </div>
@@ -361,10 +360,7 @@ function ReconciliationWindow() {
             {rows.map((r) => (
               <tr
                 key={r.fund}
-                className={cn(
-                  "border-b border-white/[0.05] last:border-0",
-                  r.status === "Exception" && "bg-[#EF4444]/[0.08]",
-                )}
+                className="border-b border-white/[0.05] last:border-0"
               >
                 <td className="whitespace-nowrap px-1.5 py-[7px] font-medium text-[#E9EEF3]">
                   {r.fund}
@@ -379,7 +375,7 @@ function ReconciliationWindow() {
                   className={cn(
                     "whitespace-nowrap px-1.5 py-[7px] text-right font-mono tabular-nums",
                     r.status === "Exception"
-                      ? "font-medium text-[#F87171]"
+                      ? "font-medium text-[#E9EEF3]"
                       : "text-[#A7B0BA]",
                   )}
                 >
@@ -413,11 +409,9 @@ function ReconciliationWindow() {
                 height: `${Math.max(2, Math.round((Math.abs(r.diffPct) / 1.8) * 32))}px`,
                 backgroundColor:
                   r.status === "Exception"
-                    ? "#EF4444"
-                    : r.status === "Within tolerance"
-                      ? "#FBBF24"
-                      : "#4FAE7E",
-                opacity: r.status === "Exception" ? 0.85 : 0.55,
+                    ? "var(--danger-solid)"
+                    : "rgba(148,163,184,0.35)",
+                opacity: r.status === "Exception" ? 0.85 : 1,
               }}
             />
           ))}

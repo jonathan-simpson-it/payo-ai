@@ -92,17 +92,17 @@ function NavCanvas() {
           <span className="font-medium text-[#E9EEF3]">Ashbourne Equity</span>
           <span className="text-right font-mono tabular-nums text-ink-2">0.00%</span>
           <span className="inline-flex justify-end">
-            <span className="inline-flex items-center gap-1 rounded-full border border-[rgba(79,174,126,0.25)] bg-[rgba(79,174,126,0.12)] px-2 py-0.5 text-[9.5px] font-medium text-[#4FAE7E]">
+            <span className="inline-flex items-center gap-1 rounded-full bg-ok-solid px-2 py-0.5 text-[9.5px] font-medium text-white">
               <Check className="size-2.5" strokeWidth={3} aria-hidden="true" />
               Matched
             </span>
           </span>
         </div>
-        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2 bg-[#EF4444]/[0.06] px-2.5 py-2 text-[11px]">
+        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2 px-2.5 py-2 text-[11px]">
           <span className="font-medium text-[#E9EEF3]">Harborpoint</span>
-          <span className="text-right font-mono tabular-nums text-[#F87171]">−1.77%</span>
+          <span className="text-right font-mono tabular-nums text-ink-2">−1.77%</span>
           <span className="inline-flex justify-end">
-            <span className="inline-flex items-center gap-1 rounded-full border border-[rgba(252,165,165,0.25)] bg-[rgba(220,38,38,0.12)] px-2 py-0.5 text-[9.5px] font-medium text-[#F87171]">
+            <span className="inline-flex items-center gap-1 rounded-full bg-danger-solid px-2 py-0.5 text-[9.5px] font-medium text-white">
               Exception
             </span>
           </span>
@@ -110,8 +110,7 @@ function NavCanvas() {
       </div>
 
       <div className="flex justify-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-300">
-          <span className="size-1.5 rounded-full bg-red-300" aria-hidden="true" />
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-danger-solid px-3 py-1 text-xs font-medium text-white">
           2 exceptions routed to human review
         </span>
       </div>
@@ -150,7 +149,7 @@ function RiskCanvas() {
               Concentration threshold
             </p>
             <div className="relative mt-1 h-1.5 rounded-full bg-white/[0.08]">
-              <span className="absolute inset-y-0 left-0 w-[85%] rounded-full bg-[#EF4444]" />
+              <span className="absolute inset-y-0 left-0 w-[85%] rounded-full bg-danger-solid" />
               <span
                 className="absolute -top-0.5 h-2.5 w-px bg-white/40"
                 style={{ left: "75%" }}
@@ -159,13 +158,13 @@ function RiskCanvas() {
             </div>
           </div>
           <p className="truncate font-mono text-[10.5px] tabular-nums text-ink-3">
-            Max Position: <span className="text-[#F87171]">$12.4M</span> / $10.0M Limit
+            Max Position: <span className="text-foreground">$12.4M</span> / $10.0M Limit
           </p>
         </div>
       </div>
 
       <div className="flex justify-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-300">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-danger-solid px-3 py-1 text-xs font-medium text-white">
           <TriangleAlert className="size-3" aria-hidden="true" />
           Concentration limit breach
         </span>
@@ -218,7 +217,7 @@ function ResearchCanvas() {
       </div>
 
       <div className="flex justify-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#4FAE7E]/[0.14] px-3 py-1 text-[10.5px] font-medium text-[#4FAE7E]">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-ok-solid px-3 py-1 text-[10.5px] font-medium text-white">
           <Check className="size-3" strokeWidth={3} aria-hidden="true" />
           Briefing approved by editor
         </span>
