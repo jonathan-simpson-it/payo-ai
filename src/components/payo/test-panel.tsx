@@ -47,10 +47,10 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
   const done = test?.phase === "done";
 
   return (
-    <div className="min-h-0 flex-1 overflow-y-auto">
+    <div data-tour="test-panel" className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto max-w-6xl px-6 py-6 md:px-10">
         {/* Mode header */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <div data-tour="test-header" className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <div>
             <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
               <Eye className="size-3.5" aria-hidden="true" />
@@ -76,7 +76,7 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
               )}
               {done || !test ? "Run test again" : "Running…"}
             </Button>
-            <Button size="sm" variant="ghost" onClick={onExit}>
+            <Button size="sm" variant="ghost" data-tour="exit-test" onClick={onExit}>
               Exit test
             </Button>
           </div>
@@ -140,8 +140,8 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
                 <FindingsSection templateId={workflow.templateId} config={snapshotConfig(workflow)} />
 
                 {done && (
-                  <div className="rounded-md border border-ok/30 bg-ok-tint/50 px-4 py-3">
-                    <p className="flex items-center gap-2 text-[13px] font-medium text-ok">
+                  <div className="rounded-md border border-positive-border bg-positive px-4 py-3 text-positive-foreground">
+                    <p className="flex items-center gap-2 text-[13px] font-medium">
                       <Check className="size-4" aria-hidden="true" />
                       Test complete. {testOutcome(workflow)}
                     </p>
@@ -156,8 +156,11 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
                 <div className="flex flex-wrap items-center gap-3 rounded-md border border-border bg-card px-4 py-3">
                   {workflow.status === "ready" ? (
                     <p className="text-[12.5px] text-ink-2">
-                      This workflow is marked <span className="font-medium text-ok">ready to publish</span>.
-                      Further edits return it to draft.
+                      This workflow is marked{" "}
+                      <span className="inline-flex items-center rounded-sm bg-positive px-1.5 py-0.5 text-[12px] font-medium text-positive-foreground">
+                        ready to publish
+                      </span>
+                      . Further edits return it to draft.
                     </p>
                   ) : (
                     <>

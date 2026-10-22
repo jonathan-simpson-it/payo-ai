@@ -174,7 +174,7 @@ export function WaitlistSection() {
         <div className="glass edge-lit rounded-xl p-5 md:p-6">
           {done ? (
             <div className="flex flex-col items-start gap-3 py-6">
-              <span className="grid size-9 place-items-center rounded-full bg-ok-solid text-white">
+              <span className="grid size-9 place-items-center rounded-full bg-positive text-positive-foreground">
                 <Check className="size-5" aria-hidden="true" />
               </span>
               <p className="text-[16px] font-semibold">You are on the list.</p>

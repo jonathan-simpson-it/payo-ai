@@ -8,6 +8,7 @@ import {
   Circle,
   CircleAlert,
   ClipboardCheck,
+  Compass,
   FileOutput,
   FileSpreadsheet,
   Loader2,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -26,6 +28,7 @@ import {
 import { STEP_TYPE_LABELS } from "@/lib/payo/data";
 import type { RunStatus, RunStepState, StepTypeId, WorkflowStatus } from "@/lib/payo/types";
 import { useUI } from "@/lib/payo/store";
+import { useTour } from "@/lib/payo/tour";
 import { PayoMark } from "@/components/payo/mark";
 import { cn } from "@/lib/utils";
 
@@ -111,11 +114,11 @@ export function SampleTag({
 
 // ─── Status ──────────────────────────────────────────────────────────────────
 
-const RUN_STATUS: Record<RunStatus, { label: string; dot: string; cls: string; pulse?: boolean }> = {
-  draft: { label: "Draft", dot: "bg-neutral", cls: "bg-neutral-tint text-ink-2 border border-neutral-border" },
-  running: { label: "Running", dot: "bg-primary", cls: "bg-primary-tint text-primary-ink border border-primary/30", pulse: true },
-  "needs-review": { label: "Needs review", dot: "bg-warn", cls: "bg-warn-tint text-warn border border-warn-border" },
-  completed: { label: "Completed", dot: "bg-ok", cls: "bg-ok-tint text-ok border border-ok-border" },
+const RUN_STATUS: Record<RunStatus, { label: string; cls: string; pulse?: boolean }> = {
+  draft: { label: "Draft", cls: "bg-neutral-solid text-neutral-solid-foreground border border-neutral-border" },
+  running: { label: "Running", cls: "bg-positive text-positive-foreground border border-positive-border", pulse: true },
+  "needs-review": { label: "Needs review", cls: "bg-warn-solid text-white border border-warn-solid" },
+  completed: { label: "Completed", cls: "bg-positive text-positive-foreground border border-positive-border" },
 };
 
 export function RunStatusChip({
@@ -136,16 +139,19 @@ export function RunStatusChip({
         className,
       )}
     >
-      <span className={cn("size-1.5 rounded-full", s.dot, s.pulse && "animate-pulse")} aria-hidden="true" />
+      <span
+        className={cn("size-1.5 rounded-full bg-current opacity-70", s.pulse && "animate-pulse")}
+        aria-hidden="true"
+      />
       {withLabel && s.label}
     </span>
   );
 }
 
 const WORKFLOW_STATUS: Record<WorkflowStatus, { label: string; cls: string }> = {
-  draft: { label: "Draft", cls: "bg-neutral-tint text-ink-2 border border-neutral-border" },
-  tested: { label: "Tested", cls: "bg-primary-tint text-primary-ink border border-primary/30" },
-  ready: { label: "Ready to publish", cls: "bg-ok-tint text-ok border border-ok-border" },
+  draft: { label: "Draft", cls: "bg-neutral-solid text-neutral-solid-foreground border border-neutral-border" },
+  tested: { label: "Tested", cls: "bg-positive text-positive-foreground border border-positive-border" },
+  ready: { label: "Ready to publish", cls: "bg-positive text-positive-foreground border border-positive-border" },
 };
 
 export function WorkflowStatusChip({
@@ -169,31 +175,22 @@ export function WorkflowStatusChip({
   );
 }
 
-export type Tone = "danger" | "warn" | "ok" | "neutral";
+export type Tone = "danger" | "warn" | "positive" | "neutral";
 
-export function ToneChip({
-  tone,
-  variant = "soft",
-  children,
-}: {
-  tone: Tone;
-  variant?: "soft" | "solid";
-  children: React.ReactNode;
-}) {
-  const tones: Record<Tone, string> = {
-    danger: "bg-danger-tint text-danger border border-danger-border",
-    warn: "bg-warn-tint text-warn border border-warn-border",
-    ok: "bg-ok-tint text-ok border border-ok-border",
-    neutral: "bg-neutral-tint text-ink-2 border border-neutral-border",
-  };
-  const solids: Record<Tone, string> = {
-    ...tones,
-    danger: "bg-danger-solid text-white",
-    warn: "bg-warn-solid text-white",
-    ok: "bg-ok-solid text-white",
+export function ToneChip({ tone, children }: { tone: Tone; children: React.ReactNode }) {
+  const styles: Record<Tone, string> = {
+    danger: "bg-danger-solid text-white border border-danger-solid",
+    warn: "bg-warn-solid text-white border border-warn-solid",
+    positive: "bg-positive text-positive-foreground border border-positive-border",
+    neutral: "bg-neutral-solid text-neutral-solid-foreground border border-neutral-border",
   };
   return (
-    <span className={cn("inline-flex items-center whitespace-nowrap rounded-full px-2 py-0.5 text-[12px] font-medium", variant === "solid" ? solids[tone] : tones[tone])}>
+    <span
+      className={cn(
+        "inline-flex items-center whitespace-nowrap rounded-full px-2 py-0.5 text-[12px] font-medium",
+        styles[tone],
+      )}
+    >
       {children}
     </span>
   );
@@ -202,7 +199,7 @@ export function ToneChip({
 export function rowStatusTone(status: string): Tone {
   if (status === "Exception" || status === "Over limit") return "danger";
   if (status === "Near limit") return "warn";
-  if (status === "Matched") return "ok";
+  if (status === "Matched") return "positive";
   return "neutral";
 }
 
@@ -215,7 +212,7 @@ export function StepStateIcon({ state, className }: { state: RunStepState; class
       return (
         <span
           className={cn(
-            "grid size-4 place-items-center rounded-full bg-ok-tint text-ok transition-opacity duration-200",
+            "grid size-4 place-items-center rounded-full bg-positive text-positive-foreground transition-opacity duration-200",
             className,
           )}
           aria-hidden="true"
@@ -250,6 +247,7 @@ export function Eyebrow({ children, className }: { children: React.ReactNode; cl
 
 export function AboutDemoDialog() {
   const { aboutOpen, setAboutOpen } = useUI();
+  const { active: tourActive, hasResume, completed, startTour, resumeTour } = useTour();
   return (
     <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
       <DialogContent className="max-w-md gap-0">
@@ -272,6 +270,25 @@ export function AboutDemoDialog() {
         <p className="mt-4 text-[13px] leading-relaxed text-ink-2">
           This prototype does not connect to live data sources or external services.
         </p>
+        {!tourActive && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-5 w-fit gap-1.5"
+            onClick={() => {
+              setAboutOpen(false);
+              if (hasResume) resumeTour();
+              else startTour();
+            }}
+          >
+            <Compass className="size-3.5" aria-hidden="true" />
+            {hasResume
+              ? "Resume the product tour"
+              : completed
+                ? "Replay the product tour"
+                : "Take the product tour"}
+          </Button>
+        )}
       </DialogContent>
     </Dialog>
   );

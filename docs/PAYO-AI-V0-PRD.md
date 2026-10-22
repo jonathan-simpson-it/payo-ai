@@ -282,7 +282,7 @@ Use a compact list of named indices, FX rates, rates, and holdings. Make one or 
 - **Theme:** light, quiet, professional.
 - **Base:** warm off-white or cool near-white background; near-black/navy text; soft grey dividers.
 - **Accent:** one subdued finance-appropriate blue or deep teal, used sparingly for primary actions and selected state.
-- **Status:** restrained green for completed, amber for needs review, red only for a genuine flagged exception, neutral grey for inactive.
+- **Status:** filled blue for completed, amber for needs review, red only for a genuine flagged exception, neutral grey for inactive.
 - **Typography:** modern sans-serif with strong numeric legibility; use tabular figures in financial tables where available.
 - **Borders:** thin and purposeful. Prefer flat sections and structural rules over card-heavy containers.
 - **Corners:** small radius only where a contained control needs it. Avoid pervasive rounded rectangles.

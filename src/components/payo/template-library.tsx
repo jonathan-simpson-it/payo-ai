@@ -92,7 +92,7 @@ function NavCanvas() {
           <span className="font-medium text-[#E9EEF3]">Ashbourne Equity</span>
           <span className="text-right font-mono tabular-nums text-ink-2">0.00%</span>
           <span className="inline-flex justify-end">
-            <span className="inline-flex items-center gap-1 rounded-full bg-ok-solid px-2 py-0.5 text-[11px] font-medium text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-positive px-2 py-0.5 text-[11px] font-medium text-positive-foreground">
               <Check className="size-2.5" strokeWidth={3} aria-hidden="true" />
               Matched
             </span>
@@ -217,7 +217,7 @@ function ResearchCanvas() {
       </div>
 
       <div className="flex justify-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-ok-solid px-3 py-1 text-[11.5px] font-medium text-white">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-positive px-3 py-1 text-[11.5px] font-medium text-positive-foreground">
           <Check className="size-3" strokeWidth={3} aria-hidden="true" />
           Briefing approved by editor
         </span>
@@ -273,7 +273,7 @@ export function TemplateLibrarySection() {
 
       <div className="relative mx-auto w-full max-w-[1720px] px-6 py-16 sm:px-12 lg:px-24 lg:py-20">
         {/* Header */}
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <div data-tour="landing-templates" className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="flex items-center gap-2.5 text-[12.5px] font-semibold uppercase tracking-[0.12em] text-ink-2">
               <span className="h-px w-6 bg-line-strong" aria-hidden="true" />

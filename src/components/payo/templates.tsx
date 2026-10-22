@@ -278,7 +278,7 @@ function TemplateCardGrid({
   const steps = template.steps ?? [];
   const hasReview = steps.some((s) => s.type === "review");
   return (
-    <article className={cn(CARD_LIFT, "flex flex-col p-5")}>
+    <article data-tour="template-card" className={cn(CARD_LIFT, "flex flex-col p-5")}>
       <div className="flex items-start justify-between gap-3">
         <p className="pt-0.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-3">
           {template.category}
@@ -319,7 +319,7 @@ function TemplateCardPipeline({
   const steps = template.steps ?? [];
   const hasReview = steps.some((s) => s.type === "review");
   return (
-    <article className={cn(CARD_LIFT, "overflow-hidden")}>
+    <article data-tour="template-card" className={cn(CARD_LIFT, "overflow-hidden")}>
       <div className="grid gap-0 lg:grid-cols-[300px_minmax(0,1fr)]">
         <div className="flex flex-col gap-3 p-5 lg:border-r lg:border-border">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
@@ -519,7 +519,7 @@ function LibraryControls({
   kbdLabel: string;
 }) {
   return (
-    <div className="mt-6 flex flex-col gap-3">
+    <div className="mt-6 flex flex-col gap-3" data-tour="template-controls">
       <div className="flex flex-wrap items-center gap-2.5">
         <div className="group relative min-w-[210px] flex-1 sm:max-w-sm">
           <Search

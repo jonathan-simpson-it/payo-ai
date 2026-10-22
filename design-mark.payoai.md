@@ -18,7 +18,7 @@ Mascot ink (eyes/smile) #2A1708
 Mascot blush #E2640E at 60%
 Hairline border #FFFFFF at 8% (rgba(255,255,255,0.08))
 Strong border #FFFFFF at 14%
-Optional status colors: green #1F7350, amber #96650A, red #B3261E (solid tags with white text).
+Optional status colors: blue #1D4ED8, amber #96650A, red #B3261E (solid tags with white text).
 Light-theme slides (if needed): paper #F6F5F1, card #FFFFFF, text #1C2024, border #E5E3DD, same orange #C9500A.
 Fonts
 

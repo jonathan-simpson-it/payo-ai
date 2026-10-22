@@ -32,10 +32,14 @@
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
   --color-line-strong: var(--line-strong);
-  --color-ok: var(--ok);
-  --color-ok-tint: var(--ok-tint);
-  --color-ok-border: var(--ok-border);
-  --color-ok-solid: var(--ok-solid);
+  --color-positive: var(--positive);
+  --color-positive-strong: var(--positive-strong);
+  --color-positive-foreground: var(--positive-foreground);
+  --color-positive-border: var(--positive-border);
+  --color-neutral-solid: var(--neutral-solid);
+  --color-neutral-solid-foreground: var(--neutral-solid-foreground);
+  --color-warn-solid: var(--warn-solid);
+  --color-danger-solid: var(--danger-solid);
   --color-warn: var(--warn);
   --color-warn-tint: var(--warn-tint);
   --color-warn-border: var(--warn-border);
@@ -58,10 +62,10 @@
 
 /*
  * Payo light theme: quiet warm paper, ink text, deep Payo orange for action.
- * Colour is semantic: orange = primary action/brand only, green = complete,
- * amber = needs review, red = exception. Selection states are neutral ink and
- * grey, never orange. Status pills use muted tints with 1px borders
- * (enterprise standard), never saturated or neon fills.
+ * Colour is semantic: orange = primary action/brand only, blue = positive or
+ * complete, amber = needs review, red = exception. Selection states are neutral
+ * ink and grey, never orange. Status pills are filled boxes with white or dark
+ * text, never coloured text on a pastel fill.
  */
 :root {
   --radius: 0.5rem;
@@ -94,18 +98,23 @@
   --ink-3: #8a9199;
   --line-strong: #d5d3cc;
 
-  --ok: #1F7350;
-  --ok-tint: #E9F3EE;
-  --ok-border: #CEE0D9;
+  --positive: #1d4ed8;
+  --positive-strong: #1e40af;
+  --positive-foreground: #ffffff;
+  --positive-border: #1e40af;
   --warn: #d97706;
   --warn-tint: #fffbeb;
   --warn-border: #fde68a;
+  --warn-solid: #96650a;
   --danger: #dc2626;
   --danger-tint: #fef2f2;
   --danger-border: #fecaca;
+  --danger-solid: #b3261e;
   --neutral: #475569;
   --neutral-tint: #f1f5f9;
-  --neutral-border: #e2e8f0;
+  --neutral-solid: #f1f5f9;
+  --neutral-solid-foreground: #0f172a;
+  --neutral-border: #cbd5e1;
 
   /*
    * Action aliases. The bright #FF6B00 is reserved for the Payoo mascot and
@@ -151,18 +160,23 @@
   --ink-3: #7d8794;
   --line-strong: rgba(255, 255, 255, 0.16);
 
-  --ok: #4fae7e;
-  --ok-tint: rgba(79, 174, 126, 0.12);
-  --ok-border: rgba(79, 174, 126, 0.25);
+  --positive: #2563eb;
+  --positive-strong: #1d4ed8;
+  --positive-foreground: #ffffff;
+  --positive-border: #1d4ed8;
   --warn: #fbbf24;
   --warn-tint: rgba(245, 158, 11, 0.12);
   --warn-border: rgba(245, 158, 11, 0.25);
+  --warn-solid: #96650a;
   --danger: #f87171;
   --danger-tint: rgba(239, 68, 68, 0.12);
   --danger-border: rgba(239, 68, 68, 0.25);
+  --danger-solid: #b3261e;
   --neutral: #94a3b8;
   --neutral-tint: rgba(148, 163, 184, 0.12);
-  --neutral-border: rgba(148, 163, 184, 0.25);
+  --neutral-solid: #1e293b;
+  --neutral-solid-foreground: #ffffff;
+  --neutral-border: #334155;
 
   --payo-orange: #c9500a;
   --payo-orange-strong: #b24508;
@@ -179,10 +193,10 @@
  * One continuous neutral-charcoal canvas. Bands may only shift between
  * #0D0F12 and #101318, separated by hairlines; panels sit at #14171B and
  * raised overlays at #1A1E24. Orange is a single restrained action accent,
- * never a surface wash, glow or selection fill. Scoped to .payo-neon so the
+ * never a surface wash, glow or selection fill. Scoped to .payo-dark so the
  * light workspace keeps its own theme.
  */
-.payo-neon {
+.payo-dark {
   --radius: 0.625rem;
 
   --background: #0d0f12;
@@ -214,11 +228,10 @@
   --ink-3: #7d8794;
   --line-strong: rgba(255, 255, 255, 0.14);
 
-  --ok: #4fae7e;
-  --ok-tint: rgba(79, 174, 126, 0.12);
-  --ok-border: rgba(79, 174, 126, 0.25);
-  /* Solid status tags: light-theme semantic values, white text. */
-  --ok-solid: #1f7350;
+  --positive: #2563eb;
+  --positive-strong: #1d4ed8;
+  --positive-foreground: #ffffff;
+  --positive-border: #1d4ed8;
   --warn: #c99a3f;
   --warn-tint: rgba(201, 154, 63, 0.12);
   --warn-border: rgba(201, 154, 63, 0.25);
@@ -229,7 +242,9 @@
   --danger-solid: #b3261e;
   --neutral: #8b939b;
   --neutral-tint: rgba(139, 147, 155, 0.12);
-  --neutral-border: rgba(139, 147, 155, 0.25);
+  --neutral-solid: #1e293b;
+  --neutral-solid-foreground: #ffffff;
+  --neutral-border: #334155;
 
   --select-bg: rgba(255, 255, 255, 0.14);
   --scroll-thumb: rgba(255, 255, 255, 0.14);
@@ -241,7 +256,7 @@
 }
 
 /* Panel surface: charcoal fill, 1px translucent border, quiet depth. */
-.payo-neon .glass {
+.payo-dark .glass {
   background: #14171b;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
@@ -250,7 +265,7 @@
 }
 
 /* Heavier panel for floating windows (hero stack, widgets). */
-.payo-neon .glass-deep {
+.payo-dark .glass-deep {
   background: #1a1e24;
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow:
@@ -259,7 +274,7 @@
 }
 
 /* Panel hover: brighter rim only, no bloom. */
-.payo-neon .glass-hover:hover {
+.payo-dark .glass-hover:hover {
   border-color: rgba(255, 255, 255, 0.14);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
@@ -267,10 +282,10 @@
 }
 
 /* Rim: a single quiet slate hairline, no gradient. */
-.payo-neon .edge-lit {
+.payo-dark .edge-lit {
   position: relative;
 }
-.payo-neon .edge-lit::before {
+.payo-dark .edge-lit::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -289,14 +304,14 @@
 }
 
 /* Showcase window: charcoal frame with a restrained ambient drop. */
-.payo-neon .showcase-aura {
+.payo-dark .showcase-aura {
   background: #171b20;
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: 0 16px 36px -22px rgba(0, 0, 0, 0.8);
 }
 
 /* Dotted connector: keyphrase → showcase links, drawn as static dashes. */
-.payo-neon .laser-flow {
+.payo-dark .laser-flow {
   stroke-dasharray: 5 7;
 }
 
@@ -309,7 +324,7 @@
     stroke-dashoffset: -64;
   }
 }
-.payo-neon .pipe-pulse {
+.payo-dark .pipe-pulse {
   stroke-dasharray: 6 10;
   animation: pipe-dash 1.8s linear infinite;
 }
@@ -326,7 +341,7 @@
     stroke-dashoffset: 0;
   }
 }
-.payo-neon .pipe-merge {
+.payo-dark .pipe-merge {
   stroke-dasharray: 70 70;
   animation: pipe-merge-draw 8s ease-in-out infinite;
 }
@@ -365,10 +380,10 @@
     transform: translateY(6px);
   }
 }
-.payo-neon .pipe-variance-a {
+.payo-dark .pipe-variance-a {
   animation: variance-a 8s ease-in-out infinite;
 }
-.payo-neon .pipe-variance-b {
+.payo-dark .pipe-variance-b {
   animation: variance-b 8s ease-in-out infinite;
 }
 
@@ -389,7 +404,7 @@
     stroke-dashoffset: 213.6;
   }
 }
-.payo-neon .dial-arc {
+.payo-dark .dial-arc {
   animation: dial-fill 8s cubic-bezier(0.3, 0.7, 0.3, 1) infinite;
 }
 
@@ -410,7 +425,7 @@
     transform: scale(0.9);
   }
 }
-.payo-neon .warn-pill {
+.payo-dark .warn-pill {
   animation: warn-pop 8s ease-in-out infinite;
 }
 
@@ -423,7 +438,7 @@
     stroke-dashoffset: 0;
   }
 }
-.payo-neon .spark-draw {
+.payo-dark .spark-draw {
   stroke-dasharray: 320 320;
   animation: spark-draw 8s ease-in-out infinite;
 }
@@ -461,10 +476,10 @@
     transform: translateY(6px);
   }
 }
-.payo-neon .approve-pill {
+.payo-dark .approve-pill {
   animation: approve-pop 8s ease-in-out infinite;
 }
-.payo-neon .export-pill {
+.payo-dark .export-pill {
   animation: export-pop 8s ease-in-out infinite;
 }
 
@@ -473,19 +488,11 @@
  * canvas #0D0F12 and the faintly lighter #101318, always separated by a
  * hairline. No light surfaces on the landing.
  */
-.payo-neon .band-alt {
+.payo-dark .band-alt {
   background-color: var(--band);
 }
-.payo-neon .band-rule {
+.payo-dark .band-rule {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* Fine vector grid, barely visible on the dark surface. */
-.payo-neon .neon-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 44px 44px;
 }
 
 @layer base {

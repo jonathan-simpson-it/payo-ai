@@ -1,9 +1,18 @@
 "use client";
 
-import { History, Home, Info, LayoutTemplate, Workflow, type LucideIcon } from "lucide-react";
+import {
+  Compass,
+  History,
+  Home,
+  Info,
+  LayoutTemplate,
+  Workflow,
+  type LucideIcon,
+} from "lucide-react";
 import type { ReactNode } from "react";
 
 import { usePayo, useUI } from "@/lib/payo/store";
+import { useTour } from "@/lib/payo/tour";
 import type { Route } from "@/lib/payo/router";
 import { PayoMark } from "@/components/payo/mark";
 import { RunStatusChip } from "@/components/payo/ui";
@@ -37,6 +46,7 @@ function areaOfRoute(route: Route): "overview" | "workflows" | "templates" | "ru
 
 export function WorkspaceShell({ route, children }: { route: Route; children: ReactNode }) {
   const { openAbout } = useUI();
+  const { active: tourActive, hasResume, completed, startTour, resumeTour } = useTour();
   const { state, workflowById, runById } = usePayo();
   const activeArea = areaOfRoute(route);
   const engine = state.engine && state.engine.phase !== "done" ? state.engine : null;
@@ -72,7 +82,11 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
           <PayoMark className="size-[26px]" />
           <span className="text-[14.5px] font-semibold tracking-tight">Payo AI</span>
         </a>
-        <nav className="flex flex-1 flex-col gap-0.5 px-3 py-4" aria-label="Workspace">
+        <nav
+          className="flex flex-1 flex-col gap-0.5 px-3 py-4"
+          aria-label="Workspace"
+          data-tour="workspace-nav"
+        >
           <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
             Workspace
           </p>
@@ -110,6 +124,16 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
           })}
         </nav>
         <div className="border-t border-border px-3 py-3">
+          {!tourActive && (
+            <button
+              type="button"
+              onClick={() => (hasResume ? resumeTour() : startTour())}
+              className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium text-ink-2 transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <Compass className="size-4" aria-hidden="true" />
+              {hasResume ? "Resume the tour" : completed ? "Replay the tour" : "Take the tour"}
+            </button>
+          )}
           <button
             type="button"
             onClick={openAbout}
@@ -149,6 +173,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
             <button
               type="button"
               onClick={openAbout}
+              data-tour="workspace-sample-data"
               className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-[12px] font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-foreground"
               aria-label="About this demo: sample data is simulated"
             >
@@ -168,6 +193,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
         {/* Mobile navigation */}
         <nav
           aria-label="Workspace sections"
+          data-tour="workspace-nav"
           className="flex shrink-0 items-center gap-1 overflow-x-auto border-b border-border px-3 py-2 md:hidden"
         >
           {NAV_ITEMS.map((item) => {

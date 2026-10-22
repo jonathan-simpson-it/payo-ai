@@ -263,6 +263,7 @@ export function InspectorPanel({
         aria-hidden="true"
       />
       <aside
+        data-tour="step-inspector"
         className="z-30 flex h-full w-[min(92vw,352px)] shrink-0 flex-col border-l border-border bg-card shadow-xl lg:w-[352px] lg:shadow-none"
         aria-label="Step inspector"
       >

@@ -109,7 +109,7 @@ The reference uses colour and labels for state, not decoration. A user can under
 - `Ready to publish` — review and test conditions met
 - `Blocked` — a required input or decision is missing
 
-Use green, amber, and red sparingly. Keep most of the interface neutral.
+Use blue, amber, and red sparingly. Keep most of the interface neutral.
 
 ## Payo's visual language
 
@@ -129,7 +129,7 @@ Use a small semantic palette:
 - `Text`: near-black or near-white depending on surface
 - `Border`: quiet neutral with enough contrast to define structure
 - `Primary`: one muted blue or deep teal
-- `Complete`: restrained green
+- `Complete`: filled blue
 - `Needs review`: restrained amber
 - `Exception`: restrained red
 - `Brand detail`: the Payo character's orange, used sparingly
@@ -357,7 +357,7 @@ These are starting ranges rather than fixed brand values:
 | Primary text         | Near-black on light, near-white on dark                |
 | Border               | 1px low-contrast neutral                               |
 | Primary accent       | Muted blue or deep teal                                |
-| Complete             | Muted green                                            |
+| Complete             | Filled blue                                            |
 | Needs review         | Muted amber                                            |
 | Exception            | Muted red                                              |
 | Brand mark           | Existing Payo orange, sparingly                        |

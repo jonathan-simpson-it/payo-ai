@@ -35,7 +35,7 @@ export function RunsList() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10 md:px-10">
-      <header>
+      <header data-tour="runs-list">
         <h1 className="text-[24px] font-semibold tracking-[-0.01em]">Runs</h1>
         <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-ink-2">
           Every run of a workflow, with its steps, sample sources and findings. Runs are simulated
@@ -214,7 +214,10 @@ export function RunDetail({ runId }: { runId: string }) {
         Runs
       </a>
 
-      <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
+      <div
+        data-tour="run-result"
+        className="mt-4 flex flex-wrap items-start justify-between gap-4"
+      >
         <div className="min-w-0">
           <h1 className="text-[22px] font-semibold leading-tight tracking-[-0.01em]">
             Run {run.code}: {run.workflowName}

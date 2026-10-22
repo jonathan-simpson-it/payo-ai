@@ -20,9 +20,9 @@ const SHOWN_FUNDS = [
   "Harborpoint Property",
 ];
 
-/* Solid status tags: red = exception, amber = tolerance, green = matched. */
+/* Solid status tags: red = exception, amber = tolerance, blue = matched. */
 const STATUS_CHIP: Record<string, string> = {
-  Matched: "bg-ok-solid text-white",
+  Matched: "bg-positive text-positive-foreground",
   "Within tolerance": "bg-warn-solid text-white",
   Exception: "bg-danger-solid text-white",
 };
@@ -205,7 +205,7 @@ function WorkflowWindow() {
       </div>
       <div className="flex items-center gap-1.5 border-t border-black/[0.08] px-3 py-1.5">
         <span
-          className="size-1.5 rounded-full bg-ok-solid"
+          className="size-1.5 rounded-full bg-positive"
           aria-hidden="true"
         />
         <span className="text-[10px] font-medium text-black/60">4 complete · 1 needs review</span>
@@ -277,8 +277,8 @@ function MiniChipDark({ children }: { children: React.ReactNode }) {
 
 function RunHistoryWindow() {
   const runs = [
-    { time: "09:12", name: "NAV reconciliation", dot: "bg-ok-solid" },
-    { time: "08:47", name: "Risk limit checks", dot: "bg-ok-solid" },
+    { time: "09:12", name: "NAV reconciliation", dot: "bg-positive" },
+    { time: "08:47", name: "Risk limit checks", dot: "bg-positive" },
     { time: "08:15", name: "Daily briefing", dot: "bg-warn-solid" },
   ];
   return (

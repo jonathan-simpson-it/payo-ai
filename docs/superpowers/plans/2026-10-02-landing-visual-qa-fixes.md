@@ -13,10 +13,10 @@
 ## Global Constraints
 
 - DO NOT alter layout grids, aspect ratios (16:9), border radii, paddings, or component geometry.
-- Dark status values: emerald `rgba(16,185,129,0.12)` fill / `#34D399` text / `rgba(16,185,129,0.25)` border; rose `rgba(220,38,38,0.12)` fill / `#F87171` text / `rgba(252,165,165,0.25)` border; amber `rgba(217,119,6,0.15)` fill / `#FBBF24` text / `rgba(253,230,138,0.25)` border.
-- Light status values: emerald `#ECFDF5`/`#047857`/`#A7F3D0`; rose `#FEF2F2`/`#DC2626`/`#FCA5A5`; amber `#FFFBEB`/`#D97706`/`#FDE68A`.
+- Dark status values: blue `rgba(37,99,235,0.12)` fill / `#60A5FA` text / `rgba(37,99,235,0.25)` border; rose `rgba(220,38,38,0.12)` fill / `#F87171` text / `rgba(252,165,165,0.25)` border; amber `rgba(217,119,6,0.15)` fill / `#FBBF24` text / `rgba(253,230,138,0.25)` border.
+- Light status values: blue `#EFF6FF`/`#1D4ED8`/`#BFDBFE`; rose `#FEF2F2`/`#DC2626`/`#FCA5A5`; amber `#FFFBEB`/`#D97706`/`#FDE68A`.
 - Payo Orange `#FF6B00` only on primary CTAs, active tabs/selectors, and focus indicators.
-- Grid tints: `rgba(0,0,0,0.015)` light, `rgba(255,255,255,0.02)` dark. No neon greens, no matrix cyan, no blur blooms, no fuzzy hover glows.
+- Grid tints: `rgba(0,0,0,0.015)` light, `rgba(255,255,255,0.02)` dark. No saturated neon colors, no matrix cyan, no blur blooms, no fuzzy hover glows.
 - No test framework is configured in this repo (verified: `package.json` scripts are `dev`/`build`/`start`/`lint` only) — verification is grep + lint + Playwright captures, not unit tests.
 - Screenshots go to `/tmp` only; never into the repo.
 - Section-ID mapping for QA captures (existing code IDs): `#evidence` = why-this-exists, `#roles` = built-for-roles, `#product` = see-it-work, `#templates` = template-library, `#trust` = control-by-design, `#waitlist` = early-access; hero and footer have no ID (use `section:has(h1)` / `footer` selectors).
@@ -28,7 +28,7 @@
 
 **Interfaces:**
 - Consumes: `.approve-pill` / `.export-pill` classes on `src/components/payo/helps-pipeline.tsx:215` and `:219` (unchanged).
-- Produces: non-overlapping 8s cycle — emerald "Approved by editor" visible 42%–62%, slate "Export briefing" visible 72%–92%.
+- Produces: non-overlapping 8s cycle — blue "Approved by editor" visible 42%–62%, slate "Export briefing" visible 72%–92%.
 
 - [x] **Step 1: Apply the staggered keyframes** — replace the two keyframe blocks in `src/app/globals.css` (see code in Task steps below; approve visible 42–62%, export visible 72–92%, both fade fully between).
 - [x] **Step 2: Verify no overlap window exists** — grep the keyframe stops.
@@ -44,7 +44,7 @@
 **Interfaces:**
 - Produces: dark-mode chip styling consistent with `hero-visual.tsx` `STATUS_CHIP`.
 
-- [x] **Step 1: Swap light chip values for dark spec values** (emerald `rgba(16,185,129,0.12)`/`#34D399`/`rgba(16,185,129,0.25)`; rose `rgba(220,38,38,0.12)`/`#F87171`/`rgba(252,165,165,0.25)`).
+- [x] **Step 1: Swap light chip values for dark spec values** (blue `rgba(37,99,235,0.12)`/`#60A5FA`/`rgba(37,99,235,0.25)`; rose `rgba(220,38,38,0.12)`/`#F87171`/`rgba(252,165,165,0.25)`).
 - [x] **Step 2: Verify** no `ECFDF5`/`FEF2F2` remains in the file.
 - [x] **Step 3: Visual verification** — deferred.
 - [ ] **Step 4: Lint + commit** — deferred.

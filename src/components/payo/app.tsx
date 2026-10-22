@@ -10,18 +10,21 @@ import { OverviewScreen, WorkflowsList } from "@/components/payo/misc";
 import { RunDetail, RunsList } from "@/components/payo/runs";
 import { routeKey, useRoute } from "@/lib/payo/router";
 import { PayoProvider, UIProvider } from "@/lib/payo/store";
+import { TourProvider, useTour } from "@/lib/payo/tour";
 import { TemplateLibrary } from "@/components/payo/templates";
 import { AboutDemoDialog } from "@/components/payo/ui";
 import { PayooChat } from "@/components/payo/payoo-chat";
+import { ProductTour } from "@/components/payo/tour-overlay";
 import { WorkspaceShell } from "@/components/payo/shell";
 
 function Router() {
   const route = useRoute();
+  const { active: tourActive } = useTour();
   const key = routeKey(route);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [key]);
+    if (!tourActive) window.scrollTo(0, 0);
+  }, [key, tourActive]);
 
   let view: ReactNode;
   if (route.name === "landing") {
@@ -44,7 +47,7 @@ function Router() {
     <>
       {route.name === "landing" ? view : <WorkspaceShell route={route}>{view}</WorkspaceShell>}
       <AboutDemoDialog />
-      <PayooChat dark={route.name === "landing"} />
+      {!tourActive && <PayooChat dark={route.name === "landing"} />}
       <Toaster position="bottom-left" />
     </>
   );
@@ -54,7 +57,10 @@ export function PayoApp() {
   return (
     <PayoProvider>
       <UIProvider>
-        <Router />
+        <TourProvider>
+          <Router />
+          <ProductTour />
+        </TourProvider>
       </UIProvider>
     </PayoProvider>
   );

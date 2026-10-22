@@ -351,8 +351,8 @@ function ReportFrame({
 function ApprovalLine({ review, fallbackBy }: { review?: RunReview; fallbackBy: string }) {
   const by = review?.decision === "approved" ? review.by : fallbackBy;
   return (
-    <p className="flex items-center gap-2 border-t border-border pt-4 text-[13px] font-medium text-ok">
-      <span className="grid size-4 shrink-0 place-items-center rounded-full bg-ok-tint">
+    <p className="flex items-center gap-2 border-t border-border pt-4 text-[13px] font-medium text-foreground">
+      <span className="grid size-4 shrink-0 place-items-center rounded-full bg-positive text-positive-foreground">
         <Check className="size-2.5" strokeWidth={3} aria-hidden="true" />
       </span>
       Approved by {by} (simulated decision)

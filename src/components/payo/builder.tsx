@@ -61,11 +61,11 @@ const ADDABLE_TYPES: { type: StepTypeId; description: string }[] = [
 ];
 
 const ACTIVITY_TONE: Record<ActivityTone, { label: string; cls: string }> = {
-  draft: { label: "Draft", cls: "bg-neutral-tint text-ink-2" },
-  tested: { label: "Tested", cls: "bg-primary-tint text-primary-ink" },
-  ready: { label: "Ready", cls: "bg-ok-tint text-ok" },
-  review: { label: "Review", cls: "bg-warn-tint text-warn" },
-  done: { label: "Complete", cls: "bg-ok-tint text-ok" },
+  draft: { label: "Draft", cls: "bg-neutral-solid text-neutral-solid-foreground" },
+  tested: { label: "Tested", cls: "bg-positive text-positive-foreground" },
+  ready: { label: "Ready", cls: "bg-positive text-positive-foreground" },
+  review: { label: "Review", cls: "bg-warn-solid text-white" },
+  done: { label: "Complete", cls: "bg-positive text-positive-foreground" },
 };
 
 function StepMenuItems({ onAdd }: { onAdd: (type: StepTypeId) => void }) {
@@ -128,6 +128,7 @@ function StepCard({
   return (
     <div
       data-step-id={stepId}
+      data-tour="step-card"
       role="button"
       tabIndex={0}
       aria-pressed={selected}
@@ -192,7 +193,7 @@ function StepCard({
 function Connector({ done }: { done: boolean }) {
   return (
     <ChevronRight
-      className={cn("mx-1.5 size-4 shrink-0", done ? "text-ok" : "text-ink-3/50")}
+      className={cn("mx-1.5 size-4 shrink-0", done ? "text-positive" : "text-ink-3/50")}
       strokeWidth={2}
       aria-hidden="true"
     />
@@ -250,6 +251,33 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
 
   const selectedStep = wf?.steps.find((s) => s.id === selectedStepId) ?? null;
   const selectedIndex = wf?.steps.findIndex((s) => s.id === selectedStepId) ?? -1;
+
+  useEffect(() => {
+    const onTour = (event: Event) => {
+      const detail = (event as CustomEvent<{ action?: string }>).detail;
+      if (!detail || !wf) return;
+      switch (detail.action) {
+        case "select-first-step":
+          setSelectedStepId(wf.steps[0]?.id ?? null);
+          break;
+        case "enter-test":
+          if (engineBusy) return;
+          if (!state.test || state.test.workflowId !== wf.id || state.test.phase === "done") {
+            startTest(wf.id);
+          }
+          setMode("test");
+          break;
+        case "exit-test":
+          setMode("build");
+          break;
+        case "open-review":
+          setReviewDismissed(false);
+          break;
+      }
+    };
+    window.addEventListener("payo:tour", onTour);
+    return () => window.removeEventListener("payo:tour", onTour);
+  }, [engineBusy, startTest, state.test, wf]);
 
   // Keep the active step in view while the run progresses
   const activeStepId = engineHere?.steps[engineHere.activeIndex]?.id;
@@ -335,7 +363,10 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
     <div className="flex h-full min-h-0 flex-col">
       {/* Top bar */}
       <div className="shrink-0 border-b border-border bg-background">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 md:px-6">
+        <div
+          data-tour="builder-header"
+          className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 md:px-6"
+        >
           <a
             href="#/workspace/workflows"
             className="flex items-center gap-1.5 text-[12.5px] font-medium text-ink-2 transition-colors hover:text-foreground"
@@ -353,6 +384,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
           />
           <WorkflowStatusChip status={wf.status} />
           <div
+            data-tour="builder-mode"
             className="flex shrink-0 items-center rounded-md border border-border bg-muted/50 p-0.5"
             role="group"
             aria-label="Builder mode"
@@ -424,6 +456,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             </DropdownMenu>
             <Button
               size="sm"
+              data-tour="builder-run"
               onClick={handleRun}
               disabled={engineBusy || mode === "test"}
               title={mode === "test" ? "Exit test mode to run the workflow" : undefined}
@@ -440,7 +473,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
 
       {/* Run strip */}
       {engineHere && mode === "build" && (
-        <div className="shrink-0 border-b border-border bg-muted">
+        <div data-tour="run-strip" className="shrink-0 border-b border-border bg-muted">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2.5 md:px-6">
             <p className="flex items-center gap-2 text-[12.5px] text-ink-2">
               <span className="size-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
@@ -476,7 +509,12 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
                 <p className="text-[12.5px] font-medium text-warn">
                   Paused: {reviewStep?.label} needs your decision.
                 </p>
-                <Button size="sm" className="ml-auto h-7" onClick={() => setReviewDismissed(false)}>
+<Button
+                  size="sm"
+                  data-tour="review-open"
+                  className="ml-auto h-7"
+                  onClick={() => setReviewDismissed(false)}
+                >
                   Open review
                 </Button>
               </>
@@ -500,7 +538,12 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
                   >
                     End run
                   </Button>
-                  <Button size="sm" className="h-7" onClick={handleApprove}>
+<Button
+                    size="sm"
+                    data-tour="run-approve"
+                    className="h-7"
+                    onClick={handleApprove}
+                  >
                     Approve and continue
                   </Button>
                 </div>
@@ -508,7 +551,10 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             )}
 
             {enginePhase === "done" && (
-              <p className="text-[12.5px] font-medium text-ok">
+              <p className="flex items-center gap-2 text-[12.5px] text-ink-2">
+                <span className="inline-flex items-center rounded-sm bg-positive px-1.5 py-0.5 text-[11px] font-medium text-positive-foreground">
+                  Complete
+                </span>
                 Run completed. Opening the result…
               </p>
             )}
@@ -537,7 +583,10 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
               />
             </div>
           ) : (
-            <div className="flex h-full min-w-max items-center px-6 py-8 md:px-10">
+            <div
+              data-tour="builder-canvas"
+              className="flex h-full min-w-max items-center px-6 py-8 md:px-10"
+            >
               {wf.steps.map((step, i) => {
                 const st = engineHere?.states[step.id];
                 const prevComplete =
@@ -644,7 +693,10 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
 
       {/* Review gate dialog */}
       <Dialog open={reviewOpen} onOpenChange={(v) => setReviewDismissed(!v)}>
-        <DialogContent className="max-h-[85vh] gap-0 overflow-hidden p-0 sm:max-w-3xl">
+        <DialogContent
+          data-tour="review-dialog"
+          className="max-h-[85vh] gap-0 overflow-hidden p-0 sm:max-w-3xl"
+        >
           <DialogHeader className="items-start space-y-1.5 border-b border-border px-6 py-5 text-left">
             <div className="flex flex-wrap items-center gap-2.5">
               <DialogTitle className="text-[17px] font-semibold">{reviewStep?.label ?? "Review"}</DialogTitle>

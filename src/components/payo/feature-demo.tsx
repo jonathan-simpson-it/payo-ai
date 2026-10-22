@@ -145,7 +145,7 @@ function ReconcileResult() {
                   {fmtSignedPct(r.diffPct)}
                 </td>
                 <td className={cn(TD, "whitespace-nowrap")}>
-                  <ToneChip tone="danger" variant="solid">Exception</ToneChip>
+                  <ToneChip tone="danger">Exception</ToneChip>
                 </td>
               </tr>
             ))}
@@ -381,7 +381,7 @@ export function FeatureDemo() {
        */}
       <div className="relative mx-auto flex w-full max-w-full flex-col gap-10 px-6 py-14 md:px-12 lg:h-[100svh] lg:max-h-[1080px] lg:aspect-[16/9] lg:gap-0 lg:justify-between lg:overflow-hidden lg:px-24 lg:py-12">
         {/* Section header */}
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <div data-tour="landing-sandbox" className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="flex items-center gap-2.5 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-ink-2">
               <span
@@ -545,7 +545,7 @@ export function FeatureDemo() {
                       )}
                       {phase === "done" && (
                         <p className="flex items-center gap-2 rounded-xl border border-border bg-white/[0.03] px-3.5 py-2.5 text-[12.5px] text-ink-2">
-                          <span className="inline-flex items-center rounded bg-ok-solid px-1.5 py-0.5 text-[11.5px] font-medium text-white">
+                          <span className="inline-flex items-center rounded bg-positive px-1.5 py-0.5 text-[11.5px] font-medium text-positive-foreground">
                             Complete
                           </span>
                           Run complete. Reviewed and finalised in this simulation.

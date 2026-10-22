@@ -41,7 +41,7 @@ with:
 ```tsx
 <span className="headline-bar my-2 inline-block rounded-2xl border border-white/20 bg-white/5 px-5 pb-1.5 pt-1 text-white shadow-sm">
 ```
-Note: `.payo-neon .headline-bar` in `globals.css:296-298` keeps its soft `box-shadow` (higher specificity than Tailwind `shadow-sm`) — expected, no CSS change needed beyond the comment.
+Note: `.payo-dark .headline-bar` in `globals.css:296-298` keeps its soft `box-shadow` (higher specificity than Tailwind `shadow-sm`) — expected, no CSS change needed beyond the comment.
 
 - [ ] **Step 2: Update the stale CSS comment** — `globals.css:295`:
 `/* Inverted headline bar: flat white block, black text, no glow. */` → `/* Headline bar: glassmorphic border pill over the dark hero. */`
@@ -214,11 +214,11 @@ data-[state=active]:border-transparent data-[state=active]:bg-slate-900 data-[st
 - [ ] **Step 3: Add RiskStatusPill** — insert above `function AnalystPreview()`:
 
 ```tsx
-/* Light-canvas status pills for the position-risk table (spec: emerald/red, amber for near-limit). */
+/* Light-canvas status pills for the position-risk table (spec: blue/red, amber for near-limit). */
 const RISK_PILL: Record<string, string> = {
   "Over limit": "bg-red-50 text-red-700 border border-red-200",
   "Near limit": "bg-amber-50 text-amber-700 border border-amber-200",
-  "Within limit": "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  "Within limit": "bg-blue-50 text-blue-700 border border-blue-200",
 };
 
 function RiskStatusPill({ status }: { status: string }) {
@@ -352,7 +352,7 @@ git commit -m "style(demo): dotted workspace grid, slate stepper label contrast"
 - Modify: `src/components/payo/template-library.tsx` — 3 canvas containers (lines 65, 108, 161), `ResearchCanvas` SVG (lines 162–179), alert pills (lines 94–97, 149–153)
 
 **Interfaces:**
-- Produces: SVG `<defs>` gains `id="blue-gradient"` (unique in repo — verified by grep). **Scope confirmed:** both alert pills restyled; green "Briefing approved" pill untouched.
+- Produces: SVG `<defs>` gains `id="blue-gradient"` (unique in repo — verified by grep). **Scope confirmed:** both alert pills restyled; blue "Briefing approved" pill untouched.
 
 - [ ] **Step 1: Canvas container fills** — string appears exactly 3×; replace all with:
 
@@ -405,7 +405,7 @@ git commit -m "style(templates): deep canvas fills, curve area gradient, dark re
 
 ---
 
-### Task 8: Section 8 + Early Access — emerald checkmarks, dark form inputs
+### Task 8: Section 8 + Early Access — blue checkmarks, dark form inputs
 
 **Files:**
 - Modify: `src/components/payo/landing-sections.tsx:757-762` (checkmark span)
@@ -418,7 +418,7 @@ git commit -m "style(templates): deep canvas fills, curve area gradient, dark re
 
 ```tsx
               <span
-                className="grid size-8 place-items-center rounded-lg border border-emerald-200/80 bg-emerald-50 text-emerald-600"
+                className="grid size-8 place-items-center rounded-lg border border-blue-200/80 bg-blue-50 text-blue-600"
                 aria-hidden="true"
               >
 ```
@@ -443,7 +443,7 @@ git commit -m "style(templates): deep canvas fills, curve area gradient, dark re
 
 - [ ] **Step 5: Verify**
 
-Run: `grep -n "rounded-lg border border-emerald-200/80" src/components/payo/landing-sections.tsx && grep -c "border-slate-700 bg-slate-900/80" src/components/payo/waitlist.tsx && ! grep -n "boxShadow" src/components/payo/landing-sections.tsx`
+Run: `grep -n "rounded-lg border border-blue-200/80" src/components/payo/landing-sections.tsx && grep -c "border-slate-700 bg-slate-900/80" src/components/payo/waitlist.tsx && ! grep -n "boxShadow" src/components/payo/landing-sections.tsx`
 Expected: match, `2` inputs, no inline boxShadow left.
 
 - [ ] **Step 6: Lint the whole change set** — DEFERRED per standing user instruction ("don't test until I told you to do so").
@@ -466,7 +466,7 @@ Expected: match, `2` inputs, no inline boxShadow left.
 - Task 1 grep note: remaining `text-white/60` at `landing.tsx:111` is the nav links (out of scope, untouched).
 - Task 7 grep note: `#EF4444` remains at `template-library.tsx:82` (exception row tint) and `:134` (concentration bar fill) — data-viz elements, not banners, out of scope.
 - Lint (Task 8 Step 6), visual captures, and all commit steps: deferred per standing user instructions ("don't test until I told you to do so"; previous session's "no commit or push").
-- Task 1 follow-up (same day): user directive replaced the glass headline pill with "Clean Accent Text" — `Automated` and `Auditable.` now `text-[#FF6B00]` spans, pill wrapper and the dead `.payo-neon .headline-bar` CSS rule removed. Responsive type scale + line breaks kept; HeroThreads anchor coordinates (landing.tsx:69-86) were tuned to the old pill metrics and may drift a few px — retune during visual QA if needed.
+- Task 1 follow-up (same day): user directive replaced the glass headline pill with "Clean Accent Text" — `Automated` and `Auditable.` now `text-[#FF6B00]` spans, pill wrapper and the dead `.payo-dark .headline-bar` CSS rule removed. Responsive type scale + line breaks kept; HeroThreads anchor coordinates (landing.tsx:69-86) were tuned to the old pill metrics and may drift a few px — retune during visual QA if needed.
 - Task 2 follow-up (same day): user directive replaced the `GrowthBars` component entirely with `GrowthTrend` — a smooth SVG area trend (curve `#FF6B00` w=2.5 round cap, `growth-area` gradient 0.12→0, dashed `#E2E8F0` gridlines), HTML-overlay nodes/labels percentage-mapped to the 320×120 viewBox (`preserveAspectRatio="none"` + `vectorEffect="non-scaling-stroke"`), `+69% Growth` badge in a right-aligned header row, citation wrapper → `text-xs text-slate-400`.
 - Task 6 follow-up (same day): user directive restyled the FeatureDemo section — orange active tabs on `bg-slate-100/80` segment container (hover scoped to `data-[state=inactive]`), card → `rounded-xl border-slate-200 shadow-sm` (supersedes the dotted-grid/rounded-2xl treatment), mono slate "Run again", amber paused banner + spec CTAs (`h-auto` added to defeat Button `h-9`; `has-[>svg]:px-4` on primary CTA to defeat Button's `has-[>svg]:px-3`), uniform mono stepper chips (tone param removed from `statusChip`), dark slate "Mark ready". Out-of-spec leftovers flagged: "returned" banner still orange `#FFF0E6`, idle "Run on sample data" button still old orange, header/footer `border-[#E2E8F0]` dividers, status-line icon still `#E14E00`.
 - Working tree also carries the previous session's uncommitted dark-mode rework; the two change sets are intentionally not interleaved into commits.

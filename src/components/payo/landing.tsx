@@ -1,9 +1,10 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Compass } from "lucide-react";
 
 import { useUI } from "@/lib/payo/store";
 import { PayoMark } from "@/components/payo/mark";
+import { TourLauncher } from "@/components/payo/tour-overlay";
 import {
   ConnectorsSection,
   EvidenceStrip,
@@ -84,7 +85,7 @@ export function LandingPage() {
   const { openAbout } = useUI();
 
   return (
-    <div className="payo-neon relative min-h-screen bg-background text-foreground">
+    <div className="payo-dark relative min-h-screen bg-background text-foreground">
       <div className="relative">
         {/* Navigation */}
         <header className="sticky top-0 z-40 border-b border-border bg-background">
@@ -109,6 +110,24 @@ export function LandingPage() {
                   {l.label}
                 </a>
               ))}
+              <TourLauncher
+                className="relative inline-flex items-center gap-1.5 py-1 text-[13px] text-ink-2 transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:bg-white/35 after:transition-transform after:duration-200 hover:text-white hover:after:scale-x-100"
+                resumeLabel={
+                  <>
+                    <Compass className="size-3.5" aria-hidden="true" />
+                    Resume tour
+                  </>
+                }
+                replayLabel={
+                  <>
+                    <Compass className="size-3.5" aria-hidden="true" />
+                    Replay tour
+                  </>
+                }
+              >
+                <Compass className="size-3.5" aria-hidden="true" />
+                Tour
+              </TourLauncher>
             </nav>
             <div className="ml-auto flex items-center gap-3">
               {/* Hand-drawn note pointing at the waitlist CTA (decorative). */}
@@ -138,6 +157,7 @@ export function LandingPage() {
               </a>
               <a
                 href={WORKSPACE_URL}
+                data-tour="landing-enter-workspace"
                 className="hidden h-9 items-center gap-1.5 rounded-lg border border-white/15 bg-white/[0.03] px-3.5 text-[13px] font-medium text-white transition-colors duration-200 hover:bg-white/[0.07] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-white/20 sm:inline-flex"
               >
                 Build a Workflow
@@ -167,7 +187,7 @@ export function LandingPage() {
           <div className="relative mx-auto w-full max-w-[1920px] px-6 py-12 lg:px-20 xl:py-16">
             <div className="relative grid items-center gap-12 lg:grid-cols-[45fr_55fr] lg:gap-10">
               <HeroThreads />
-              <div className="min-w-0">
+              <div className="min-w-0" data-tour="landing-hero">
                 <h1 className="text-balance text-[32px] font-bold leading-[1.12] tracking-[-0.03em] text-white sm:text-[38px]">
                   Describe your workflow.
                   <br />
@@ -180,6 +200,7 @@ export function LandingPage() {
                 <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-3">
                   <a
                     href={WORKSPACE_URL}
+                    data-tour="landing-hero-cta"
                     className="inline-flex h-12 items-center gap-2 rounded-[10px] bg-primary px-7 text-[15px] font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary-strong focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/40"
                   >
                     Generate Your First Graph
@@ -192,9 +213,29 @@ export function LandingPage() {
                     Explore Template Library
                   </a>
                 </div>
-                <p className="mt-4 text-[13px] text-ink-2">
-                  No code required · Zero execution without human approval · Sample data sandbox
-                </p>
+                <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+                  <p className="text-[13px] text-ink-2">
+                    No code required · Zero execution without human approval · Sample data sandbox
+                  </p>
+                  <TourLauncher
+                    className="inline-flex items-center gap-1.5 text-[13px] font-medium text-primary-ink transition-colors hover:text-white"
+                    resumeLabel={
+                      <>
+                        <Compass className="size-3.5" aria-hidden="true" />
+                        Resume the tour
+                      </>
+                    }
+                    replayLabel={
+                      <>
+                        <Compass className="size-3.5" aria-hidden="true" />
+                        Replay the tour
+                      </>
+                    }
+                  >
+                    <Compass className="size-3.5" aria-hidden="true" />
+                    Take the 2-minute tour
+                  </TourLauncher>
+                </div>
               </div>
               <HeroVisual />
             </div>

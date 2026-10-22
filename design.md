@@ -22,7 +22,7 @@ spacing, border weight, typography and selected-state outlines — not from colo
 | Meaning | Token | Light | Dark |
 | --- | --- | --- | --- |
 | Action, selection, navigation | `primary` / `primary-strong` / `primary-ink` | `#14556B` / `#0F4459` / `#14556B` | `#2E7D93` / `#3C93AA` / `#6FB4C6` |
-| Complete | `ok` / `ok-tint` | `#1F7350` / `#E9F3EE` | `#4FAE7E` / `#122A20` |
+| Positive / complete | `positive` / `positive-strong` | `#1D4ED8` / `#1E40AF` | `#2563EB` / `#1D4ED8` |
 | Needs review | `warn` / `warn-tint` | `#96650A` / `#FAF2E1` | `#C99A3F` / `#2E2515` |
 | Exception | `danger` / `danger-tint` | `#B3261E` / `#FAECEA` | `#E06A5F` / `#331A18` |
 | Neutral / draft | `neutral` / `neutral-tint` | `#6F7680` / `#EFEFEC` | `#8B939B` / `#22282E` |
@@ -66,7 +66,7 @@ Rules:
 
 Workflow: `Draft` (editable) → `Testing` (sample run in progress) → `Tested` → `Ready to publish`.
 Runs: `Draft`, `Running`, `Needs review`, `Completed`. Every status label implies a next action.
-Green, amber and red appear only where a status genuinely completes, waits or fails.
+Blue, amber and red appear only where a status genuinely completes, waits or fails. Status chips are filled boxes with white or dark text, never coloured text on a pastel fill.
 
 ## 6. Modes
 

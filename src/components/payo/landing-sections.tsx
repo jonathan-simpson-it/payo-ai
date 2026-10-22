@@ -298,7 +298,7 @@ const MINI_TD = "px-2 py-1.5 align-top text-[12.5px] text-ink-2";
 const RISK_PILL: Record<string, string> = {
   "Over limit": "bg-danger-solid text-white",
   "Near limit": "bg-warn-solid text-white",
-  "Within limit": "bg-ok-solid text-white",
+  "Within limit": "bg-positive text-positive-foreground",
 };
 
 function RiskStatusPill({ status }: { status: string }) {
@@ -401,7 +401,7 @@ function OperationsPreview() {
                 {fmtSignedPct(r.diffPct)}
               </td>
               <td className={cn(MINI_TD, "whitespace-nowrap")}>
-                <ToneChip tone={rowStatusTone(r.status)} variant="solid">{r.status}</ToneChip>
+                <ToneChip tone={rowStatusTone(r.status)}>{r.status}</ToneChip>
               </td>
             </tr>
           ))}
@@ -458,7 +458,7 @@ function SmePreview() {
         {SME_CASHFLOW.tasks.map((t) => (
           <li key={t.label} className="flex items-center justify-between gap-3 text-[12.5px]">
             <span className="text-ink-2">{t.label}</span>
-            <ToneChip tone={t.status === "Needs review" ? "warn" : "ok"} variant="solid">{t.status}</ToneChip>
+            <ToneChip tone={t.status === "Needs review" ? "warn" : "positive"}>{t.status}</ToneChip>
           </li>
         ))}
       </ul>
@@ -517,7 +517,7 @@ function RolePanel({ role }: { role: RoleDef }) {
             <p className="text-ink-2">{role.slow}</p>
           </div>
           <div className="rounded-r-lg border-l-2 border-border bg-white/[0.03] p-3 text-[13px]">
-            <p className="mb-1.5 inline-flex rounded bg-ok-solid px-1.5 py-0.5 font-mono font-semibold uppercase tracking-wider text-white text-[12px]">
+            <p className="mb-1.5 inline-flex rounded bg-positive px-1.5 py-0.5 font-mono font-semibold uppercase tracking-wider text-positive-foreground text-[12px]">
               What Payo delivers
             </p>
             <p className="text-ink-2">{role.prepare}</p>
@@ -623,7 +623,9 @@ export function ConnectorsSection() {
     <section id="connections" className={cn(SECTION_169, "band-alt band-rule")}>
       <div className="mx-auto w-full max-w-[1720px] px-6 py-16 sm:px-12 lg:px-24 lg:py-20">
         <Eyebrow>Connections</Eyebrow>
-        <h2 className={cn(SECTION_HEADING, "text-white")}>The sources behind every step.</h2>
+        <h2 className={cn(SECTION_HEADING, "text-white")} data-tour="landing-connections">
+          The sources behind every step.
+        </h2>
         <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink-2">
           Payo is designed to read the files and feeds finance teams already use. This prototype
           runs on the sample files below, nothing else is connected.
@@ -797,12 +799,14 @@ export function TrustSection() {
     <section id="trust" className={cn(SECTION_169, "band-alt band-rule")}>
       <div className="mx-auto w-full max-w-[1720px] px-6 py-16 sm:px-12 lg:px-24 lg:py-20">
         <Eyebrow>Enterprise control &amp; governance</Eyebrow>
-        <h2 className={SECTION_HEADING}>Designed for regulated standards. Built for zero risk.</h2>
+        <h2 className={SECTION_HEADING} data-tour="landing-trust">
+          Designed for regulated standards. Built for zero risk.
+        </h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {CONTROL_POINTS.map((c) => (
             <div key={c.title} className="glass glass-hover rounded-xl p-5">
               <span
-                className="grid size-8 place-items-center rounded-lg bg-ok-solid text-white"
+                className="grid size-8 place-items-center rounded-lg bg-positive text-positive-foreground"
                 aria-hidden="true"
               >
                 <Check className="size-4" strokeWidth={2.5} />

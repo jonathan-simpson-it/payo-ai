@@ -254,7 +254,7 @@ function BriefingGraphic() {
       </div>
 
       <div className="relative grid h-8 place-items-center">
-        <span className="approve-pill absolute inline-flex items-center gap-1.5 rounded-full bg-ok-solid px-3 py-1 text-[11.5px] font-medium text-white">
+        <span className="approve-pill absolute inline-flex items-center gap-1.5 rounded-full bg-positive px-3 py-1 text-[11.5px] font-medium text-positive-foreground">
           <Check className="size-3" strokeWidth={3} aria-hidden="true" />
           Approved by editor
         </span>
@@ -296,6 +296,7 @@ export function HelpsPipeline() {
       <div className="relative mx-auto w-full max-w-[1720px] px-6 py-16 sm:px-10 lg:px-20 lg:py-20">
         {/* Header */}
         <div
+          data-tour="landing-how-it-works"
           className={`transition-all duration-700 ${
             shown ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
           }`}
