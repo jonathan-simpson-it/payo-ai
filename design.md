@@ -64,16 +64,24 @@ Rules:
 
 ## 5. Status vocabulary
 
-Workflow: `Draft` (editable) → `Testing` (sample run in progress) → `Tested` → `Ready to publish`.
-Runs: `Draft`, `Running`, `Needs review`, `Completed`. Every status label implies a next action.
-Blue, amber and red appear only where a status genuinely completes, waits or fails. Status chips are filled boxes with white or dark text, never coloured text on a pastel fill.
+Workflow: `Draft` (editable) → `Testing` (sample run in progress) → `Tested` → `Ready to publish` →
+`Published`. Runs: `Draft`, `Running`, `Needs review`, `Completed`. Every status label implies a next
+action. Blue, amber and red appear only where a status genuinely completes, waits or fails. Status
+chips are filled boxes with white or dark text, never coloured text on a pastel fill.
+
+Authoring lifecycle: `Describe` (plain-English brief, not a chat) → `Draft graph` → `Refine` (natural
+language plus the inspector) → `Verify` (deterministic readiness checks) → `Test` (sample data) →
+`Publish` (simulated version snapshot) → `Run`. No task requires drag-and-drop; every structural edit
+has a move, insert, remove, or natural-language alternative.
 
 ## 6. Modes
 
 The builder has explicit boundaries: **Build** (edit the workflow) and **Test** (run sample data and
-inspect results), plus **History** (simulated activity and ready-state changes). Editing controls and
-release controls never mix without a visible mode header. The workflow run itself is a separate,
-simulated experience with the review gate.
+inspect results), plus **History** (simulated activity and ready-state changes), a **Verify** ready
+check, and a **Publish** action gated on that check. Editing controls and release controls never mix
+without a visible mode header. The workflow run itself is a separate, simulated experience with the
+review gate. The "Adjust with Payo" rail is a contextual editor for one workflow, never an
+open-ended assistant surface.
 
 ## 7. Components
 
@@ -81,12 +89,14 @@ simulated experience with the review gate.
   setting, run state, visible selection (border + pressed state), never colour-only.
 - **Inspector**: one contextual panel for the selected step — what it does, what it receives, the
   small set of settings most users need, what it produces, and an `Advanced` disclosure.
-- **Add step**: opens at the insertion point, curated finance categories (Load data, Map fields,
-  Calculate, Check limit, Draft summary, Request review, Create report); no connector catalogue.
+- **Add step**: opens at the insertion point, curated finance categories (Load data, Match,
+  Calculate, Check, Draft summary, Request review, Create report); no connector catalogue.
 - **Tables**: compact, 12–13px, tabular numerals, thin row dividers, status chips; source noted
   wherever a result could be mistaken for live data.
 - **Review gate**: shows what was flagged, why, the values and threshold, the expected reviewer,
   and what approving or returning will do next.
+- **Version history**: published snapshots listed with version number, timestamp, step count and
+  test state. `Restore` creates a draft from that version; published versions are never deleted.
 - **Connector tiles (landing)**: grouped planned connections with quiet icon fan-out on hover or
   focus, one inline inspector, and a `Planned` tag; never presented as connected.
 - **Dialogs/overlays**: flat, bordered, focus-trapped; one primary action.

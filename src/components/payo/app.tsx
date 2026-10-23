@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 import { Toaster } from "@/components/ui/sonner";
 import { BuilderView } from "@/components/payo/builder";
+import { CreateBrief } from "@/components/payo/create-brief";
 import { LandingPage } from "@/components/payo/landing";
 import { OverviewScreen, WorkflowsList } from "@/components/payo/misc";
 import { RunDetail, RunsList } from "@/components/payo/runs";
@@ -13,7 +14,6 @@ import { PayoProvider, UIProvider } from "@/lib/payo/store";
 import { TourProvider, useTour } from "@/lib/payo/tour";
 import { TemplateLibrary } from "@/components/payo/templates";
 import { AboutDemoDialog } from "@/components/payo/ui";
-import { PayooChat } from "@/components/payo/payoo-chat";
 import { ProductTour } from "@/components/payo/tour-overlay";
 import { WorkspaceShell } from "@/components/payo/shell";
 
@@ -35,6 +35,8 @@ function Router() {
     view = <RunDetail runId={route.id} />;
   } else if (route.area === "overview") {
     view = <OverviewScreen />;
+  } else if (route.area === "create") {
+    view = <CreateBrief />;
   } else if (route.area === "workflows") {
     view = <WorkflowsList />;
   } else if (route.area === "runs") {
@@ -47,7 +49,6 @@ function Router() {
     <>
       {route.name === "landing" ? view : <WorkspaceShell route={route}>{view}</WorkspaceShell>}
       <AboutDemoDialog />
-      {!tourActive && <PayooChat dark={route.name === "landing"} />}
       <Toaster position="bottom-left" />
     </>
   );

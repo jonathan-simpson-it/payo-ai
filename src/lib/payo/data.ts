@@ -2,8 +2,10 @@ import type {
   ActivityEvent,
   FieldOption,
   Run,
+  RunConfig,
   RunStepRecord,
   RunStepState,
+  SampleProfile,
   StepConfig,
   StepDef,
   StepTypeId,
@@ -23,9 +25,9 @@ import type {
 
 export const STEP_TYPE_LABELS: Record<StepTypeId, string> = {
   load: "Load data",
-  map: "Map fields",
+  map: "Match",
   calculate: "Calculate",
-  check: "Check limit",
+  check: "Check",
   draft: "Draft summary",
   review: "Request review",
   report: "Create report",
@@ -102,6 +104,57 @@ export const NAV_SOURCES = [
   "Sample internal valuation (29 Sep 2026)",
   "Fund reference list (sample)",
 ];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sample data: Bank reconciliation
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface BankTransaction {
+  id: string;
+  tid: string;
+  date: string;
+  description: string;
+  amount: number;
+  reference: string;
+  ledgerUid: string | null;
+  ledgerAmount: number | null;
+  note: string;
+}
+
+export const BANK_TRANSACTIONS: BankTransaction[] = [
+  { id: "TX-1042", tid: "TID-8841", date: "29 Sep", description: "Harbour Lane Trading", amount: 186400, reference: "INV-8841", ledgerUid: "LDG-50121", ledgerAmount: 186400, note: "Matched to the sales invoice" },
+  { id: "TX-1043", tid: "TID-8827", date: "29 Sep", description: "Northwind Supplies", amount: 142300, reference: "INV-8827", ledgerUid: "LDG-50122", ledgerAmount: 142300, note: "Matched to the supplier invoice" },
+  { id: "TX-1044", tid: "TID-PAYSEP", date: "29 Sep", description: "Payroll run", amount: 210000, reference: "PAY-SEP", ledgerUid: "LDG-50123", ledgerAmount: 210000, note: "Matched to the payroll journal" },
+  { id: "TX-1045", tid: "TID-RENTOCT", date: "28 Sep", description: "Rent and utilities", amount: 41000, reference: "RENT-OCT", ledgerUid: "LDG-50124", ledgerAmount: 41000, note: "Matched to the rent schedule" },
+  { id: "TX-1046", tid: "TID-LEASE09", date: "28 Sep", description: "Fleet lease", amount: 28500, reference: "LEASE-09", ledgerUid: "LDG-50125", ledgerAmount: 27900, note: "Same TID, amount differs by HK$600" },
+  { id: "TX-1047", tid: "TID-CARD221", date: "28 Sep", description: "Card settlement", amount: 96400, reference: "CARD-221", ledgerUid: null, ledgerAmount: null, note: "No ledger entry with this TID" },
+  { id: "TX-1048", tid: "TID-8836", date: "27 Sep", description: "Client receipt", amount: 312800, reference: "INV-8836", ledgerUid: "LDG-50126", ledgerAmount: 312800, note: "Matched to the sales invoice" },
+  { id: "TX-1049", tid: "TID-SUB4471", date: "27 Sep", description: "Software subscription", amount: 12400, reference: "SUB-4471", ledgerUid: null, ledgerAmount: null, note: "No ledger entry with this TID" },
+];
+
+export const BANK_SOURCES = [
+  "Sample bank statement (29 Sep 2026)",
+  "Sample ledger and open invoices (29 Sep 2026)",
+];
+
+export type BankRowStatus = "Matched" | "Difference" | "Unmatched";
+
+export interface BankResultRow extends BankTransaction {
+  difference: number | null;
+  status: BankRowStatus;
+}
+
+export function bankResults(): BankResultRow[] {
+  return BANK_TRANSACTIONS.map((t) => {
+    if (t.ledgerAmount == null) return { ...t, difference: null, status: "Unmatched" };
+    const difference = t.amount - t.ledgerAmount;
+    return { ...t, difference, status: difference === 0 ? "Matched" : "Difference" };
+  });
+}
+
+export function bankExceptions(): BankResultRow[] {
+  return bankResults().filter((r) => r.status !== "Matched");
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Sample data: Position risk review
@@ -571,6 +624,99 @@ export const TEMPLATES: TemplateDef[] = [
     ],
   },
   {
+    id: "bank-reconciliation",
+    category: "Operations",
+    name: "Bank reconciliation",
+    outcome:
+      "Match bank transactions to ledger entries on TID, flag unmatched payments and differences, and route them for review.",
+    sampleData: true,
+    keySources: ["Bank statement", "Ledger and open invoices"],
+    steps: [
+      {
+        id: "load-bank-statement",
+        type: "load",
+        label: "Load bank statement",
+        purpose: "Brings in the bank statement and the ledger extract used for matching.",
+        durationMs: 1200,
+        fields: [
+          { key: "primary", label: "Bank statement", kind: "select", options: opts("Sample bank statement (29 Sep 2026)", "Sample bank statement (28 Sep 2026)") },
+          { key: "compare", label: "Compare against", kind: "select", options: opts("Sample ledger and open invoices (29 Sep 2026)", "Sample ledger (28 Sep 2026)") },
+        ],
+        config: { primary: "Sample bank statement (29 Sep 2026)", compare: "Sample ledger and open invoices (29 Sep 2026)" },
+        summary: (c) => `${c.primary}`,
+      },
+      {
+        id: "match-payments",
+        type: "map",
+        label: "Match payments",
+        purpose: "Matches each bank transaction to its ledger row on TID and shows the ledger UID.",
+        durationMs: 900,
+        fields: [
+          { key: "matchOn", label: "Match on", kind: "select", options: opts("TID", "UID", "Amount and date", "Description") },
+          { key: "unmatched", label: "Unmatched payments", kind: "select", options: opts("Flag for review", "Exclude from run") },
+        ],
+        config: { matchOn: "TID", unmatched: "Flag for review" },
+        summary: () => "Matched on TID · 8 transactions",
+      },
+      {
+        id: "calc-bank-difference",
+        type: "calculate",
+        label: "Calculate differences",
+        purpose: "Works out the difference between the bank amount and the ledger amount.",
+        durationMs: 1100,
+        fields: [
+          { key: "measure", label: "Measure", kind: "select", options: opts("Bank amount minus ledger", "Absolute difference", "Both") },
+        ],
+        config: { measure: "Bank amount minus ledger" },
+        summary: (c) => `${c.measure}`,
+      },
+      {
+        id: "flag-unmatched",
+        type: "check",
+        label: "Flag unmatched payments",
+        purpose: "Marks transactions with no ledger entry or a different amount.",
+        durationMs: 1000,
+        fields: [
+          { key: "basis", label: "Flag", kind: "select", options: opts("Unmatched items", "Difference %", "Absolute difference (HK$)") },
+          { key: "threshold", label: "Amount threshold", kind: "number", suffix: "HK$", min: 0, max: 100000, step: 100, hint: "Unmatched items are always flagged." },
+        ],
+        config: { basis: "Unmatched items", threshold: 0 },
+        summary: () => "Flags unmatched payments",
+      },
+      {
+        id: "bank-review",
+        type: "review",
+        label: "Finance manager review",
+        purpose: "Stops the run so a finance manager can check unmatched payments and differences.",
+        durationMs: 800,
+        fields: [
+          { key: "reviewer", label: "Reviewer", kind: "select", options: opts("Finance manager", "Senior accountant", "Financial controller") },
+          { key: "decision", label: "Decision required", kind: "static" },
+          { key: "instructions", label: "Instructions to reviewer", kind: "textarea" },
+        ],
+        config: {
+          reviewer: "Finance manager",
+          decision: "Approve summary or return for review",
+          instructions: "Check each unmatched payment and amount difference before the summary is issued.",
+        },
+        summary: (c) => `Pauses for ${c.reviewer}`,
+      },
+      {
+        id: "bank-summary",
+        type: "report",
+        label: "Create reconciliation summary",
+        purpose: "Prepares the bank reconciliation summary from the checked results.",
+        durationMs: 1400,
+        fields: [
+          { key: "title", label: "Report title", kind: "text" },
+          { key: "contents", label: "Contents", kind: "select", options: opts("Unmatched and differences", "All transactions", "Unmatched only") },
+        ],
+        config: { title: "Bank reconciliation (29 September 2026)", contents: "Unmatched and differences" },
+        summary: (c) => `${c.title}`,
+      },
+    ],
+  },
+  {
     id: "kyc-checklist",
     category: "Operations",
     name: "KYC document checklist",
@@ -620,6 +766,81 @@ export function getTemplate(id: string): TemplateDef | undefined {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Sample profiles: which behaviour a workflow or run follows
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const TEMPLATE_PROFILE: Record<string, SampleProfile> = {
+  "nav-reconciliation": "nav",
+  "position-risk": "risk",
+  "market-movements": "market",
+  "bank-reconciliation": "bank",
+};
+
+export function profileForTemplate(id?: string): SampleProfile {
+  return id ? TEMPLATE_PROFILE[id] ?? "generic" : "generic";
+}
+
+function withTemplateDefaults(step: StepDef, profile: SampleProfile): StepDef {
+  const s: StepDef = { ...step, origin: "template" };
+  if (s.type === "review" && profile !== "generic") {
+    s.when = "only-when-exceptions";
+  }
+  return s;
+}
+
+/** Deterministic generic sample rows for described workflows (all fictional). */
+export interface GenericRecord {
+  label: string;
+  value: number;
+  note: string;
+}
+
+export const GENERIC_RECORDS: GenericRecord[] = [
+  { label: "Record A", value: 0.12, note: "Within range" },
+  { label: "Record B", value: 0.2, note: "Within range" },
+  { label: "Record C", value: 0.4, note: "Within range" },
+  { label: "Record D", value: 0.9, note: "Close to the limit" },
+  { label: "Record E", value: 1.3, note: "Above the set threshold" },
+  { label: "Record F", value: 2.05, note: "Above the set threshold" },
+  { label: "Record G", value: 3.6, note: "Above the set threshold" },
+  { label: "Record H", value: 0.35, note: "Within range" },
+];
+
+export function genericFlagged(threshold: number): number {
+  return GENERIC_RECORDS.filter((r) => r.value > threshold).length;
+}
+
+/** Number of items the current settings would route to review. */
+export function checkOutcome(
+  profile: SampleProfile,
+  config: RunConfig,
+): { flagged: number; label: string } {
+  switch (profile) {
+    case "nav": {
+      const n = navExceptions(config.tolerance ?? 0.5).length;
+      return { flagged: n, label: `${n} material variance${n === 1 ? "" : "s"}` };
+    }
+    case "risk": {
+      const rows = riskResults(config.reviewThreshold ?? 90);
+      const n = rows.filter((r) => r.status !== "Within limit").length;
+      return { flagged: n, label: `${n} position${n === 1 ? "" : "s"} at or near the limit` };
+    }
+    case "market": {
+      const n = notableMoves(config.notableThreshold ?? 0.75).length;
+      return { flagged: n, label: `${n} notable move${n === 1 ? "" : "s"}` };
+    }
+    case "bank": {
+      const n = bankExceptions().length;
+      return { flagged: n, label: `${n} unmatched or different payment${n === 1 ? "" : "s"}` };
+    }
+    default: {
+      const n = config.flaggedCount ?? genericFlagged(config.notableThreshold ?? config.tolerance ?? 1);
+      return { flagged: n, label: `${n} item${n === 1 ? "" : "s"} outside the range` };
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Workflow helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -632,82 +853,129 @@ export function cloneWorkflow(wf: Workflow): Workflow {
 }
 
 export function workflowFromTemplate(t: TemplateDef): Workflow {
+  const profile = profileForTemplate(t.id);
   return {
     id: t.id,
     templateId: t.id,
+    source: "template",
+    sampleProfile: profile,
     name: t.name,
     category: t.category,
     status: "draft",
-    steps: (t.steps ?? []).map(cloneStep),
+    version: 1,
+    steps: (t.steps ?? []).map((s) => withTemplateDefaults(cloneStep(s), profile)),
     createdAt: new Date().toISOString(),
   };
 }
 
-function stepConfigValue(wf: Workflow, stepId: string, key: string): string | number | undefined {
-  return wf.steps.find((s) => s.id === stepId)?.config[key];
-}
-
 /** The key setting echoed under the workflow name and used for the run. */
-export function snapshotConfig(wf: Workflow) {
-  const reportTitle = wf.steps.find((s) => s.type === "report")?.config.title;
-  switch (wf.templateId) {
-    case "nav-reconciliation":
+export function snapshotConfig(wf: Workflow): RunConfig {
+  const profile = wf.sampleProfile;
+  const firstOf = (type: StepTypeId) => wf.steps.find((s) => s.type === type);
+  const reportTitle = String(firstOf("report")?.config.title ?? "Report");
+  const check = firstOf("check");
+  const load = firstOf("load");
+  const review = firstOf("review");
+
+  const tolerance = Number(check?.config.tolerance ?? 0.5);
+  const threshold = Number(check?.config.threshold ?? check?.config.tolerance ?? 1);
+
+  switch (profile) {
+    case "nav":
+      return { profile, tolerance: Number.isFinite(tolerance) ? tolerance : 0.5, reportTitle };
+    case "risk": {
+      const rt = Number(check?.config.threshold ?? 90);
+      return { profile, reviewThreshold: Number.isFinite(rt) ? rt : 90, reportTitle };
+    }
+    case "market": {
+      const nt = Number(check?.config.threshold ?? 0.75);
+      return { profile, notableThreshold: Number.isFinite(nt) ? nt : 0.75, reportTitle };
+    }
+    case "bank":
       return {
-        tolerance: Number(stepConfigValue(wf, "flag-breaches", "tolerance") ?? 0.5),
-        reportTitle: String(reportTitle ?? "NAV reconciliation"),
+        profile,
+        reportTitle,
+        sourceName: String(load?.config.source ?? "Sample bank statement"),
+        rowCount: BANK_TRANSACTIONS.length,
+        flaggedCount: bankExceptions().length,
+        matchKey: String(firstOf("map")?.config.matchOn ?? "Payment reference"),
+        calcLabel: String(firstOf("calculate")?.config.measure ?? "Difference"),
+        checkLabel: check?.label,
+        reviewer: review ? String(review.config.reviewer ?? "Finance manager") : undefined,
+        hasReview: Boolean(review),
       };
-    case "position-risk":
+    default: {
+      const src = String(load?.config.source ?? load?.config.primary ?? "Sample dataset");
+      const flagged = genericFlagged(threshold);
       return {
-        reviewThreshold: Number(stepConfigValue(wf, "flag-breaches", "threshold") ?? 90),
-        reportTitle: String(reportTitle ?? "Position risk summary"),
+        profile: "generic",
+        reportTitle,
+        sourceName: src,
+        rowCount: GENERIC_RECORDS.length,
+        flaggedCount: review ? flagged : 0,
+        matchKey: String(firstOf("map")?.config.matchOn ?? "Name"),
+        calcLabel: String(firstOf("calculate")?.config.output ?? firstOf("calculate")?.config.measure ?? "Value"),
+        checkLabel: check ? check.label : undefined,
+        checkUnit: (check?.config.basis as string)?.includes("HK$") ? "HK$" : "%",
+        reviewer: review ? String(review.config.reviewer ?? "Reviewer") : undefined,
+        hasReview: Boolean(review),
+        notableThreshold: Number.isFinite(threshold) ? threshold : 1,
       };
-    case "market-movements":
-      return {
-        notableThreshold: Number(stepConfigValue(wf, "notable-moves", "threshold") ?? 0.75),
-        reportTitle: String(reportTitle ?? "Morning market briefing"),
-      };
-    default:
-      return { reportTitle: String(reportTitle ?? "Report") };
+    }
   }
 }
 
 export function canvasSubtitle(wf: Workflow): string {
   const n = wf.steps.length;
-  switch (wf.templateId) {
-    case "nav-reconciliation": {
-      const tol = Number(stepConfigValue(wf, "flag-breaches", "tolerance") ?? 0.5);
+  const check = wf.steps.find((s) => s.type === "check");
+  const cfg = snapshotConfig(wf);
+  switch (wf.sampleProfile) {
+    case "nav": {
+      const tol = Number(check?.config.tolerance ?? cfg.tolerance ?? 0.5);
       return `Tolerance ±${tol.toFixed(2)}% · ${n} steps · Sample data`;
     }
-    case "position-risk": {
-      const t = Number(stepConfigValue(wf, "flag-breaches", "threshold") ?? 90);
+    case "risk": {
+      const t = Number(check?.config.threshold ?? cfg.reviewThreshold ?? 90);
       return `Review threshold ${t}% of limit · ${n} steps · Sample data`;
     }
-    case "market-movements": {
-      const t = Number(stepConfigValue(wf, "notable-moves", "threshold") ?? 0.75);
+    case "market": {
+      const t = Number(check?.config.threshold ?? cfg.notableThreshold ?? 0.75);
       return `Notable move threshold ${t.toFixed(2)}% · ${n} steps · Sample data`;
     }
-    default:
-      return `${n} steps · Sample data`;
+    case "bank":
+      return `Unmatched payments · ${n} steps · Sample data`;
+    default: {
+      const t = Number(check?.config.threshold ?? 1);
+      return `Threshold ${t}% · ${n} steps · Sample data`;
+    }
   }
 }
 
-export function sourcesFor(templateId: string): string[] {
-  switch (templateId) {
-    case "nav-reconciliation":
+export function sourcesFor(wf: Workflow): string[] {
+  switch (wf.sampleProfile) {
+    case "nav":
       return NAV_SOURCES;
-    case "position-risk":
+    case "risk":
       return RISK_SOURCES;
-    case "market-movements":
+    case "market":
       return MARKET_SOURCES;
-    default:
-      return ["Sample source"];
+    case "bank":
+      return BANK_SOURCES;
+    default: {
+      const loads = wf.steps
+        .filter((s) => s.type === "load")
+        .map((s) => String(s.config.source ?? s.config.primary ?? ""))
+        .filter(Boolean);
+      return loads.length ? loads : ["Sample dataset"];
+    }
   }
 }
 
 /** One-line summary used in run lists and the builder's last-run bar. */
 export function runSummary(run: Run): string {
-  switch (run.workflowId) {
-    case "nav-reconciliation": {
+  const profile = run.config.profile ?? profileForTemplate(run.workflowId);
+  switch (profile) {
+    case "nav": {
       if (run.status === "draft") return "Configured, not yet run";
       const ex = navExceptions(run.config.tolerance ?? 0.5).length;
       if (run.status === "completed") {
@@ -717,7 +985,7 @@ export function runSummary(run: Run): string {
       }
       return `${ex} material variance${ex === 1 ? "" : "s"} awaiting review`;
     }
-    case "position-risk": {
+    case "risk": {
       if (run.status === "draft") return "Configured, not yet run";
       const rows = riskResults(run.config.reviewThreshold ?? 90);
       const over = rows.filter((r) => r.status === "Over limit").length;
@@ -727,13 +995,27 @@ export function runSummary(run: Run): string {
       }
       return `${over} position${over === 1 ? "" : "s"} over limit, awaiting analyst review`;
     }
-    case "market-movements": {
+    case "market": {
       if (run.status === "draft") return "Configured, not yet run";
       if (run.status === "completed") return "Completed: briefing approved and exported";
       return "Briefing awaiting editor review";
     }
-    default:
-      return "Simulated run";
+    case "bank": {
+      if (run.status === "draft") return "Configured, not yet run";
+      const flagged = bankExceptions().length;
+      if (run.status === "completed") {
+        return `Completed: ${flagged} item${flagged === 1 ? "" : "s"} reconciled and reviewed`;
+      }
+      return `${flagged} unmatched payment${flagged === 1 ? "" : "s"} awaiting review`;
+    }
+    default: {
+      const flagged = run.config.flaggedCount ?? 0;
+      if (run.status === "draft") return "Configured, not yet run";
+      if (run.status === "completed") {
+        return flagged === 0 ? "Completed: no items flagged" : `Completed: ${flagged} item${flagged === 1 ? "" : "s"} reviewed`;
+      }
+      return `${flagged} item${flagged === 1 ? "" : "s"} awaiting review`;
+    }
   }
 }
 
@@ -956,7 +1238,7 @@ export function seedRuns(): Run[] {
       startedAt: "2026-09-29T16:20:00+01:00",
       status: "draft",
       statusNote: "Configured, not yet run",
-      config: { tolerance: 0.5, reportTitle: "NAV reconciliation (29 September 2026)" },
+      config: { profile: "nav", tolerance: 0.5, reportTitle: "NAV reconciliation (29 September 2026)" },
       timeline: seedTimeline("nav-reconciliation", ["queued", "queued", "queued", "queued", "queued", "queued"]),
       sources: NAV_SOURCES,
     },
@@ -968,7 +1250,7 @@ export function seedRuns(): Run[] {
       startedAt: "2026-09-29T14:02:00+01:00",
       finishedAt: "2026-09-29T14:02:09+01:00",
       status: "completed",
-      config: { tolerance: 0.5, reportTitle: "NAV reconciliation (29 September 2026)" },
+      config: { profile: "nav", tolerance: 0.5, reportTitle: "NAV reconciliation (29 September 2026)" },
       timeline: seedTimeline("nav-reconciliation", allComplete, "Approved by Operations reviewer (simulated)"),
       sources: NAV_SOURCES,
       review: { decision: "approved", at: "2026-09-29T14:02:07+01:00", by: "Operations reviewer" },
@@ -981,7 +1263,7 @@ export function seedRuns(): Run[] {
       startedAt: "2026-09-29T09:10:00+01:00",
       status: "needs-review",
       statusNote: "Returned for review, awaiting analyst decision",
-      config: { reviewThreshold: 90, reportTitle: "Position risk summary (29 September 2026)" },
+      config: { profile: "risk", reviewThreshold: 90, reportTitle: "Position risk summary (29 September 2026)" },
       timeline: seedTimeline("position-risk", pausedAtReview, "Returned for review, awaiting analyst decision"),
       sources: RISK_SOURCES,
       review: { decision: "returned", at: "2026-09-29T09:11:02+01:00", by: "Risk analyst" },
@@ -994,7 +1276,7 @@ export function seedRuns(): Run[] {
       startedAt: "2026-09-29T07:35:00+01:00",
       finishedAt: "2026-09-29T07:35:08+01:00",
       status: "completed",
-      config: { notableThreshold: 0.75, reportTitle: "Morning market briefing (29 September 2026)" },
+      config: { profile: "market", notableThreshold: 0.75, reportTitle: "Morning market briefing (29 September 2026)" },
       timeline: seedTimeline("market-movements", allComplete, "Approved by Research editor (simulated)"),
       sources: MARKET_SOURCES,
       review: { decision: "approved", at: "2026-09-29T07:35:06+01:00", by: "Research editor" },
@@ -1008,7 +1290,7 @@ export function seedRuns(): Run[] {
       finishedAt: "2026-09-26T14:05:09+01:00",
       status: "completed",
       statusNote: "No exceptions: all funds within tolerance",
-      config: { tolerance: 2.0, reportTitle: "NAV reconciliation (26 September 2026)" },
+      config: { profile: "nav", tolerance: 2.0, reportTitle: "NAV reconciliation (26 September 2026)" },
       timeline: seedTimeline("nav-reconciliation", allComplete, "Approved by Operations reviewer (simulated)"),
       sources: NAV_SOURCES,
       review: { decision: "approved", at: "2026-09-26T14:05:07+01:00", by: "Operations reviewer" },

@@ -13,6 +13,7 @@ import {
 } from "react";
 import {
   FIRST_RUN_NUMBER,
+  checkOutcome,
   cloneStep,
   cloneWorkflow,
   getTemplate,
@@ -24,10 +25,14 @@ import {
   sourcesFor,
   workflowFromTemplate,
 } from "./data";
+import { applyOperations } from "./authoring/proposals";
+import { draftToWorkflow } from "./authoring/normalize";
+import type { ProposalOperation, WorkflowDraft } from "./authoring/types";
 import { navigate } from "./router";
 import type {
   ActivityEvent,
   ActivityTone,
+  PublishedSnapshot,
   Run,
   RunEngine,
   RunStepState,
@@ -64,6 +69,12 @@ export type Action =
   | { type: "REORDER"; workflowId: string; from: number; to: number }
   | { type: "ADD_STEP"; workflowId: string; step: ReturnType<typeof makeDefaultStep>; index: number }
   | { type: "REMOVE_STEP"; workflowId: string; stepId: string }
+  | { type: "APPLY_PROPOSAL"; workflowId: string; operations: ProposalOperation[] }
+  | { type: "SET_STEP_WHEN"; workflowId: string; stepId: string; when: "always" | "only-when-exceptions" }
+  | { type: "ADD_WORKFLOW"; workflow: Workflow }
+  | { type: "PUBLISH"; workflowId: string }
+  | { type: "RESTORE_VERSION"; workflowId: string; version: number }
+  | { type: "CONFIRM_ASSUMPTIONS"; workflowId: string }
   | { type: "RENAME"; workflowId: string; name: string }
   | { type: "RESET"; workflowId: string }
   | { type: "UNDO"; workflowId: string }
@@ -113,11 +124,13 @@ function mutateWorkflow(
   // Any change to a workflow returns it to draft: a tested or ready state
   // only means something for the version that was tested.
   const applied = fn(wf);
-  const next: Workflow = { ...applied, status: "draft" };
+  const next: Workflow = { ...applied, status: "draft", testEvidence: undefined };
   return {
     ...state,
     workflows: state.workflows.map((w) => (w.id === workflowId ? next : w)),
     history: { ...state.history, [workflowId]: history },
+    // Editing the workflow invalidates an in-flight background test.
+    test: state.test?.workflowId === workflowId ? null : state.test,
     lastEdit: opts?.coalesceKey
       ? { workflowId, stepId: opts.coalesceKey.split(":")[0], key: opts.coalesceKey.split(":")[1], at: now }
       : undefined,
@@ -132,11 +145,21 @@ function finishRun(state: State, eng: RunEngine, states: Record<string, RunStepS
     finishedAt: now,
     statusNote: undefined,
   }));
+  const run = ns.runs.find((r) => r.id === eng.runId);
+  const evidence = run
+    ? {
+        at: now,
+        result: "passed" as const,
+        flaggedCount: checkOutcome(run.config.profile ?? "generic", run.config).flagged,
+        stepCount: eng.steps.length,
+      }
+    : undefined;
   ns = {
     ...ns,
-    workflows: ns.workflows.map((w) => (w.id === eng.workflowId ? { ...w, status: "ready" } : w)),
+    workflows: ns.workflows.map((w) =>
+      w.id === eng.workflowId ? { ...w, status: "ready", testEvidence: evidence ?? w.testEvidence } : w,
+    ),
   };
-  const run = ns.runs.find((r) => r.id === eng.runId);
   if (run) {
     ns = {
       ...ns,
@@ -187,7 +210,21 @@ function tick(state: State): State {
     ),
   }));
 
-  const nextIdx = eng.activeIndex + 1;
+  let nextIdx = eng.activeIndex + 1;
+  // Auto-skip a conditional review when the linked check found no exceptions.
+  while (nextIdx < eng.steps.length && eng.steps[nextIdx].skip) {
+    const sk = eng.steps[nextIdx];
+    states[sk.id] = "skipped";
+    ns = setRun(ns, eng.runId, (r) => ({
+      ...r,
+      timeline: r.timeline.map((t) =>
+        t.stepId === sk.id
+          ? { ...t, state: "skipped" as const, note: "Skipped: no exceptions at the current threshold" }
+          : t,
+      ),
+    }));
+    nextIdx += 1;
+  }
   if (nextIdx >= eng.steps.length) {
     return finishRun(ns, eng, states);
   }
@@ -266,13 +303,19 @@ function testTick(state: State): State {
   }
 
   const states: Record<string, RunStepState> = { ...t.states };
-  if (cur.type === "review") {
+  if (cur.skip) {
+    states[cur.id] = "skipped";
+  } else if (cur.type === "review") {
     states[cur.id] = "needs-review";
   } else {
     states[cur.id] = "complete";
   }
 
-  const nextIdx = t.activeIndex + 1;
+  let nextIdx = t.activeIndex + 1;
+  while (nextIdx < t.steps.length && t.steps[nextIdx].skip) {
+    states[t.steps[nextIdx].id] = "skipped";
+    nextIdx += 1;
+  }
   if (nextIdx >= t.steps.length) {
     return testFinish({ ...state, test: { ...t, states, progress: 1 } }, t);
   }
@@ -282,12 +325,18 @@ function testTick(state: State): State {
 
 function testFinish(state: State, t: TestEngine): State {
   const wf = state.workflows.find((w) => w.id === t.workflowId);
-  const nextStatus = wf?.status === "ready" ? "ready" : "tested";
+  const nextStatus = wf?.status === "ready" || wf?.status === "published" ? "ready" : "tested";
+  const evidence = {
+    at: new Date().toISOString(),
+    result: "passed" as const,
+    flaggedCount: wf ? checkOutcome(wf.sampleProfile, snapshotConfig(wf)).flagged : 0,
+    stepCount: t.steps.length,
+  };
   return {
     ...state,
     test: { ...t, phase: "done", progress: 1 },
     workflows: state.workflows.map((w) =>
-      w.id === t.workflowId ? { ...w, status: nextStatus } : w,
+      w.id === t.workflowId ? { ...w, status: nextStatus, testEvidence: evidence } : w,
     ),
     activity: [
       activityEvent(t.workflowId, "Tested on sample data: all steps previewed", "tested"),
@@ -401,18 +450,114 @@ export function reducer(state: State, action: Action): State {
       }));
     }
 
-    case "RENAME": {
+    case "APPLY_PROPOSAL": {
+      return mutateWorkflow(state, action.workflowId, (wf) => ({
+        ...wf,
+        steps: applyOperations(wf.steps, action.operations),
+      }));
+    }
+
+    case "SET_STEP_WHEN": {
+      return mutateWorkflow(state, action.workflowId, (wf) => ({
+        ...wf,
+        steps: wf.steps.map((s) => (s.id === action.stepId ? { ...s, when: action.when } : s)),
+      }));
+    }
+
+    case "ADD_WORKFLOW": {
+      if (state.workflows.some((w) => w.id === action.workflow.id)) return state;
+      return { ...state, workflows: [...state.workflows, action.workflow] };
+    }
+
+    case "PUBLISH": {
+      const wf = state.workflows.find((w) => w.id === action.workflowId);
+      if (!wf || wf.steps.length === 0) return state;
+      const now = new Date().toISOString();
+      const existingVersions = wf.versions ?? [];
+      const latest = existingVersions.reduce(
+        (max, v) => Math.max(max, v.version),
+        wf.publishedSnapshot?.version ?? 0,
+      );
+      const nextVersion = latest + 1;
+      const snapshot: PublishedSnapshot = {
+        version: nextVersion,
+        publishedAt: now,
+        name: wf.name,
+        category: wf.category,
+        sampleProfile: wf.sampleProfile,
+        steps: wf.steps.map(cloneStep),
+        config: snapshotConfig(wf),
+        testEvidence: wf.testEvidence,
+      };
       return {
         ...state,
         workflows: state.workflows.map((w) =>
-          w.id === action.workflowId ? { ...w, name: action.name } : w,
+          w.id === action.workflowId
+            ? {
+                ...w,
+                status: "published",
+                version: nextVersion,
+                publishedAt: now,
+                publishedVersion: nextVersion,
+                publishedSnapshot: snapshot,
+                versions: [...existingVersions, snapshot],
+              }
+            : w,
         ),
+        activity: [activityEvent(action.workflowId, `Published version ${nextVersion} (simulated)`, "ready"), ...state.activity],
       };
+    }
+
+    case "RESTORE_VERSION": {
+      const wf = state.workflows.find((w) => w.id === action.workflowId);
+      if (!wf) return state;
+      const snapshot =
+        (wf.versions ?? []).find((v) => v.version === action.version) ??
+        (wf.publishedSnapshot?.version === action.version ? wf.publishedSnapshot : undefined);
+      if (!snapshot) return state;
+      const next = mutateWorkflow(state, action.workflowId, (w) => ({
+        ...w,
+        name: snapshot.name,
+        steps: snapshot.steps.map(cloneStep),
+      }));
+      return {
+        ...next,
+        activity: [
+          activityEvent(action.workflowId, `Restored version ${snapshot.version} as a draft`, "draft"),
+          ...next.activity,
+        ],
+      };
+    }
+
+    case "CONFIRM_ASSUMPTIONS": {
+      const wf = state.workflows.find((w) => w.id === action.workflowId);
+      if (!wf || !(wf.assumptions?.length)) return state;
+      return {
+        ...state,
+        workflows: state.workflows.map((w) =>
+          w.id === action.workflowId
+            ? { ...w, assumptions: (w.assumptions ?? []).map((a) => ({ ...a, resolved: true })) }
+            : w,
+        ),
+        activity: [
+          activityEvent(action.workflowId, "Assumptions confirmed", "draft"),
+          ...state.activity,
+        ],
+      };
+    }
+
+    case "RENAME": {
+      return mutateWorkflow(
+        state,
+        action.workflowId,
+        (wf) => ({ ...wf, name: action.name }),
+        { coalesceKey: `${action.workflowId}:name` },
+      );
     }
 
     case "RESET": {
       const wf = state.workflows.find((w) => w.id === action.workflowId);
-      const template = wf ? getTemplate(wf.templateId) : undefined;
+      const template = wf?.templateId ? getTemplate(wf.templateId) : undefined;
       if (!wf || !template?.steps) return state;
       const templateSteps = template.steps.map(cloneStep);
       return mutateWorkflow(state, action.workflowId, () => ({
@@ -522,6 +667,12 @@ export interface PayoContextValue {
   endTest: () => void;
   markReady: (workflowId: string) => void;
   decideRun: (runId: string, decision: "approved" | "returned") => void;
+  createWorkflowFromDraft: (draft: WorkflowDraft, brief: string) => string;
+  applyProposal: (workflowId: string, operations: ProposalOperation[]) => void;
+  setStepWhen: (workflowId: string, stepId: string, when: "always" | "only-when-exceptions") => void;
+  publish: (workflowId: string) => void;
+  restoreVersion: (workflowId: string, version: number) => void;
+  confirmAssumptions: (workflowId: string) => void;
   addStep: (workflowId: string, type: StepTypeId, index?: number) => string | null;
   removeStep: (workflowId: string, stepId: string) => void;
   reorderSteps: (workflowId: string, from: number, to: number) => void;
@@ -591,6 +742,19 @@ export function PayoProvider({ children }: { children: ReactNode }) {
 
     const num = s.nextRunNumber;
     const runId = `run-${num}`;
+    const config = snapshotConfig(wf);
+    const flagged = checkOutcome(wf.sampleProfile, config).flagged;
+    const stepsMeta = wf.steps.map((st) => {
+      const conditionalReview = st.type === "review" && st.when === "only-when-exceptions";
+      return {
+        id: st.id,
+        label: st.label,
+        type: st.type,
+        durationMs: st.durationMs,
+        conditionalReview,
+        skip: conditionalReview && flagged === 0,
+      };
+    });
     const run: Run = {
       id: runId,
       code: `PR-${String(num).padStart(4, "0")}`,
@@ -598,14 +762,14 @@ export function PayoProvider({ children }: { children: ReactNode }) {
       workflowName: wf.name,
       startedAt: new Date().toISOString(),
       status: "running",
-      config: snapshotConfig(wf),
+      config,
       timeline: wf.steps.map((st) => ({
         stepId: st.id,
         label: st.label,
         type: st.type,
         state: "queued" as const,
       })),
-      sources: sourcesFor(wf.templateId),
+      sources: sourcesFor(wf),
     };
     const states: Record<string, RunStepState> = {};
     wf.steps.forEach((st, i) => {
@@ -614,12 +778,7 @@ export function PayoProvider({ children }: { children: ReactNode }) {
     const engine: RunEngine = {
       runId,
       workflowId: wf.id,
-      steps: wf.steps.map((st) => ({
-        id: st.id,
-        label: st.label,
-        type: st.type,
-        durationMs: st.durationMs,
-      })),
+      steps: stepsMeta,
       states,
       activeIndex: 0,
       progress: 0,
@@ -633,18 +792,24 @@ export function PayoProvider({ children }: { children: ReactNode }) {
     const s = stateRef.current;
     const wf = s.workflows.find((w) => w.id === workflowId);
     if (!wf || wf.steps.length === 0) return;
+    const flagged = checkOutcome(wf.sampleProfile, snapshotConfig(wf)).flagged;
     const states: Record<string, RunStepState> = {};
     wf.steps.forEach((st, i) => {
       states[st.id] = i === 0 ? "running" : "queued";
     });
     const test: TestEngine = {
       workflowId: wf.id,
-      steps: wf.steps.map((st) => ({
-        id: st.id,
-        label: st.label,
-        type: st.type,
-        durationMs: st.durationMs,
-      })),
+      steps: wf.steps.map((st) => {
+        const conditionalReview = st.type === "review" && st.when === "only-when-exceptions";
+        return {
+          id: st.id,
+          label: st.label,
+          type: st.type,
+          durationMs: st.durationMs,
+          conditionalReview,
+          skip: conditionalReview && flagged === 0,
+        };
+      }),
       states,
       activeIndex: 0,
       progress: 0,
@@ -667,6 +832,13 @@ export function PayoProvider({ children }: { children: ReactNode }) {
     return step.id;
   }, []);
 
+  const createWorkflowFromDraft = useCallback((draft: WorkflowDraft, brief: string): string => {
+    const wf = draftToWorkflow(draft, brief, `wf-${Date.now().toString(36)}`);
+    dispatch({ type: "ADD_WORKFLOW", workflow: wf });
+    navigate(`/workspace/workflows/${wf.id}`);
+    return wf.id;
+  }, []);
+
   const value = useMemo<PayoContextValue>(
     () => ({
       state,
@@ -679,6 +851,12 @@ export function PayoProvider({ children }: { children: ReactNode }) {
       endTest: () => dispatch({ type: "END_TEST" }),
       markReady: (workflowId) => dispatch({ type: "MARK_READY", workflowId }),
       decideRun: (runId, decision) => dispatch({ type: "DECIDE_RUN", runId, decision }),
+      createWorkflowFromDraft,
+      applyProposal: (workflowId, operations) => dispatch({ type: "APPLY_PROPOSAL", workflowId, operations }),
+      setStepWhen: (workflowId, stepId, when) => dispatch({ type: "SET_STEP_WHEN", workflowId, stepId, when }),
+      publish: (workflowId) => dispatch({ type: "PUBLISH", workflowId }),
+      restoreVersion: (workflowId, version) => dispatch({ type: "RESTORE_VERSION", workflowId, version }),
+      confirmAssumptions: (workflowId) => dispatch({ type: "CONFIRM_ASSUMPTIONS", workflowId }),
       addStep,
       removeStep: (workflowId, stepId) => dispatch({ type: "REMOVE_STEP", workflowId, stepId }),
       reorderSteps: (workflowId, from, to) => dispatch({ type: "REORDER", workflowId, from, to }),
@@ -697,7 +875,7 @@ export function PayoProvider({ children }: { children: ReactNode }) {
         return rs.find((r) => r.status !== "draft") ?? rs[0];
       },
     }),
-    [state, useTemplate, startRun, startTest, addStep],
+    [state, useTemplate, startRun, startTest, addStep, createWorkflowFromDraft],
   );
 
   return <PayoContext.Provider value={value}>{children}</PayoContext.Provider>;

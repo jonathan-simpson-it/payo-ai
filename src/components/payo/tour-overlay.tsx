@@ -442,7 +442,7 @@ function TourLayer() {
             <div className="flex items-center gap-2">
               {step.action && (
                 <Button variant="ghost" size="sm" onClick={tour.skipStep}>
-                  Skip step
+                  Do it for me
                 </Button>
               )}
               {(!step.action || tour.targetMissing) && (

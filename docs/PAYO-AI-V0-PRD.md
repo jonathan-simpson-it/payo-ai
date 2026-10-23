@@ -212,7 +212,7 @@ Do not use giant rounded cards, coloured halos, emoji icons, or a rainbow catego
 - Changes are immediately reflected in the canvas subtitle where practical.
 - Advanced controls exist but are collapsed and use human labels.
 - One obvious undo action is available after changing the workflow.
-- “Ask AI to build this” is not part of the V0 builder. If a future natural-language entry point is shown, label it as a future concept rather than a functional primary flow.
+- A plain-English brief ("Describe a workflow") drafts the graph, and a contextual "Adjust with Payo" rail adds, removes, changes, or reorders steps through proposals the user approves. This is a guided brief, not prompt engineering and not an open-ended chat, and templates remain a first-class start. The draft is always labelled and reviewed before anything is tested or published.
 
 ## 11. Run experience
 
@@ -371,10 +371,10 @@ Only after V0 is validated should the team decide whether to add:
 - real connector architecture and credential management
 - document intake and structured extraction
 - calculation service with validation and test records
-- workflow versioning, real approval routing, and auditable event records
+- advanced workflow versioning (version diff and promotion), real approval routing, and auditable event records
 - tenant data-handling controls and legal/compliance review
 - additional finance templates and regulated-market integrations
-- a natural-language workflow drafting assistant, placed behind templates rather than replacing them
+- real model hardening for the drafting assistant (streaming, structured-output enforcement, per-tenant quotas and retention controls), beyond the current guided brief and proposal review
 
 ## 19. Open product questions for the next decision
 

@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export type Route =
   | { name: "landing" }
-  | { name: "workspace"; area: "overview" | "templates" | "workflows" | "runs" }
+  | { name: "workspace"; area: "overview" | "create" | "templates" | "workflows" | "runs" }
   | { name: "workflow"; id: string }
   | { name: "run"; id: string };
 
@@ -22,6 +22,7 @@ export function parseHash(hash: string): Route {
   if (parts[1] === "workflows" && parts[2]) return { name: "workflow", id: parts[2] };
   if (parts[1] === "runs" && parts[2]) return { name: "run", id: parts[2] };
   if (parts[1] === "overview") return { name: "workspace", area: "overview" };
+  if (parts[1] === "create") return { name: "workspace", area: "create" };
   if (parts[1] === "workflows") return { name: "workspace", area: "workflows" };
   if (parts[1] === "runs") return { name: "workspace", area: "runs" };
   return { name: "workspace", area: "templates" };

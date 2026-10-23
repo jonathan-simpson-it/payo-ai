@@ -1,8 +1,15 @@
 "use client";
 
-import { MoreHorizontal, Play, Plus, Undo2 } from "lucide-react";
-import { ChevronRight, ArrowLeft, History } from "lucide-react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import {
+  ClipboardCheck,
+  History,
+  MoreHorizontal,
+  Play,
+  ShieldCheck,
+  Undo2,
+} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import {
@@ -31,6 +38,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { canvasSubtitle, runSummary } from "@/lib/payo/data";
+import { workflowToMermaid } from "@/lib/payo/authoring/mermaid";
+import { evaluateReadiness } from "@/lib/payo/authoring/readiness";
 import { fmtDateTime } from "@/lib/payo/format";
 import { navigate } from "@/lib/payo/router";
 import { usePayo, useUI } from "@/lib/payo/store";
@@ -38,27 +47,18 @@ import type { ActivityTone, StepTypeId, RunStepState } from "@/lib/payo/types";
 import { ReviewContent, reviewApproveLabel } from "@/components/payo/reports";
 import { InspectorPanel } from "@/components/payo/inspector";
 import { TestPanel } from "@/components/payo/test-panel";
+import { AdjustRail } from "@/components/payo/adjust-rail";
+import { WorkflowGraph } from "@/components/payo/workflow-graph";
+import { ReadinessPanel } from "@/components/payo/readiness-panel";
+import { PublishDialog } from "@/components/payo/publish-dialog";
 import {
-  STEP_TYPE_META,
   RunStatusChip,
   SampleTag,
   ScrollFade,
-  StepStateIcon,
-  StepTypeIcon,
   WorkflowStatusChip,
   useScrollEdge,
 } from "@/components/payo/ui";
 import { cn } from "@/lib/utils";
-
-const ADDABLE_TYPES: { type: StepTypeId; description: string }[] = [
-  { type: "load", description: "Bring in a sample source file" },
-  { type: "map", description: "Line up fields between sources" },
-  { type: "calculate", description: "Work out a value for each row" },
-  { type: "check", description: "Compare against a tolerance or limit" },
-  { type: "draft", description: "Prepare an AI-assisted draft" },
-  { type: "review", description: "Pause for a human decision" },
-  { type: "report", description: "Prepare a report from the results" },
-];
 
 const ACTIVITY_TONE: Record<ActivityTone, { label: string; cls: string }> = {
   draft: { label: "Draft", cls: "bg-neutral-solid text-neutral-solid-foreground" },
@@ -67,140 +67,6 @@ const ACTIVITY_TONE: Record<ActivityTone, { label: string; cls: string }> = {
   review: { label: "Review", cls: "bg-warn-solid text-white" },
   done: { label: "Complete", cls: "bg-positive text-positive-foreground" },
 };
-
-function StepMenuItems({ onAdd }: { onAdd: (type: StepTypeId) => void }) {
-  return (
-    <>
-      <p className="px-2 py-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-ink-3">
-        Add a step
-      </p>
-      {ADDABLE_TYPES.map(({ type, description }) => (
-        <DropdownMenuItem key={type} onClick={() => onAdd(type)} className="gap-2.5 py-2">
-          <StepTypeIcon type={type} className="size-4 shrink-0 text-ink-3" />
-          <div className="min-w-0">
-            <p className="text-[13px] font-medium leading-tight">{STEP_TYPE_META[type].label}</p>
-            <p className="mt-0.5 text-[11.5px] leading-tight text-ink-3">{description}</p>
-          </div>
-        </DropdownMenuItem>
-      ))}
-    </>
-  );
-}
-
-// ─── Step card ───────────────────────────────────────────────────────────────
-
-function StepCard({
-  stepId,
-  type,
-  label,
-  detail,
-  index,
-  selected,
-  state,
-  progress,
-  dragDisabled,
-  dragging,
-  showDropIndicator,
-  onSelect,
-  onDragStart,
-  onDragEnd,
-  onDragOver,
-  onDrop,
-}: {
-  stepId: string;
-  type: StepTypeId;
-  label: string;
-  detail: string;
-  index: number;
-  selected: boolean;
-  state?: RunStepState;
-  progress?: number;
-  dragDisabled: boolean;
-  dragging: boolean;
-  showDropIndicator: boolean;
-  onSelect: () => void;
-  onDragStart: (e: React.DragEvent) => void;
-  onDragEnd: () => void;
-  onDragOver: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-}) {
-  const meta = STEP_TYPE_META[type];
-  return (
-    <div
-      data-step-id={stepId}
-      data-tour="step-card"
-      role="button"
-      tabIndex={0}
-      aria-pressed={selected}
-      aria-label={`${meta.label}: ${label}. ${detail}`}
-      onClick={onSelect}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onSelect();
-        }
-      }}
-      draggable={!dragDisabled}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
-      className={cn(
-        "relative flex w-[224px] shrink-0 cursor-pointer select-none flex-col rounded-md border bg-card p-3.5 text-left transition-[border-color,background-color,opacity] duration-150",
-        "hover:border-line-strong",
-        !dragDisabled && "cursor-grab active:cursor-grabbing",
-        selected && "border-primary bg-muted/60",
-        !selected && state === "needs-review" && "border-warn/60",
-        !selected && state === "running" && "border-primary/70",
-        dragging && "opacity-40",
-      )}
-    >
-      {showDropIndicator && (
-        <span
-          className="absolute -left-[5px] bottom-2 top-2 w-[2px] rounded-full bg-primary"
-          aria-hidden="true"
-        />
-      )}
-      <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.08em] text-ink-3">
-          <span className="tabular-nums">{index + 1}</span>
-          <StepTypeIcon type={type} className="size-3.5" />
-          {meta.label}
-        </span>
-        {state && <StepStateIcon state={state} />}
-      </div>
-      <p className="mt-2 text-[13.5px] font-medium leading-snug text-foreground">{label}</p>
-      <p className="mt-1 line-clamp-2 text-[12px] leading-snug text-ink-3">{detail}</p>
-      {state === "running" && (
-        <div
-          className="mt-2.5 h-[3px] overflow-hidden rounded-full bg-muted"
-          role="progressbar"
-          aria-label={`${label} progress`}
-          aria-valuenow={Math.round((progress ?? 0) * 100)}
-          aria-valuemin={0}
-          aria-valuemax={100}
-        >
-          <div
-            className="h-full rounded-full bg-ink-2 transition-[width] duration-150 ease-linear"
-            style={{ width: `${Math.min(100, (progress ?? 0) * 100)}%` }}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Connector({ done }: { done: boolean }) {
-  return (
-    <ChevronRight
-      className={cn("mx-1.5 size-4 shrink-0", done ? "text-positive" : "text-ink-3/50")}
-      strokeWidth={2}
-      aria-hidden="true"
-    />
-  );
-}
-
-// ─── Builder ─────────────────────────────────────────────────────────────────
 
 export function BuilderView({ workflowId }: { workflowId: string }) {
   const {
@@ -214,21 +80,24 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
     endRun,
     startTest,
     addStep,
-    reorderSteps,
     renameWorkflow,
     resetWorkflow,
     undo,
     canUndo,
+    restoreVersion,
+    confirmAssumptions,
   } = usePayo();
   const { openAbout } = useUI();
 
   const wf = workflowById(workflowId);
   const [mode, setMode] = useState<"build" | "test">("build");
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [verifyOpen, setVerifyOpen] = useState(false);
+  const [publishOpen, setPublishOpen] = useState(false);
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
   const [resetOpen, setResetOpen] = useState(false);
-  const [dragIndex, setDragIndex] = useState<number | null>(null);
-  const [overIndex, setOverIndex] = useState<number | null>(null);
+  const [restoreTarget, setRestoreTarget] = useState<number | null>(null);
+  const [seedInstruction, setSeedInstruction] = useState<string | null>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const { scrollable: canvasScrolls, atEnd: canvasAtEnd } = useScrollEdge(canvasRef);
 
@@ -236,11 +105,8 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
   const enginePhase = engineHere?.phase;
   const runHere = engineHere ? runById(engineHere.runId) : undefined;
   const runActive = engineHere != null;
-  // A finished engine no longer blocks starting another run.
   const engineBusy = state.engine != null && state.engine.phase !== "done";
 
-  // The review dialog is open while the run waits at its review gate, unless
-  // the reviewer has dismissed it (it can be reopened from the run strip).
   const [reviewDismissed, setReviewDismissed] = useState(false);
   const [lastPhase, setLastPhase] = useState(enginePhase);
   if (enginePhase !== lastPhase) {
@@ -251,6 +117,7 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
 
   const selectedStep = wf?.steps.find((s) => s.id === selectedStepId) ?? null;
   const selectedIndex = wf?.steps.findIndex((s) => s.id === selectedStepId) ?? -1;
+  const report = wf ? evaluateReadiness(wf, wf.testEvidence) : null;
 
   useEffect(() => {
     const onTour = (event: Event) => {
@@ -279,7 +146,6 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
     return () => window.removeEventListener("payo:tour", onTour);
   }, [engineBusy, startTest, state.test, wf]);
 
-  // Keep the active step in view while the run progresses
   const activeStepId = engineHere?.steps[engineHere.activeIndex]?.id;
   useEffect(() => {
     if (enginePhase !== "running" || !activeStepId) return;
@@ -287,7 +153,6 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
     el?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
   }, [activeStepId, enginePhase]);
 
-  // When the run completes, open the result
   const doneRunId = enginePhase === "done" && engineHere ? engineHere.runId : null;
   useEffect(() => {
     if (!doneRunId) return;
@@ -312,36 +177,27 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
     toast("Run paused: returned for review.");
   };
 
-  // DnD handlers
-  const onDragStart = (i: number) => (e: React.DragEvent) => {
-    setDragIndex(i);
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", String(i));
+  const handleAddStep = (type: StepTypeId, index: number) => {
+    if (!wf) return;
+    const id = addStep(wf.id, type, index);
+    if (id) setSelectedStepId(id);
   };
-  const onDragOver = (i: number) => (e: React.DragEvent) => {
-    if (dragIndex === null) return;
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    if (overIndex !== i) setOverIndex(i);
-  };
-  const onDrop = (i: number) => (e: React.DragEvent) => {
-    e.preventDefault();
-    if (dragIndex !== null && dragIndex !== i && wf) reorderSteps(wf.id, dragIndex, i);
-    setDragIndex(null);
-    setOverIndex(null);
-  };
-  const onDragEnd = () => {
-    setDragIndex(null);
-    setOverIndex(null);
+
+  const copyMermaid = async () => {
+    if (!wf) return;
+    try {
+      await navigator.clipboard.writeText(workflowToMermaid(wf));
+      toast("Mermaid diagram copied. Preview only.");
+    } catch {
+      toast("Could not copy the diagram.");
+    }
   };
 
   if (!wf) {
     return (
       <div className="mx-auto max-w-md px-6 py-24 text-center">
         <h1 className="text-[20px] font-semibold">Workflow not found</h1>
-        <p className="mt-2 text-[14px] text-ink-2">
-          This workflow does not exist in the demo workspace.
-        </p>
+        <p className="mt-2 text-[14px] text-ink-2">This workflow does not exist in the demo workspace.</p>
         <Button asChild className="mt-6" size="sm">
           <a href="#/workspace/templates">Browse templates</a>
         </Button>
@@ -350,7 +206,6 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
   }
 
   const reviewStep = engineHere ? engineHere.steps[engineHere.activeIndex] : undefined;
-  const reviewerLabel = runHere ? reviewStep?.label : undefined;
   const completedCount = engineHere
     ? engineHere.steps.filter((s) => engineHere.states[s.id] === "complete").length
     : 0;
@@ -358,19 +213,23 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
   const workflowActivity = [...state.activity]
     .filter((a) => a.workflowId === wf.id)
     .sort((a, b) => b.at.localeCompare(a.at));
+  const canPublish = report?.canPublish ?? false;
+  const canTest = report?.canTest ?? false;
+  const showPublishAsPrimary = canPublish && wf.status !== "published";
+  const primaryLabel = runActive
+    ? "Running…"
+    : engineBusy
+      ? "Run in progress…"
+      : showPublishAsPrimary
+        ? "Publish"
+        : "Run workflow";
 
   return (
     <div className="flex h-full min-h-0 flex-col">
       {/* Top bar */}
       <div className="shrink-0 border-b border-border bg-background">
-        <div
-          data-tour="builder-header"
-          className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 md:px-6"
-        >
-          <a
-            href="#/workspace/workflows"
-            className="flex items-center gap-1.5 text-[12.5px] font-medium text-ink-2 transition-colors hover:text-foreground"
-          >
+        <div data-tour="builder-header" className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 md:px-6">
+          <a href="#/workspace/workflows" className="flex items-center gap-1.5 text-[12.5px] font-medium text-ink-2 transition-colors hover:text-foreground">
             <ArrowLeft className="size-3.5" aria-hidden="true" />
             Workflows
           </a>
@@ -383,21 +242,29 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             className="min-w-0 max-w-[300px] flex-1 rounded-sm border border-transparent bg-transparent px-1.5 py-0.5 text-[15px] font-semibold tracking-[-0.01em] transition-colors hover:border-line-strong focus:border-primary-strong focus:outline-none"
           />
           <WorkflowStatusChip status={wf.status} />
-          <div
-            data-tour="builder-mode"
-            className="flex shrink-0 items-center rounded-md border border-border bg-muted/50 p-0.5"
-            role="group"
-            aria-label="Builder mode"
-          >
+          {wf.publishedVersion && wf.status === "published" && (
+            <span className="hidden items-center rounded-sm border border-border bg-muted px-1.5 py-0.5 text-[10.5px] font-medium tabular-nums text-ink-2 sm:inline-flex">
+              v{wf.publishedVersion}
+            </span>
+          )}
+          {wf.source === "described" && (
+            <span className="hidden items-center gap-1.5 rounded-sm border border-dashed border-line-strong px-1.5 py-0.5 text-[10.5px] font-medium text-ink-3 sm:inline-flex">
+              Drafted by Payo
+            </span>
+          )}
+          {wf.publishedSnapshot && wf.status !== "published" && (
+            <span className="hidden items-center rounded-sm bg-muted px-1.5 py-0.5 text-[10.5px] font-medium text-ink-2 sm:inline-flex">
+              Draft changes · v{wf.publishedSnapshot.version} published
+            </span>
+          )}
+          <div data-tour="builder-mode" className="flex shrink-0 items-center rounded-md border border-border bg-muted/50 p-0.5" role="group" aria-label="Builder mode">
             <button
               type="button"
               aria-pressed={mode === "build"}
               onClick={() => setMode("build")}
               className={cn(
                 "rounded-sm px-2.5 py-1 text-[12px] font-medium transition-colors",
-                mode === "build"
-                  ? "bg-card text-foreground shadow-sm"
-                  : "text-ink-2 hover:text-foreground",
+                mode === "build" ? "bg-card text-foreground shadow-sm" : "text-ink-2 hover:text-foreground",
               )}
             >
               Build
@@ -405,36 +272,31 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             <button
               type="button"
               aria-pressed={mode === "test"}
-              disabled={engineBusy}
+              disabled={engineBusy || !canTest}
+              title={!canTest ? "Resolve blocking checks before testing." : undefined}
               onClick={() => {
-                if (!state.test || state.test.workflowId !== wf.id || state.test.phase === "done") {
-                  startTest(wf.id);
-                }
+                if (!state.test || state.test.workflowId !== wf.id || state.test.phase === "done") startTest(wf.id);
                 setMode("test");
               }}
               className={cn(
                 "rounded-sm px-2.5 py-1 text-[12px] font-medium transition-colors",
-                mode === "test"
-                  ? "bg-card text-foreground shadow-sm"
-                  : "text-ink-2 hover:text-foreground",
-                engineBusy && "cursor-not-allowed opacity-50",
+                mode === "test" ? "bg-card text-foreground shadow-sm" : "text-ink-2 hover:text-foreground",
+                (engineBusy || !canTest) && "cursor-not-allowed opacity-50",
               )}
             >
               Test
             </button>
           </div>
           <div className="ml-auto flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => setVerifyOpen(true)}>
+              <ShieldCheck className="size-3.5" aria-hidden="true" />
+              Verify
+            </Button>
             <Button variant="outline" size="sm" onClick={() => setHistoryOpen(true)}>
               <History className="size-3.5" aria-hidden="true" />
               History
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => undo(wf.id)}
-              disabled={!canUndo(wf.id)}
-              aria-keyshortcuts="Control+Z"
-            >
+            <Button variant="outline" size="sm" onClick={() => undo(wf.id)} disabled={!canUndo(wf.id)} aria-keyshortcuts="Control+Z">
               <Undo2 className="size-3.5" aria-hidden="true" />
               Undo
             </Button>
@@ -449,20 +311,36 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
                   <Undo2 className="size-4" aria-hidden="true" />
                   Undo last change
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={copyMermaid}>Copy Mermaid diagram</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setResetOpen(true)}>Reset to template…</DropdownMenuItem>
+                {wf.templateId && (
+                  <DropdownMenuItem onClick={() => setResetOpen(true)}>Reset to template…</DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={openAbout}>About this demo</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            {showPublishAsPrimary && (
+              <Button
+                variant="outline"
+                size="sm"
+                data-tour="builder-run"
+                onClick={handleRun}
+                disabled={engineBusy || mode === "test" || runActive}
+                title={mode === "test" ? "Exit test mode to run the workflow" : "Run on sample data"}
+              >
+                <Play className="size-3.5" aria-hidden="true" />
+                Run
+              </Button>
+            )}
             <Button
               size="sm"
-              data-tour="builder-run"
-              onClick={handleRun}
-              disabled={engineBusy || mode === "test"}
-              title={mode === "test" ? "Exit test mode to run the workflow" : undefined}
+              data-tour={showPublishAsPrimary ? undefined : "builder-run"}
+              onClick={() => (showPublishAsPrimary && mode === "build" ? setPublishOpen(true) : handleRun())}
+              disabled={engineBusy || mode === "test" || runActive}
+              title={mode === "test" ? "Exit test mode to continue" : undefined}
             >
               <Play className="size-3.5" aria-hidden="true" />
-              {runActive ? "Running…" : engineBusy ? "Run in progress…" : "Run workflow"}
+              {primaryLabel}
             </Button>
           </div>
         </div>
@@ -479,22 +357,17 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
               <span className="size-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
               Using sample data for this demonstration.
             </p>
-
             {enginePhase === "running" && (
               <>
                 <p className="text-[12.5px] text-ink-2">
                   Step {engineHere.activeIndex + 1} of {engineHere.steps.length}:{" "}
-                  <span className="font-medium text-foreground">
-                    {engineHere.steps[engineHere.activeIndex]?.label}
-                  </span>
+                  <span className="font-medium text-foreground">{engineHere.steps[engineHere.activeIndex]?.label}</span>
                 </p>
                 <div className="ml-auto flex w-44 items-center gap-2">
                   <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-muted">
                     <div
                       className="h-full rounded-full bg-ink-2 transition-[width] duration-200 ease-linear"
-                      style={{
-                        width: `${Math.min(100, ((completedCount + engineHere.progress) / engineHere.steps.length) * 100)}%`,
-                      }}
+                      style={{ width: `${Math.min(100, ((completedCount + engineHere.progress) / engineHere.steps.length) * 100)}%` }}
                     />
                   </div>
                   <span className="text-[11.5px] tabular-nums text-ink-3">
@@ -503,58 +376,32 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
                 </div>
               </>
             )}
-
             {enginePhase === "awaiting-review" && (
               <>
-                <p className="text-[12.5px] font-medium text-warn">
-                  Paused: {reviewStep?.label} needs your decision.
-                </p>
-<Button
-                  size="sm"
-                  data-tour="review-open"
-                  className="ml-auto h-7"
-                  onClick={() => setReviewDismissed(false)}
-                >
+                <p className="text-[12.5px] font-medium text-warn">Paused: {reviewStep?.label} needs your decision.</p>
+                <Button size="sm" data-tour="review-open" className="ml-auto h-7" onClick={() => setReviewDismissed(false)}>
                   Open review
                 </Button>
               </>
             )}
-
             {enginePhase === "returned" && (
               <>
                 <p className="max-w-xl text-[12.5px] leading-snug text-warn">
-                  Run paused, returned for review. The final steps will not run until the review is
-                  approved.
+                  Run paused, returned for review. The final steps will not run until the review is approved.
                 </p>
                 <div className="ml-auto flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-7"
-                    onClick={() => {
-                      endRun();
-                      toast("Run ended. Saved to Runs as Needs review.");
-                    }}
-                  >
+                  <Button size="sm" variant="outline" className="h-7" onClick={() => { endRun(); toast("Run ended. Saved to Runs as Needs review."); }}>
                     End run
                   </Button>
-<Button
-                    size="sm"
-                    data-tour="run-approve"
-                    className="h-7"
-                    onClick={handleApprove}
-                  >
+                  <Button size="sm" data-tour="run-approve" className="h-7" onClick={handleApprove}>
                     Approve and continue
                   </Button>
                 </div>
               </>
             )}
-
             {enginePhase === "done" && (
               <p className="flex items-center gap-2 text-[12.5px] text-ink-2">
-                <span className="inline-flex items-center rounded-sm bg-positive px-1.5 py-0.5 text-[11px] font-medium text-positive-foreground">
-                  Complete
-                </span>
+                <span className="inline-flex items-center rounded-sm bg-positive px-1.5 py-0.5 text-[11px] font-medium text-positive-foreground">Complete</span>
                 Run completed. Opening the result…
               </p>
             )}
@@ -562,141 +409,135 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
         </div>
       )}
 
-      {/* Canvas + inspector, or the test workspace */}
+      {/* Canvas + rail, or test workspace */}
       {mode === "test" ? (
-        <TestPanel workflow={wf} onExit={() => setMode("build")} />
+        <TestPanel
+          workflow={wf}
+          onExit={() => setMode("build")}
+          onInspectStep={(stepId) => {
+            setMode("build");
+            setSelectedStepId(stepId);
+          }}
+        />
       ) : (
-      <div className="flex min-h-0 flex-1">
-        <div ref={canvasRef} className="relative min-w-0 flex-1 overflow-x-auto overflow-y-hidden">
-          <ScrollFade show={canvasScrolls && !canvasAtEnd} to="to-background" />
-          {wf.steps.length === 0 ? (
-            <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
-              <p className="text-[14px] text-ink-2">
-                This workflow has no steps yet. Add the first step to begin.
-              </p>
-              <AddStepControl
-                disabled={runActive}
-                onAdd={(type) => {
-                  const id = addStep(wf.id, type);
-                  if (id) setSelectedStepId(id);
-                }}
+        <div className="flex min-h-0 flex-1">
+          <div ref={canvasRef} className="relative min-w-0 flex-1 overflow-x-auto overflow-y-hidden">
+            <ScrollFade show={canvasScrolls && !canvasAtEnd} to="to-background" />
+            <div className="flex h-full flex-col">
+              <WorkflowGraph
+                wf={wf}
+                selectedStepId={selectedStepId}
+                onSelectStep={setSelectedStepId}
+                runStates={engineHere ? (engineHere.states as Record<string, RunStepState>) : undefined}
+                activeStepId={activeStepId}
+                progress={engineHere?.progress}
+                runActive={runActive}
+                onAddStep={handleAddStep}
               />
             </div>
+          </div>
+
+          {selectedStep ? (
+            <InspectorPanel
+              workflow={wf}
+              step={selectedStep}
+              index={selectedIndex}
+              lastIndex={wf.steps.length - 1}
+              runActive={runActive}
+              runState={engineHere?.states[selectedStep.id]}
+              onClose={() => setSelectedStepId(null)}
+            />
           ) : (
-            <div
-              data-tour="builder-canvas"
-              className="flex h-full min-w-max items-center px-6 py-8 md:px-10"
-            >
-              {wf.steps.map((step, i) => {
-                const st = engineHere?.states[step.id];
-                const prevComplete =
-                  i > 0 && engineHere?.states[wf.steps[i - 1].id] === "complete";
-                return (
-                  <Fragment key={step.id}>
-                    {i > 0 && (
-                      <div className="group/join relative mx-1 flex h-10 w-6 shrink-0 items-center justify-center">
-                        <Connector done={!!prevComplete} />
-                        <InlineAddStep
-                          disabled={runActive}
-                          label={`Insert a step before “${step.label}”`}
-                          onAdd={(type) => {
-                            const id = addStep(wf.id, type, i);
-                            if (id) setSelectedStepId(id);
-                          }}
-                        />
-                      </div>
-                    )}
-                    <StepCard
-                      stepId={step.id}
-                      type={step.type}
-                      label={step.label}
-                      detail={step.summary(step.config)}
-                      index={i}
-                      selected={selectedStepId === step.id}
-                      state={engineHere ? (st ?? "queued") : undefined}
-                      progress={engineHere?.activeIndex === i ? engineHere.progress : undefined}
-                      dragDisabled={runActive}
-                      dragging={dragIndex === i}
-                      showDropIndicator={overIndex === i && dragIndex !== null && dragIndex !== i}
-                      onSelect={() =>
-                        setSelectedStepId((cur) => (cur === step.id ? null : step.id))
-                      }
-                      onDragStart={onDragStart(i)}
-                      onDragEnd={onDragEnd}
-                      onDragOver={onDragOver(i)}
-                      onDrop={onDrop(i)}
-                    />
-                  </Fragment>
-                );
-              })}
-              <div className="ml-1.5 flex items-center">
-                <Connector done={false} />
-                <AddStepControl
-                  disabled={runActive}
-                  onAdd={(type) => {
-                    const id = addStep(wf.id, type);
-                    if (id) setSelectedStepId(id);
+            <>
+              <div className="fixed inset-0 z-20 bg-foreground/10 lg:hidden" onClick={() => setSeedInstruction(null)} aria-hidden="true" />
+              <aside className="z-30 hidden h-full w-[352px] shrink-0 border-l border-border bg-card lg:flex lg:flex-col">
+                <AdjustRail
+                  workflow={wf}
+                  selectedStepId={selectedStepId}
+                  seedInstruction={seedInstruction}
+                  onSeedConsumed={() => setSeedInstruction(null)}
+                  onApplied={() => {
+                    /* selection is cleared after apply; keep rail */
                   }}
                 />
+              </aside>
+              {/* Narrow screens: rail as a bottom sheet */}
+              <div className="fixed inset-x-0 bottom-0 z-30 max-h-[55vh] border-t border-border bg-card lg:hidden">
+                <AdjustRail
+                  workflow={wf}
+                  selectedStepId={selectedStepId}
+                  seedInstruction={seedInstruction}
+                  onSeedConsumed={() => setSeedInstruction(null)}
+                  onApplied={() => {}}
+                />
               </div>
-            </div>
+            </>
           )}
         </div>
-
-        {selectedStep && (
-          <InspectorPanel
-            workflow={wf}
-            step={selectedStep}
-            index={selectedIndex}
-            lastIndex={wf.steps.length - 1}
-            runActive={runActive}
-            runState={engineHere?.states[selectedStep.id]}
-            onClose={() => setSelectedStepId(null)}
-          />
-        )}
-      </div>
       )}
 
-      {/* Bottom summary */}
+      {/* Bottom status */}
       {!engineHere && mode === "build" && (
         <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-border bg-background px-4 py-2.5 md:px-6">
+          {report && report.blockers > 0 && (
+            <button type="button" onClick={() => setVerifyOpen(true)} className="flex items-center gap-1.5 text-[12.5px] font-medium text-danger">
+              <ClipboardCheck className="size-3.5" aria-hidden="true" />
+              {report.blockers} issue{report.blockers === 1 ? "" : "s"} to resolve before publishing
+            </button>
+          )}
+          {report && report.blockers === 0 && (
+            <button type="button" onClick={() => setVerifyOpen(true)} className="flex items-center gap-1.5 text-[12.5px] text-ink-2">
+              <ShieldCheck className="size-3.5 text-positive" aria-hidden="true" />
+              Verified{report.warnings > 0 ? ` · ${report.warnings} warning${report.warnings === 1 ? "" : "s"} to review` : ""}
+            </button>
+          )}
           {lastRun ? (
             <>
+              <span className="hidden text-[12px] text-ink-3 md:inline">·</span>
               <span className="text-[12px] text-ink-3">Last run</span>
-              <a
-                href={`#/workspace/runs/${lastRun.id}`}
-                className="text-[12.5px] font-medium tabular-nums text-primary-ink transition-colors hover:text-primary-deep"
-              >
+              <a href={`#/workspace/runs/${lastRun.id}`} className="text-[12.5px] font-medium tabular-nums text-primary-ink transition-colors hover:text-primary-deep">
                 {lastRun.code}
               </a>
-              <span className="text-[12.5px] tabular-nums text-ink-2">
-                {fmtDateTime(lastRun.startedAt)}
-              </span>
               <RunStatusChip status={lastRun.status} />
-              <span className="text-[12.5px] text-ink-2">
-                {lastRun.statusNote ?? runSummary(lastRun)}
-              </span>
-              <a
-                href={`#/workspace/runs/${lastRun.id}`}
-                className="ml-auto text-[12.5px] font-medium text-primary-ink transition-colors hover:text-primary-deep"
-              >
+              <span className="text-[12.5px] text-ink-2">{lastRun.statusNote ?? runSummary(lastRun)}</span>
+              <a href={`#/workspace/runs/${lastRun.id}`} className="ml-auto text-[12.5px] font-medium text-primary-ink transition-colors hover:text-primary-deep">
                 View result
               </a>
             </>
           ) : (
-            <span className="text-[12.5px] text-ink-3">
-              No runs yet. This workflow has not been run. Runs use labelled sample data.
+            <span className="ml-auto text-[12.5px] text-ink-3">
+              {wf.testEvidence ? "Tested. Publish when you are ready." : "Run a test on sample data before publishing."}
             </span>
           )}
         </div>
       )}
 
+      {/* Adjust rail toggle for narrow screens handled above; readiness + publish dialogs */}
+      <ReadinessPanel
+        open={verifyOpen}
+        onOpenChange={setVerifyOpen}
+        workflow={wf}
+        onFix={(text) => {
+          setMode("build");
+          setSelectedStepId(null);
+          setSeedInstruction(text);
+        }}
+        onSelectStep={(stepId) => {
+          setMode("build");
+          setSelectedStepId(stepId);
+        }}
+        onRunTest={() => {
+          if (!state.test || state.test.workflowId !== wf.id || state.test.phase === "done") startTest(wf.id);
+          setMode("test");
+        }}
+        onConfirmAssumptions={() => confirmAssumptions(wf.id)}
+        canTest={canTest}
+      />
+      <PublishDialog open={publishOpen} onOpenChange={setPublishOpen} workflow={wf} />
+
       {/* Review gate dialog */}
       <Dialog open={reviewOpen} onOpenChange={(v) => setReviewDismissed(!v)}>
-        <DialogContent
-          data-tour="review-dialog"
-          className="max-h-[85vh] gap-0 overflow-hidden p-0 sm:max-w-3xl"
-        >
+        <DialogContent data-tour="review-dialog" className="max-h-[85vh] gap-0 overflow-hidden p-0 sm:max-w-3xl">
           <DialogHeader className="items-start space-y-1.5 border-b border-border px-6 py-5 text-left">
             <div className="flex flex-wrap items-center gap-2.5">
               <DialogTitle className="text-[17px] font-semibold">{reviewStep?.label ?? "Review"}</DialogTitle>
@@ -708,20 +549,17 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
             </div>
             <DialogDescription className="text-[13px] leading-relaxed">
               {runHere ? `Run ${runHere.code} · ` : ""}
-              {reviewerLabel ? `The run is paused at this step. ` : ""}
-              Your decision is recorded on the run. This review is simulated.
+              The run is paused at this step. Your decision is recorded on the run. This review is simulated.
             </DialogDescription>
           </DialogHeader>
           <div className="max-h-[52vh] overflow-y-auto px-6 py-5">
-            {runHere && wf && <ReviewContent templateId={wf.templateId} config={runHere.config} />}
+            <ReviewContent profile={wf.sampleProfile} config={runHere?.config ?? {}} />
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border bg-muted/30 px-6 py-4">
             <p className="text-[12px] text-ink-3">Simulated review · Sample data</p>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={handleReturn}>
-                Return for review
-              </Button>
-              <Button onClick={handleApprove}>{wf ? reviewApproveLabel(wf.templateId) : "Approve"}</Button>
+              <Button variant="outline" onClick={handleReturn}>Return for review</Button>
+              <Button onClick={handleApprove}>{reviewApproveLabel(wf.sampleProfile)}</Button>
             </div>
           </div>
         </DialogContent>
@@ -729,41 +567,116 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
 
       {/* History */}
       <Dialog open={historyOpen} onOpenChange={setHistoryOpen}>
-        <DialogContent className="max-w-lg gap-0">
+        <DialogContent className="max-h-[85vh] gap-0 overflow-y-auto sm:max-w-lg">
           <DialogHeader className="items-start text-left">
-            <DialogTitle className="text-[16px] font-semibold">Workflow history</DialogTitle>
+            <DialogTitle className="text-[16px] font-semibold">Version history</DialogTitle>
             <DialogDescription className="text-[13px] leading-relaxed">
-              How “{wf.name}” reached its current state. Every entry below is simulated.
+              Published versions and recent changes for “{wf.name}”. All activity is simulated.
             </DialogDescription>
           </DialogHeader>
-          <ol className="mt-4 max-h-[50vh] overflow-y-auto">
-            {workflowActivity.map((e) => {
-              const tone = ACTIVITY_TONE[e.tone];
-              return (
-                <li key={e.id} className="flex items-start gap-3 border-b border-border py-2.5 last:border-0">
-                  <span
-                    className={cn(
-                      "mt-0.5 inline-flex shrink-0 items-center rounded-sm px-1.5 py-0.5 text-[10.5px] font-medium",
-                      tone.cls,
-                    )}
-                  >
-                    {tone.label}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[13px] leading-snug text-foreground">{e.label}</p>
-                    <p className="mt-0.5 text-[11.5px] tabular-nums text-ink-3">
-                      {fmtDateTime(e.at)}
-                    </p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+
+          {(wf.versions?.length ?? 0) > 0 ? (
+            <section className="mt-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
+                Published versions
+              </p>
+              <ul className="mt-2.5 space-y-2">
+                {[...(wf.versions ?? [])]
+                  .sort((a, b) => b.version - a.version)
+                  .map((v) => {
+                    const current = v.version === wf.publishedVersion;
+                    return (
+                      <li
+                        key={v.version}
+                        className="flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-md border border-border px-3 py-2.5"
+                      >
+                        <span className="text-[13px] font-semibold tabular-nums">Version {v.version}</span>
+                        {current && (
+                          <span className="inline-flex items-center rounded-sm bg-positive px-1.5 py-0.5 text-[10.5px] font-medium text-positive-foreground">
+                            Published
+                          </span>
+                        )}
+                        <span className="text-[12px] tabular-nums text-ink-3">{fmtDateTime(v.publishedAt)}</span>
+                        <span className="text-[12px] text-ink-2">
+                          {v.steps.length} steps · {v.testEvidence ? "Tested" : "Not tested"}
+                        </span>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="ml-auto h-7"
+                          onClick={() => setRestoreTarget(v.version)}
+                        >
+                          Restore
+                        </Button>
+                      </li>
+                    );
+                  })}
+              </ul>
+            </section>
+          ) : (
+            <p className="mt-4 rounded-md border border-dashed border-line-strong bg-card/60 px-3.5 py-3 text-[12.5px] leading-relaxed text-ink-2">
+              No published versions yet. Publishing records a version you can restore later.
+            </p>
+          )}
+
+          {wf.brief && (
+            <div className="mt-4 rounded-md border border-border bg-muted/30 px-3.5 py-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-ink-3">Original brief</p>
+              <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-2">{wf.brief}</p>
+            </div>
+          )}
+
+          <div className="mt-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">Recent activity</p>
+            <ol className="mt-1">
+              {workflowActivity.map((e) => {
+                const tone = ACTIVITY_TONE[e.tone];
+                return (
+                  <li key={e.id} className="flex items-start gap-3 border-b border-border py-2.5 last:border-0">
+                    <span className={cn("mt-0.5 inline-flex shrink-0 items-center rounded-sm px-1.5 py-0.5 text-[10.5px] font-medium", tone.cls)}>{tone.label}</span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[13px] leading-snug text-foreground">{e.label}</p>
+                      <p className="mt-0.5 text-[11.5px] tabular-nums text-ink-3">{fmtDateTime(e.at)}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
           <p className="mt-3 text-[11.5px] leading-relaxed text-ink-3">
-            Draft → Tested → Ready to publish. Edits return a workflow to draft.
+            Draft → Tested → Ready to publish → Published. Restoring a version creates a draft; your
+            published versions stay intact.
           </p>
         </DialogContent>
       </Dialog>
+
+      {/* Restore version confirmation */}
+      <AlertDialog open={restoreTarget !== null} onOpenChange={(open) => !open && setRestoreTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Restore version {restoreTarget}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This replaces the current draft steps with version {restoreTarget}. Your published
+              versions stay available, and you can undo this change.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (restoreTarget == null) return;
+                restoreVersion(wf.id, restoreTarget);
+                toast(`Version ${restoreTarget} restored as a draft.`);
+                setRestoreTarget(null);
+                setHistoryOpen(false);
+                setSelectedStepId(null);
+              }}
+            >
+              Restore version
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Reset confirmation */}
       <AlertDialog open={resetOpen} onOpenChange={setResetOpen}>
@@ -771,9 +684,8 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
           <AlertDialogHeader>
             <AlertDialogTitle>Reset workflow to template</AlertDialogTitle>
             <AlertDialogDescription>
-              This removes your changes and restores the “
-              {wf.name}” template steps and settings. Sample data will continue to be used for
-              runs. You can undo this afterwards.
+              This removes your changes and restores the “{wf.name}” template steps and settings. Sample
+              data will continue to be used for runs. You can undo this afterwards.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -791,61 +703,5 @@ export function BuilderView({ workflowId }: { workflowId: string }) {
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  );
-}
-
-function AddStepControl({
-  disabled,
-  onAdd,
-}: {
-  disabled: boolean;
-  onAdd: (type: StepTypeId) => void;
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          disabled={disabled}
-          className="h-auto gap-1.5 border-dashed py-3.5 text-[13px] font-medium text-ink-2 hover:border-primary hover:text-primary-ink"
-          aria-label="Add a step"
-        >
-          <Plus className="size-3.5" aria-hidden="true" />
-          Add step
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-64">
-        <StepMenuItems onAdd={onAdd} />
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-/** Small plus between two steps: inserts at that point in the flow. */
-function InlineAddStep({
-  disabled,
-  label,
-  onAdd,
-}: {
-  disabled: boolean;
-  label: string;
-  onAdd: (type: StepTypeId) => void;
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          disabled={disabled}
-          aria-label={label}
-          className="absolute inset-0 m-auto grid size-5 place-items-center rounded-full border border-dashed border-line-strong bg-card text-ink-3 opacity-0 transition-[opacity,color,border-color] duration-150 hover:border-primary hover:text-primary-ink focus-visible:opacity-100 group-hover/join:opacity-100 disabled:hidden"
-        >
-          <Plus className="size-3" aria-hidden="true" />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="center" className="w-64">
-        <StepMenuItems onAdd={onAdd} />
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 }

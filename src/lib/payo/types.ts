@@ -41,6 +41,10 @@ export interface StepDef {
   summary: (config: StepConfig) => string;
   /** Simulated run duration in ms. */
   durationMs: number;
+  /** Review steps only: pause always, or only when the linked check finds exceptions. */
+  when?: "always" | "only-when-exceptions";
+  /** Where the step came from, used for badges and read-only hints. */
+  origin?: "template" | "generated" | "manual";
 }
 
 export interface TemplateDef {
@@ -57,19 +61,59 @@ export interface TemplateDef {
   keySources?: string[];
 }
 
-export type WorkflowStatus = "draft" | "tested" | "ready";
+export type WorkflowStatus = "draft" | "tested" | "ready" | "published";
+export type WorkflowSource = "template" | "described";
+export type SampleProfile = "nav" | "risk" | "market" | "bank" | "generic";
+
+export interface Assumption {
+  id: string;
+  text: string;
+  stepIndex?: number;
+  resolved: boolean;
+}
+
+export interface TestEvidence {
+  at: string;
+  result: "passed";
+  flaggedCount: number;
+  stepCount: number;
+}
+
+export interface PublishedSnapshot {
+  version: number;
+  publishedAt: string;
+  name: string;
+  category: string;
+  sampleProfile: SampleProfile;
+  steps: StepDef[];
+  config: RunConfig;
+  testEvidence?: TestEvidence;
+}
 
 export interface Workflow {
   id: string;
-  templateId: string;
+  templateId?: string;
+  source: WorkflowSource;
+  sampleProfile: SampleProfile;
   name: string;
   category: string;
   status: WorkflowStatus;
+  version: number;
   steps: StepDef[];
   createdAt: string;
+  /** Original plain-English brief for described workflows. */
+  brief?: string;
+  assumptions?: Assumption[];
+  questions?: string[];
+  testEvidence?: TestEvidence;
+  publishedAt?: string;
+  publishedVersion?: number;
+  publishedSnapshot?: PublishedSnapshot;
+  /** Every published snapshot, oldest first. Restorable as a new draft. */
+  versions?: PublishedSnapshot[];
 }
 
-export type RunStepState = "queued" | "running" | "complete" | "needs-review";
+export type RunStepState = "queued" | "running" | "complete" | "needs-review" | "skipped";
 
 export interface RunStepRecord {
   stepId: string;
@@ -91,6 +135,18 @@ export interface RunConfig {
   /** Market movements: notable move threshold in %, e.g. 0.75 */
   notableThreshold?: number;
   reportTitle?: string;
+  /** Which sample behaviour a run or workflow follows. */
+  profile?: SampleProfile;
+  /** Generic profile fields, used when the workflow was described, not a template. */
+  sourceName?: string;
+  rowCount?: number;
+  flaggedCount?: number;
+  matchKey?: string;
+  calcLabel?: string;
+  checkLabel?: string;
+  checkUnit?: "%" | "HK$";
+  reviewer?: string;
+  hasReview?: boolean;
 }
 
 export interface RunReview {
@@ -119,6 +175,10 @@ export interface EngineStepMeta {
   label: string;
   type: StepTypeId;
   durationMs: number;
+  /** True when this is a review gated on the preceding check's exceptions. */
+  conditionalReview?: boolean;
+  /** Precomputed at run start: auto-skip because the check found no exceptions. */
+  skip?: boolean;
 }
 
 export interface RunEngine {

@@ -38,6 +38,7 @@ const STATE_LABEL: Record<RunStepState, string> = {
   running: "Running",
   complete: "Complete",
   "needs-review": "Needs review",
+  skipped: "Skipped",
 };
 
 function Field({
@@ -224,7 +225,7 @@ export function InspectorPanel({
   runState?: RunStepState;
   onClose: () => void;
 }) {
-  const { updateStepConfig, updateStepLabel, reorderSteps, removeStep } = usePayo();
+  const { updateStepConfig, updateStepLabel, reorderSteps, removeStep, setStepWhen } = usePayo();
   const [labelDraft, setLabelDraft] = useState(step.label);
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [confirmRemove, setConfirmRemove] = useState(false);
@@ -342,6 +343,25 @@ export function InspectorPanel({
               </CollapsibleContent>
             </Collapsible>
           )}
+          {step.type === "review" && (
+            <Field
+              label="When to pause for review"
+              hint="Choose whether this review always runs, or only when the check before it finds exceptions."
+            >
+              <Select
+                value={step.when ?? "always"}
+                onValueChange={(v) => setStepWhen(workflow.id, step.id, v as "always" | "only-when-exceptions")}
+              >
+                <SelectTrigger size="sm" className="h-8 w-full text-[13px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="always">Always review</SelectItem>
+                  <SelectItem value="only-when-exceptions">Only when exceptions are found</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+          )}
         </div>
 
         <div className="shrink-0 border-t border-border px-4 py-3">
@@ -354,7 +374,7 @@ export function InspectorPanel({
                 onClick={() => reorderSteps(workflow.id, index, index - 1)}
               >
                 <ChevronLeft className="size-3.5" aria-hidden="true" />
-                Earlier
+                Move earlier
               </Button>
               <Button
                 variant="outline"
@@ -362,7 +382,7 @@ export function InspectorPanel({
                 disabled={index === lastIndex || runActive}
                 onClick={() => reorderSteps(workflow.id, index, index + 1)}
               >
-                Later
+                Move later
                 <ChevronRight className="size-3.5" aria-hidden="true" />
               </Button>
             </div>
@@ -377,7 +397,7 @@ export function InspectorPanel({
             </Button>
           </div>
           <p className="mt-2.5 text-[11.5px] leading-snug text-ink-3">
-            Steps can also be reordered by dragging them on the canvas.
+            Use Move earlier or Move later, or ask Payo to move this step.
           </p>
         </div>
       </aside>

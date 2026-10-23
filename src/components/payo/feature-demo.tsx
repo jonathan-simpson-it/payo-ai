@@ -391,11 +391,10 @@ export function FeatureDemo() {
               Interactive sandbox
             </p>
             <h2 className="mt-4 text-[30px] font-bold leading-tight tracking-[-0.01em] text-foreground md:text-[32px]">
-              Watch a promoted workflow execute step-by-step.
+              Watch a workflow run, step by step.
             </h2>
             <p className="mt-3 max-w-[720px] text-[14px] leading-relaxed text-ink-2">
-              Select a workflow below to test the pipeline: watch inputs process, inspect exception
-              pauses, and approve the output.
+              Choose a workflow to see each step run, pause for review, and produce a result.
             </p>
           </div>
           <SampleTag label="Simulated preview · Sample data" />
@@ -580,14 +579,14 @@ export function FeatureDemo() {
                 {phase === "idle" && "Runs on sample data before anything is marked ready."}
                 {phase === "running" && "Running the workflow on sample data…"}
                 {tested && !ready && scenario.testedNote}
-                {ready && "Deployed to production (simulated publish state)."}
+                {ready && "Published in this simulation. Ready to run on sample data."}
               </p>
               {tested && !ready && (
                 <Button
                   className="ml-auto h-auto rounded-lg border border-border bg-white/[0.06] px-4 py-2 text-[12.5px] font-medium text-foreground transition-colors hover:bg-white/[0.10]"
                   onClick={() => setReady(true)}
                 >
-                  Deploy to production
+                  Publish workflow (simulated)
                 </Button>
               )}
             </div>

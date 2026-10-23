@@ -86,6 +86,7 @@ const SORT_OPTIONS: { id: SortId; label: string }[] = [
 const POPULARITY: Record<string, number> = {
   "nav-reconciliation": 5,
   "position-risk": 4,
+  "bank-reconciliation": 4,
   "monthly-close": 4,
   "market-movements": 3,
   "kyc-checklist": 2,
@@ -252,7 +253,7 @@ function HumanInTheLoopBadge() {
   return (
     <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-neutral-tint px-1.5 py-0.5 text-[11px] font-medium text-ink-2">
       <UserCheck className="size-3" aria-hidden="true" />
-      Human-in-the-loop
+      Human review
     </span>
   );
 }
@@ -776,6 +777,18 @@ export function TemplateLibrary() {
           workflow and runs on labelled sample data. Hover a step in a card to see its settings.
         </p>
       </header>
+
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3">
+        <div>
+          <p className="text-[13px] font-medium text-foreground">Have a process in mind?</p>
+          <p className="text-[12.5px] leading-snug text-ink-2">
+            Describe it and Payo drafts the workflow. You review every step before publishing.
+          </p>
+        </div>
+        <Button asChild size="sm">
+          <a href="#/workspace/create">Describe a workflow</a>
+        </Button>
+      </div>
 
       <LibraryControls
         query={query}

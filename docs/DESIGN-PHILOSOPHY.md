@@ -336,7 +336,7 @@ Every selectable step, tab, input type, table row, review decision, and primary 
 ## What Payo should never do
 
 - Start the user with a blank technical canvas.
-- Make chat the default way to build a workflow.
+- Make an open-ended chat the default way to build a workflow. A guided plain-English brief that drafts a visible graph, and a contextual "Adjust with Payo" rail that proposes reviewable changes, are allowed; a free-form chatbot that hides the path is not.
 - Show every connector, setting, model, or branch at once.
 - Hide the workflow path behind an AI-generated answer.
 - Use orange, purple, or neon colour to signal generic “AI”.

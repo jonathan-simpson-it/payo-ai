@@ -5,12 +5,7 @@ import { Check, Eye, Play, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FindingsSection } from "@/components/payo/reports";
 import { SampleTag, StepStateIcon, StepTypeIcon, WorkflowStatusChip } from "@/components/payo/ui";
-import {
-  navExceptions,
-  notableMoves,
-  riskResults,
-  snapshotConfig,
-} from "@/lib/payo/data";
+import { checkOutcome, snapshotConfig } from "@/lib/payo/data";
 import { usePayo } from "@/lib/payo/store";
 import type { RunStepState, Workflow } from "@/lib/payo/types";
 import { cn } from "@/lib/utils";
@@ -18,30 +13,30 @@ import { cn } from "@/lib/utils";
 /** One-line outcome of a sample test, derived from the workflow's own settings. */
 function testOutcome(wf: Workflow): string {
   const config = snapshotConfig(wf);
-  switch (wf.templateId) {
-    case "nav-reconciliation": {
-      const ex = navExceptions(config.tolerance ?? 0.5).length;
-      return ex === 0
-        ? "No exceptions at the current tolerance. The run would complete without a review pause."
-        : `${ex} exceptions will pause the run at “Review material variances”.`;
-    }
-    case "position-risk": {
-      const rows = riskResults(config.reviewThreshold ?? 90);
-      const over = rows.filter((r) => r.status === "Over limit").length;
-      const near = rows.filter((r) => r.status === "Near limit").length;
-      return `${over} over limit and ${near} near limit. Those positions pause the run at “Analyst review”.`;
-    }
-    case "market-movements": {
-      const n = notableMoves(config.notableThreshold ?? 0.75).length;
-      return `${n} notable moves would go to the editor before export.`;
-    }
-    default:
-      return "Sample data test complete.";
+  const review = wf.steps.find((s) => s.type === "review");
+  const { flagged } = checkOutcome(wf.sampleProfile, config);
+  if (!review) {
+    return "No review step. The run would complete without pausing for a person.";
   }
+  if (flagged === 0 && review.when === "only-when-exceptions") {
+    return `Nothing is outside the set limits. The review step would be skipped at the current settings.`;
+  }
+  if (flagged === 0) {
+    return `Nothing is outside the set limits. The review step still pauses for a person.`;
+  }
+  return `${flagged} item${flagged === 1 ? "" : "s"} would pause the run at “${review.label}”.`;
 }
 
-export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: () => void }) {
-  const { state, startTest, markReady } = usePayo();
+export function TestPanel({
+  workflow,
+  onExit,
+  onInspectStep,
+}: {
+  workflow: Workflow;
+  onExit: () => void;
+  onInspectStep: (stepId: string) => void;
+}) {
+  const { state, startTest } = usePayo();
   const test = state.test?.workflowId === workflow.id ? state.test : null;
   const running = test?.phase === "running";
   const done = test?.phase === "done";
@@ -107,20 +102,28 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
                 {test.steps.map((s, i) => {
                   const stepState: RunStepState = test.states[s.id] ?? "queued";
                   return (
-                    <li key={s.id} className="flex items-center gap-2.5">
-                      <span className="w-3.5 shrink-0 text-right text-[11px] tabular-nums text-ink-3">
-                        {i + 1}
-                      </span>
-                      <StepTypeIcon type={s.type} className="size-3.5 shrink-0 text-ink-3" />
-                      <span
-                        className={cn(
-                          "min-w-0 flex-1 truncate text-[12.5px]",
-                          stepState === "queued" ? "text-ink-3" : "font-medium text-foreground",
-                        )}
+                    <li key={s.id}>
+                      <button
+                        type="button"
+                        aria-label={`Inspect ${s.label}. ${stepState.replace("-", " ")}.`}
+                        title="Inspect in the builder"
+                        onClick={() => onInspectStep(s.id)}
+                        className="flex w-full items-center gap-2.5 rounded-md px-1 py-1 text-left transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/25"
                       >
-                        {s.label}
-                      </span>
-                      <StepStateIcon state={stepState} />
+                        <span className="w-3.5 shrink-0 text-right text-[11px] tabular-nums text-ink-3">
+                          {i + 1}
+                        </span>
+                        <StepTypeIcon type={s.type} className="size-3.5 shrink-0 text-ink-3" />
+                        <span
+                          className={cn(
+                            "min-w-0 flex-1 truncate text-[12.5px]",
+                            stepState === "queued" ? "text-ink-3" : "font-medium text-foreground",
+                          )}
+                        >
+                          {s.label}
+                        </span>
+                        <StepStateIcon state={stepState} />
+                      </button>
                     </li>
                   );
                 })}
@@ -137,7 +140,7 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
                 Results preview: sample data
               </p>
               <div className="mt-3 space-y-4">
-                <FindingsSection templateId={workflow.templateId} config={snapshotConfig(workflow)} />
+                <FindingsSection profile={workflow.sampleProfile} config={snapshotConfig(workflow)} />
 
                 {done && (
                   <div className="rounded-md border border-positive-border bg-positive px-4 py-3 text-positive-foreground">
@@ -154,28 +157,23 @@ export function TestPanel({ workflow, onExit }: { workflow: Workflow; onExit: ()
                 )}
 
                 <div className="flex flex-wrap items-center gap-3 rounded-md border border-border bg-card px-4 py-3">
-                  {workflow.status === "ready" ? (
+                  {workflow.status === "ready" || workflow.status === "published" ? (
                     <p className="text-[12.5px] text-ink-2">
-                      This workflow is marked{" "}
+                      This workflow is{" "}
                       <span className="inline-flex items-center rounded-sm bg-positive px-1.5 py-0.5 text-[12px] font-medium text-positive-foreground">
-                        ready to publish
+                        {workflow.status === "published" ? "published" : "ready to publish"}
                       </span>
                       . Further edits return it to draft.
                     </p>
                   ) : (
                     <>
                       <p className="text-[12.5px] text-ink-2">
-                        {workflow.status === "tested"
-                          ? "Test passed. Mark the workflow ready when you are satisfied with it."
-                          : "Mark the workflow ready once the test looks right."}
+                        {done
+                          ? "Test passed. Exit test to check readiness and publish from the workflow header."
+                          : "Run the test to preview this workflow on labelled sample data."}
                       </p>
-                      <Button
-                        size="sm"
-                        className="ml-auto"
-                        onClick={() => markReady(workflow.id)}
-                        disabled={!done}
-                      >
-                        Mark ready to publish
+                      <Button size="sm" className="ml-auto" onClick={onExit} disabled={!done}>
+                        Exit test
                       </Button>
                     </>
                   )}

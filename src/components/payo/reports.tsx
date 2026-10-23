@@ -7,21 +7,26 @@ import {
   BRIEFING_ITEMS,
   BRIEFING_RELEVANCE,
   BRIEFING_SNAPSHOT_NOTES,
+  GENERIC_RECORDS,
   HOLDING_LINKS,
   MARKET_SNAPSHOT,
   NAV_VALUATION_DATE,
   RISK_AS_AT,
   RISK_PORTFOLIO_TOTAL,
+  bankExceptions,
+  bankResults,
   navExceptions,
   navResults,
   navTotals,
   notableMoves,
   riskResults,
+  type BankRowStatus,
+  type BankResultRow,
   type NavResultRow,
   type RiskResultRow,
 } from "@/lib/payo/data";
 import { fmtHKD, fmtInt, fmtPct, fmtSignedHKD, fmtSignedPct } from "@/lib/payo/format";
-import type { RunConfig, RunReview, TemplateDef } from "@/lib/payo/types";
+import type { RunConfig, RunReview, SampleProfile } from "@/lib/payo/types";
 import { SampleTag, ScrollFade, ToneChip, rowStatusTone, useScrollEdge } from "@/components/payo/ui";
 import { cn } from "@/lib/utils";
 import { useRef } from "react";
@@ -135,6 +140,58 @@ function RiskTable({ rows }: { rows: RiskResultRow[] }) {
   );
 }
 
+// ─── Bank reconciliation tables ──────────────────────────────────────────────
+
+function bankTone(status: BankRowStatus) {
+  if (status === "Matched") return "positive";
+  if (status === "Difference") return "warn";
+  return "danger";
+}
+
+export function BankTable({ rows }: { rows: BankResultRow[] }) {
+  return (
+    <TableShell minWidth={1020}>
+      <thead>
+        <tr className="border-b border-border">
+          <th className={TH}>TID</th>
+          <th className={TH}>Ledger UID</th>
+          <th className={TH}>Date</th>
+          <th className={TH}>Description</th>
+          <th className={TH_R}>Bank (HK$)</th>
+          <th className={TH_R}>Ledger (HK$)</th>
+          <th className={TH_R}>Difference</th>
+          <th className={TH}>Status</th>
+          <th className={TH}>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr key={r.id} className="border-b border-border/70 last:border-0">
+            <td className={cn(TD, "whitespace-nowrap font-mono text-[11.5px]")}>{r.tid}</td>
+            <td className={cn(TD, "whitespace-nowrap font-mono text-[11.5px]")}>
+              {r.ledgerUid ?? "—"}
+            </td>
+            <td className={cn(TD, "whitespace-nowrap text-[12px]")}>{r.date}</td>
+            <td className={cn(TD, "min-w-[190px]")}>
+              <span className="font-medium text-foreground">{r.description}</span>
+              <span className="mt-0.5 block font-mono text-[11px] text-ink-3">{r.reference}</span>
+            </td>
+            <td className={TD_R}>{fmtInt(r.amount)}</td>
+            <td className={TD_R}>{r.ledgerAmount == null ? "—" : fmtInt(r.ledgerAmount)}</td>
+            <td className={cn(TD_R, r.status !== "Matched" && "font-medium text-danger")}>
+              {r.difference == null ? "—" : fmtSignedHKD(r.difference)}
+            </td>
+            <td className="whitespace-nowrap px-3 py-2.5">
+              <ToneChip tone={bankTone(r.status)}>{r.status}</ToneChip>
+            </td>
+            <td className={cn(TD, "max-w-[220px] text-[12px] leading-snug")}>{r.note}</td>
+          </tr>
+        ))}
+      </tbody>
+    </TableShell>
+  );
+}
+
 // ─── Market tables ───────────────────────────────────────────────────────────
 
 function changeLabel(group: string, changePct: number): string {
@@ -205,14 +262,63 @@ function HoldingLinksTable() {
   );
 }
 
-// ─── Review gate content ─────────────────────────────────────────────────────
+// ─── Generic sample tables (described workflows) ─────────────────────────────
 
-export function reviewApproveLabel(templateId: string): string {
-  return templateId === "market-movements" ? "Approve briefing" : "Approve summary";
+function genericThreshold(config: RunConfig): number {
+  return Number(config.notableThreshold ?? config.tolerance ?? 1);
 }
 
-export function ReviewContent({ templateId, config }: { templateId: string; config: RunConfig }) {
-  if (templateId === "nav-reconciliation") {
+type GenericStatus = "Within range" | "Flagged";
+
+function genericRows(config: RunConfig): { label: string; value: number; status: GenericStatus; note: string }[] {
+  const t = genericThreshold(config);
+  return GENERIC_RECORDS.map((r) => ({
+    label: r.label,
+    value: r.value,
+    status: (r.value > t ? "Flagged" : "Within range") as GenericStatus,
+    note: r.note,
+  }));
+}
+
+function genericTone(status: GenericStatus) {
+  return status === "Flagged" ? "danger" : "neutral";
+}
+
+function GenericTableInner({ rows, onlyFlagged }: { rows: ReturnType<typeof genericRows>; onlyFlagged?: boolean }) {
+  return (
+    <TableShell minWidth={440}>
+      <thead>
+        <tr className="border-b border-border">
+          <th className={TH}>Item</th>
+          <th className={TH_R}>Value</th>
+          <th className={TH}>Status</th>
+          <th className={TH}>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(onlyFlagged ? rows.filter((r) => r.status === "Flagged") : rows).map((r) => (
+          <tr key={r.label} className="border-b border-border/70 last:border-0">
+            <td className="whitespace-nowrap px-3 py-2.5 font-medium text-foreground">{r.label}</td>
+            <td className={cn(TD_R, r.status === "Flagged" && "font-medium text-danger")}>{r.value.toFixed(2)}</td>
+            <td className="whitespace-nowrap px-3 py-2.5">
+              <ToneChip tone={genericTone(r.status)}>{r.status}</ToneChip>
+            </td>
+            <td className={cn(TD, "max-w-[200px] text-[12px] leading-snug")}>{r.note}</td>
+          </tr>
+        ))}
+      </tbody>
+    </TableShell>
+  );
+}
+
+// ─── Review gate content ─────────────────────────────────────────────────────
+
+export function reviewApproveLabel(profile: SampleProfile): string {
+  return profile === "market" ? "Approve briefing" : "Approve summary";
+}
+
+export function ReviewContent({ profile, config }: { profile: SampleProfile; config: RunConfig }) {
+  if (profile === "nav") {
     const tol = config.tolerance ?? 0.5;
     const ex = navExceptions(tol);
     return (
@@ -232,7 +338,7 @@ export function ReviewContent({ templateId, config }: { templateId: string; conf
     );
   }
 
-  if (templateId === "position-risk") {
+  if (profile === "risk") {
     const threshold = config.reviewThreshold ?? 90;
     const rows = riskResults(threshold);
     const flagged = rows.filter((r) => r.status !== "Within limit");
@@ -250,21 +356,55 @@ export function ReviewContent({ templateId, config }: { templateId: string; conf
     );
   }
 
+  if (profile === "market") {
+    return (
+      <div className="space-y-4">
+        <p className="text-[13.5px] leading-relaxed text-ink-2">
+          These holdings-related moves need an editor check before the briefing is exported.
+          Estimated impacts are simulated.
+        </p>
+        <HoldingLinksTable />
+      </div>
+    );
+  }
+
+  if (profile === "bank") {
+    const ex = bankExceptions();
+    return (
+      <div className="space-y-4">
+        <p className="text-[13.5px] leading-relaxed text-ink-2">
+          {ex.length} payment{ex.length === 1 ? "" : "s"} need review before the reconciliation
+          summary can be completed. Unmatched items have no ledger entry; differences are shown
+          against the bank amount.
+        </p>
+        {ex.length > 0 && <BankTable rows={ex} />}
+      </div>
+    );
+  }
+
+  const rows = genericRows(config);
+  const flagged = rows.filter((r) => r.status === "Flagged");
   return (
     <div className="space-y-4">
       <p className="text-[13.5px] leading-relaxed text-ink-2">
-        These holdings-related moves need an editor check before the briefing is exported.
-        Estimated impacts are simulated.
+        {flagged.length === 0 ? (
+          <>No items are outside the {genericThreshold(config).toFixed(2)}% range. Confirm the output can be completed.</>
+        ) : (
+          <>
+            {flagged.length} item{flagged.length === 1 ? "" : "s"} are outside the{" "}
+            {genericThreshold(config).toFixed(2)}% range and need review before the output is released.
+          </>
+        )}
       </p>
-      <HoldingLinksTable />
+      {flagged.length > 0 && <GenericTableInner rows={rows} onlyFlagged />}
     </div>
   );
 }
 
 // ─── Findings (run detail) ───────────────────────────────────────────────────
 
-export function FindingsSection({ templateId, config }: { templateId: string; config: RunConfig }) {
-  if (templateId === "nav-reconciliation") {
+export function FindingsSection({ profile, config }: { profile: SampleProfile; config: RunConfig }) {
+  if (profile === "nav") {
     const tol = config.tolerance ?? 0.5;
     const t = navTotals(tol);
     return (
@@ -279,7 +419,7 @@ export function FindingsSection({ templateId, config }: { templateId: string; co
     );
   }
 
-  if (templateId === "position-risk") {
+  if (profile === "risk") {
     const threshold = config.reviewThreshold ?? 90;
     const rows = riskResults(threshold);
     const over = rows.filter((r) => r.status === "Over limit").length;
@@ -295,25 +435,57 @@ export function FindingsSection({ templateId, config }: { templateId: string; co
     );
   }
 
-  const threshold = config.notableThreshold ?? 0.75;
-  const notable = notableMoves(threshold);
-  return (
-    <div className="space-y-5">
-      <div className="space-y-3">
-        <p className="text-[13px] text-ink-2">
-          {notable.length} notable moves at the ±{threshold.toFixed(2)}% threshold, of{" "}
-          {MARKET_SNAPSHOT.length} instruments in the snapshot.
-        </p>
-        <div className="grid gap-4 xl:grid-cols-2">
-          <MarketSnapshotTable />
-          <div className="space-y-3">
-            <p className="text-[11.5px] font-medium uppercase tracking-[0.1em] text-ink-3">
-              Holdings-related movements
-            </p>
-            <HoldingLinksTable />
+  if (profile === "market") {
+    const threshold = config.notableThreshold ?? 0.75;
+    const notable = notableMoves(threshold);
+    return (
+      <div className="space-y-5">
+        <div className="space-y-3">
+          <p className="text-[13px] text-ink-2">
+            {notable.length} notable moves at the ±{threshold.toFixed(2)}% threshold, of{" "}
+            {MARKET_SNAPSHOT.length} instruments in the snapshot.
+          </p>
+          <div className="grid gap-4 xl:grid-cols-2">
+            <MarketSnapshotTable />
+            <div className="space-y-3">
+              <p className="text-[11.5px] font-medium uppercase tracking-[0.1em] text-ink-3">
+                Holdings-related movements
+              </p>
+              <HoldingLinksTable />
+            </div>
           </div>
         </div>
       </div>
+    );
+  }
+
+  if (profile === "bank") {
+    const rows = bankResults();
+    const ex = rows.filter((r) => r.status !== "Matched").length;
+    const matched = rows.length - ex;
+    return (
+      <div className="space-y-3">
+        <p className="text-[13px] text-ink-2">
+          {rows.length} payments checked · {matched} matched ·{" "}
+          <span className="font-medium text-danger">{ex} need review</span> · Source:{" "}
+          {config.sourceName ?? "sample bank statement"}
+        </p>
+        <BankTable rows={rows} />
+      </div>
+    );
+  }
+
+  const rows = genericRows(config);
+  const flagged = rows.filter((r) => r.status === "Flagged").length;
+  return (
+    <div className="space-y-3">
+      <p className="text-[13px] text-ink-2">
+        {rows.length} sample rows checked ·{" "}
+        <span className="font-medium text-danger">{flagged} flagged</span> · Threshold{" "}
+        {genericThreshold(config).toFixed(2)}%
+        {config.sourceName ? ` · Source: ${config.sourceName}` : ""}
+      </p>
+      <GenericTableInner rows={rows} />
     </div>
   );
 }
@@ -372,21 +544,23 @@ function Stat({ label, value, tone }: { label: string; value: string; tone?: "da
 }
 
 export function ReportPreview({
-  template,
+  profile,
+  name,
   config,
   review,
 }: {
-  template: TemplateDef;
+  profile: SampleProfile;
+  name: string;
   config: RunConfig;
   review?: RunReview;
 }) {
-  if (template.id === "nav-reconciliation") {
+  if (profile === "nav") {
     const tol = config.tolerance ?? 0.5;
     const t = navTotals(tol);
     const ex = navExceptions(tol);
     return (
       <ReportFrame
-        title={String(config.reportTitle ?? template.name)}
+        title={String(config.reportTitle ?? name)}
         meta={`Valuation date ${NAV_VALUATION_DATE} · 8 funds · Tolerance ±${tol.toFixed(2)}% · Sample data`}
         footer="Preview only. Not an official report. Prepared from sample data for demonstration."
       >
@@ -412,7 +586,7 @@ export function ReportPreview({
     );
   }
 
-  if (template.id === "position-risk") {
+  if (profile === "risk") {
     const threshold = config.reviewThreshold ?? 90;
     const rows = riskResults(threshold);
     const flagged = rows.filter((r) => r.status !== "Within limit");
@@ -420,7 +594,7 @@ export function ReportPreview({
     const near = rows.filter((r) => r.status === "Near limit").length;
     return (
       <ReportFrame
-        title={String(config.reportTitle ?? template.name)}
+        title={String(config.reportTitle ?? name)}
         meta={`As at ${RISK_AS_AT} · Review threshold ${threshold}% of applicable limit · Sample data`}
         footer="Preview only. Not an official report. Prepared from sample data for demonstration."
       >
@@ -442,58 +616,113 @@ export function ReportPreview({
     );
   }
 
+  if (profile === "market") {
+    return (
+      <ReportFrame
+        title={String(config.reportTitle ?? name)}
+        meta={`${BRIEFING_DATE} · 07:45 snapshot · Sample data`}
+        footer="AI-assisted draft prepared from sample data. Preview only. Not investment advice."
+      >
+        <div className="flex items-center gap-2.5">
+          <span className="inline-flex items-center rounded-sm bg-primary-tint px-2 py-0.5 text-[11.5px] font-semibold text-primary-ink">
+            AI-assisted draft
+          </span>
+          <span className="text-[12px] text-ink-3">Generated from the sample snapshot. Check before use.</span>
+        </div>
+        <section className="space-y-3">
+          <h4 className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-3">
+            Market snapshot
+          </h4>
+          <MarketSnapshotTable />
+          <ul className="space-y-1.5">
+            {BRIEFING_SNAPSHOT_NOTES.map((n) => (
+              <li key={n} className="text-[13px] leading-relaxed text-ink-2">
+                {n}
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section className="space-y-2.5">
+          <h4 className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-3">
+            Portfolio relevance
+          </h4>
+          <ul className="space-y-1.5">
+            {BRIEFING_RELEVANCE.map((n) => (
+              <li key={n} className="flex gap-2.5 text-[13px] leading-relaxed text-ink-2">
+                <span className="mt-[7px] size-1 shrink-0 rounded-full bg-primary/60" aria-hidden="true" />
+                {n}
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section className="space-y-2.5">
+          <h4 className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-3">
+            Items to review
+          </h4>
+          <ol className="space-y-1.5">
+            {BRIEFING_ITEMS.map((n, i) => (
+              <li key={n} className="flex gap-2.5 text-[13px] leading-relaxed text-ink-2">
+                <span className="w-3.5 shrink-0 text-right tabular-nums text-ink-3">{i + 1}</span>
+                {n}
+              </li>
+            ))}
+          </ol>
+        </section>
+        <ApprovalLine review={review} fallbackBy="Research editor" />
+      </ReportFrame>
+    );
+  }
+
+  if (profile === "bank") {
+    const rows = bankResults();
+    const exRows = rows.filter((r) => r.status !== "Matched");
+    const matched = rows.length - exRows.length;
+    const net = rows.reduce((sum, r) => sum + (r.difference ?? 0), 0);
+    return (
+      <ReportFrame
+        title={String(config.reportTitle ?? name)}
+        meta={`As at 29 September 2026 · ${rows.length} payments · Sample data`}
+        footer="Preview only. Not an official report. Prepared from sample data for demonstration."
+      >
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
+          <Stat label="Payments checked" value={String(rows.length)} />
+          <Stat label="Matched" value={String(matched)} />
+          <Stat label="Need review" value={String(exRows.length)} tone={exRows.length ? "danger" : undefined} />
+          <Stat label="Net difference" value={fmtSignedHKD(net)} tone={net !== 0 ? "danger" : undefined} />
+        </dl>
+        {exRows.length > 0 ? (
+          <BankTable rows={exRows} />
+        ) : (
+          <p className="rounded-md border border-border bg-muted/30 px-4 py-3 text-[13px] text-ink-2">
+            No unmatched payments: every bank transaction has a matching ledger entry.
+          </p>
+        )}
+        <ApprovalLine review={review} fallbackBy={config.reviewer ?? "Finance manager"} />
+      </ReportFrame>
+    );
+  }
+
+  const rows = genericRows(config);
+  const flagged = rows.filter((r) => r.status === "Flagged").length;
   return (
     <ReportFrame
-      title={String(config.reportTitle ?? template.name)}
-      meta={`${BRIEFING_DATE} · 07:45 snapshot · Sample data`}
-      footer="AI-assisted draft prepared from sample data. Preview only. Not investment advice."
+      title={String(config.reportTitle ?? name)}
+      meta={`Prepared from ${config.sourceName ?? "sample data"} · ${rows.length} rows · Threshold ${genericThreshold(config).toFixed(2)}% · Sample data`}
+      footer="Preview only. Prepared from labelled sample data for demonstration."
     >
-      <div className="flex items-center gap-2.5">
-        <span className="inline-flex items-center rounded-sm bg-primary-tint px-2 py-0.5 text-[11.5px] font-semibold text-primary-ink">
-          AI-assisted draft
-        </span>
-        <span className="text-[12px] text-ink-3">Generated from the sample snapshot. Check before use.</span>
-      </div>
-      <section className="space-y-3">
-        <h4 className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-3">
-          Market snapshot
-        </h4>
-        <MarketSnapshotTable />
-        <ul className="space-y-1.5">
-          {BRIEFING_SNAPSHOT_NOTES.map((n) => (
-            <li key={n} className="text-[13px] leading-relaxed text-ink-2">
-              {n}
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section className="space-y-2.5">
-        <h4 className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-3">
-          Portfolio relevance
-        </h4>
-        <ul className="space-y-1.5">
-          {BRIEFING_RELEVANCE.map((n) => (
-            <li key={n} className="flex gap-2.5 text-[13px] leading-relaxed text-ink-2">
-              <span className="mt-[7px] size-1 shrink-0 rounded-full bg-primary/60" aria-hidden="true" />
-              {n}
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section className="space-y-2.5">
-        <h4 className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink-3">
-          Items to review
-        </h4>
-        <ol className="space-y-1.5">
-          {BRIEFING_ITEMS.map((n, i) => (
-            <li key={n} className="flex gap-2.5 text-[13px] leading-relaxed text-ink-2">
-              <span className="w-3.5 shrink-0 text-right tabular-nums text-ink-3">{i + 1}</span>
-              {n}
-            </li>
-          ))}
-        </ol>
-      </section>
-      <ApprovalLine review={review} fallbackBy="Research editor" />
+      <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
+        <Stat label="Rows checked" value={String(rows.length)} />
+        <Stat label="Flagged" value={String(flagged)} tone={flagged > 0 ? "danger" : undefined} />
+        <Stat label="Threshold" value={`${genericThreshold(config).toFixed(2)}%`} />
+      </dl>
+      {flagged > 0 ? (
+        <GenericTableInner rows={rows} onlyFlagged />
+      ) : (
+        <p className="rounded-md border border-border bg-muted/30 px-4 py-3 text-[13px] text-ink-2">
+          No items are outside the {genericThreshold(config).toFixed(2)}% range.
+        </p>
+      )}
+      <ApprovalLine review={review} fallbackBy={config.reviewer ?? "Reviewer"} />
     </ReportFrame>
   );
 }

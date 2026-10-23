@@ -249,7 +249,7 @@ const SOURCE_CHIPS: Record<string, { icon: typeof FileText; name: string }[]> = 
 };
 
 export function TemplateLibrarySection() {
-  const available = TEMPLATES.filter((t) => !t.comingSoon);
+  const available = TEMPLATES.filter((t) => !t.comingSoon).slice(0, 3);
 
   return (
     <section
@@ -340,7 +340,7 @@ export function TemplateLibrarySection() {
                       href={`#/workspace/workflows/${t.id}`}
                       className="group/cta inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-primary-ink transition-colors hover:text-white"
                     >
-                      Customize template
+                      Customise template
                       <ArrowRight
                         className="size-3.5 transition-transform duration-200 group-hover/cta:translate-x-0.5"
                         aria-hidden="true"

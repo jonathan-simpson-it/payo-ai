@@ -6,6 +6,7 @@ import {
   Home,
   Info,
   LayoutTemplate,
+  PenLine,
   Workflow,
   type LucideIcon,
 } from "lucide-react";
@@ -31,7 +32,7 @@ const NAV_ITEMS: NavItem[] = [
   { area: "runs", label: "Runs", icon: History },
 ];
 
-function areaOfRoute(route: Route): "overview" | "workflows" | "templates" | "runs" {
+function areaOfRoute(route: Route): "overview" | "workflows" | "create" | "templates" | "runs" {
   switch (route.name) {
     case "workspace":
       return route.area;
@@ -58,7 +59,7 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
   let crumbParentHref = "#/workspace/templates";
   if (route.name === "workspace") {
     const item = NAV_ITEMS.find((n) => n.area === route.area);
-    crumbHere = item?.label ?? "Templates";
+    crumbHere = route.area === "create" ? "Create" : item?.label ?? "Templates";
     crumbParentHref = `#/workspace/${route.area}`;
   } else if (route.name === "workflow") {
     crumbParent = "Workflows";
@@ -87,6 +88,19 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
           aria-label="Workspace"
           data-tour="workspace-nav"
         >
+          <a
+            href="#/workspace/create"
+            aria-current={activeArea === "create" ? "page" : undefined}
+            className={cn(
+              "mb-3 flex items-center gap-2.5 rounded-md px-3 py-2.5 text-[13.5px] font-semibold shadow-sm transition-colors",
+              activeArea === "create"
+                ? "bg-primary-strong text-primary-foreground"
+                : "bg-primary text-primary-foreground hover:bg-primary-strong",
+            )}
+          >
+            <PenLine className="size-4" aria-hidden="true" />
+            Create workflow
+          </a>
           <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
             Workspace
           </p>
@@ -161,6 +175,16 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
           </nav>
 
           <div className="ml-auto flex items-center gap-2.5">
+            {!(route.name === "workspace" && route.area === "create") && (
+              <a
+                href="#/workspace/create"
+                className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-[12px] font-semibold text-primary-foreground transition-colors hover:bg-primary-strong"
+              >
+                <PenLine className="size-3.5" aria-hidden="true" />
+                <span className="hidden sm:inline">New workflow</span>
+                <span className="sm:hidden">New</span>
+              </a>
+            )}
             {engine && (
               <a
                 href={`#/workspace/runs/${engine.runId}`}
@@ -196,6 +220,13 @@ export function WorkspaceShell({ route, children }: { route: Route; children: Re
           data-tour="workspace-nav"
           className="flex shrink-0 items-center gap-1 overflow-x-auto border-b border-border px-3 py-2 md:hidden"
         >
+          <a
+            href="#/workspace/create"
+            aria-current={activeArea === "create" ? "page" : undefined}
+            className="shrink-0 rounded-md bg-primary px-3 py-1.5 text-[13px] font-semibold text-primary-foreground"
+          >
+            Create
+          </a>
           {NAV_ITEMS.map((item) => {
             const active = item.area === activeArea;
             return (

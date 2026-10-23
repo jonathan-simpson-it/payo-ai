@@ -36,8 +36,8 @@ const STEPS = [
   },
   {
     n: "04",
-    title: "Human-in-the-loop review and one-click deploy.",
-    body: "Set mandatory approval gates for exceptions. Once tested, publish your workflow with a complete, tamper-proof audit trail.",
+    title: "Human review and a controlled publish.",
+    body: "Set approval gates for exceptions. Once tested, publish the workflow with a visible record of what changed.",
   },
 ];
 
@@ -108,7 +108,7 @@ function DescribeGraphic() {
 function GraphGraphic() {
   const nodes = [
     "Load valuations",
-    "Map fields",
+    "Match data",
     "Calculate variance",
     "Check tolerance",
     "Review & report",
@@ -303,7 +303,7 @@ export function HelpsPipeline() {
         >
           <Eyebrow>The Payo pipeline</Eyebrow>
           <h2 className="mt-5 max-w-3xl text-[30px] font-bold leading-[1.2] tracking-[-0.01em] text-white sm:text-[36px] xl:text-[42px]">
-            From plain text to production-grade workflow.
+            From plain text to a reviewed workflow.
           </h2>
         </div>
 

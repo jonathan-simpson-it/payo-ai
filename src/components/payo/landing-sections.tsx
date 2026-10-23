@@ -96,21 +96,21 @@ function GrowthTrend() {
 const SOLUTIONS = [
   {
     n: "01",
-    title: "Visual & Traceable Graph Logic",
-    body: "Watch your data flow from raw input feeds to final reports. Every transformation step displays its source, formula, and pass/fail criteria in real time.",
-    tag: "100% Visible Pipelines",
+    title: "Visible, traceable logic",
+    body: "Watch the data move from source to result. Every step shows its source, calculation, and pass or fail rule.",
+    tag: "Visible pipelines",
   },
   {
     n: "02",
-    title: "Smart Exception Triage",
-    body: "Clean data passes automatically. Material differences or limit breaches are instantly flagged and routed directly to designated reviewers with full context attached.",
-    tag: "Zero Manual Spreadsheets",
+    title: "Exception triage",
+    body: "Clean rows pass through. Differences or limit breaches are flagged and routed to the named reviewer with the context attached.",
+    tag: "Fewer manual checks",
   },
   {
     n: "03",
-    title: "Human-in-the-Loop Governance",
-    body: "Payo pauses at critical decision nodes until an authorized team member approves the summary. Every decision is logged, exportable, and audit-ready.",
-    tag: "Enterprise Compliance",
+    title: "Human approval gates",
+    body: "Payo pauses at decision points until a named reviewer approves the output. The decision is recorded on the run.",
+    tag: "Named reviewers",
   },
 ];
 
@@ -582,9 +582,9 @@ export function RolesSection() {
 
 const RAIL: { type: StepTypeId; label: string }[] = [
   { type: "load", label: "Load data" },
-  { type: "map", label: "Map fields" },
+  { type: "map", label: "Match" },
   { type: "calculate", label: "Calculate" },
-  { type: "check", label: "Check limit" },
+  { type: "check", label: "Check" },
   { type: "review", label: "Review" },
   { type: "report", label: "Report" },
 ];
@@ -781,16 +781,16 @@ export function ConnectorsSection() {
 
 const CONTROL_POINTS = [
   {
-    title: "Step-by-step node visibility",
-    body: "Every data transformation is visually rendered before execution. What you see in the graph is exactly what runs.",
+    title: "Visible steps",
+    body: "Every step is shown before the run. What you see in the workflow is what the simulated run follows.",
   },
   {
-    title: "Mandatory approval gates",
-    body: "Configure strict criteria where execution must pause for a human sign-off. No automated actions occur silently.",
+    title: "Human approval gates",
+    body: "Set where the run must pause for a human decision. Nothing is released silently.",
   },
   {
-    title: "Complete lineage & source tracking",
-    body: "Every output cell references its exact source file, timestamp, and mathematical formula for painless internal audit reviews.",
+    title: "Source tracking",
+    body: "Every output shows its source, the values used, and who reviewed it.",
   },
 ];
 
@@ -800,7 +800,7 @@ export function TrustSection() {
       <div className="mx-auto w-full max-w-[1720px] px-6 py-16 sm:px-12 lg:px-24 lg:py-20">
         <Eyebrow>Enterprise control &amp; governance</Eyebrow>
         <h2 className={SECTION_HEADING} data-tour="landing-trust">
-          Designed for regulated standards. Built for zero risk.
+          Designed for regulated workflows. Built for visible control.
         </h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {CONTROL_POINTS.map((c) => (

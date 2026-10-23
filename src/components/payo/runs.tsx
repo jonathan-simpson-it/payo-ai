@@ -5,7 +5,7 @@ import { ArrowLeft, ChevronRight, FileText, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { getTemplate, runSummary } from "@/lib/payo/data";
+import { runSummary } from "@/lib/payo/data";
 import { fmtDateTime } from "@/lib/payo/format";
 import { navigate } from "@/lib/payo/router";
 import { usePayo } from "@/lib/payo/store";
@@ -19,6 +19,7 @@ const STATE_LABEL: Record<string, string> = {
   running: "Running…",
   complete: "Complete",
   "needs-review": "Needs review",
+  skipped: "Skipped",
 };
 
 const SECTION_HEADING =
@@ -188,7 +189,8 @@ export function RunDetail({ runId }: { runId: string }) {
   }
 
   const wf = workflowById(run.workflowId);
-  const template = wf ? getTemplate(wf.templateId) : undefined;
+  const profile = wf?.sampleProfile ?? run.config.profile ?? "generic";
+  const wfName = wf?.name ?? run.workflowName;
   const engineBusy = state.engine != null && state.engine.phase !== "done";
   const liveEngine =
     state.engine?.runId === run.id && state.engine.phase !== "done" ? state.engine : null;
@@ -275,7 +277,7 @@ export function RunDetail({ runId }: { runId: string }) {
                 toast(`${run.code} approved (simulated decision).`);
               }}
             >
-              {template ? reviewApproveLabel(template.id) : "Approve"}
+              {reviewApproveLabel(profile)}
             </Button>
             <Button
               size="sm"
@@ -345,13 +347,13 @@ export function RunDetail({ runId }: { runId: string }) {
             </section>
           ) : (
             <>
-              {wf && template && (
+              {wf && (
                 <section aria-labelledby="run-findings">
                   <h2 id="run-findings" className={SECTION_HEADING}>
                     Results: sample data
                   </h2>
                   <div className="mt-4">
-                    <FindingsSection templateId={wf.templateId} config={run.config} />
+                    <FindingsSection profile={profile} config={run.config} />
                   </div>
                 </section>
               )}
@@ -361,8 +363,8 @@ export function RunDetail({ runId }: { runId: string }) {
                   Final report
                 </h2>
                 <div className="mt-4">
-                  {run.status === "completed" && template ? (
-                    <ReportPreview template={template} config={run.config} review={run.review} />
+                  {run.status === "completed" ? (
+                    <ReportPreview profile={profile} name={wfName} config={run.config} review={run.review} />
                   ) : (
                     <div className="rounded-md border border-dashed border-line-strong bg-card/60 px-5 py-5">
                       <p className="text-[14px] font-medium text-ink-2">

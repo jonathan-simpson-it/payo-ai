@@ -18,6 +18,7 @@ import { HelpsPipeline } from "@/components/payo/helps-pipeline";
 import { TemplateLibrarySection } from "@/components/payo/template-library";
 
 const WORKSPACE_URL = "#/workspace/templates";
+const CREATE_URL = "#/workspace/create";
 
 const NAV_LINKS = [
   { href: "#what-payo-does", label: "How it works" },
@@ -150,17 +151,17 @@ export function LandingPage() {
               </div>
               <a
                 href="#waitlist"
-                className="inline-flex h-9 items-center rounded-lg bg-primary px-3.5 text-[13px] font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary-strong focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/40"
+                className="inline-flex h-9 items-center rounded-lg border border-white/15 bg-white/[0.03] px-3.5 text-[13px] font-medium text-white transition-colors duration-200 hover:bg-white/[0.07] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-white/20"
               >
                 <span className="sm:hidden">Waitlist</span>
                 <span className="hidden sm:inline">Join the waitlist</span>
               </a>
               <a
-                href={WORKSPACE_URL}
+                href={CREATE_URL}
                 data-tour="landing-enter-workspace"
-                className="hidden h-9 items-center gap-1.5 rounded-lg border border-white/15 bg-white/[0.03] px-3.5 text-[13px] font-medium text-white transition-colors duration-200 hover:bg-white/[0.07] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-white/20 sm:inline-flex"
+                className="hidden h-9 items-center gap-1.5 rounded-lg bg-primary px-3.5 text-[13px] font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary-strong focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/40 sm:inline-flex"
               >
-                Build a Workflow
+                Create a workflow
                 <ArrowRight className="size-3.5" aria-hidden="true" />
               </a>
             </div>
@@ -199,11 +200,11 @@ export function LandingPage() {
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-3">
                   <a
-                    href={WORKSPACE_URL}
+                    href={CREATE_URL}
                     data-tour="landing-hero-cta"
                     className="inline-flex h-12 items-center gap-2 rounded-[10px] bg-primary px-7 text-[15px] font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary-strong focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/40"
                   >
-                    Generate Your First Graph
+                    Create a workflow
                     <ArrowRight className="size-4" aria-hidden="true" />
                   </a>
                   <a
